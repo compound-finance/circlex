@@ -22,8 +22,6 @@ defmodule Circlex.ApiCase do
     {:ok, state_pid} = State.start_link(name: nil, initial_state: initial_state)
     Process.put(:state_pid, state_pid)
 
-    IO.inspect(State.serialize_state())
-
     {:ok, state_pid: state_pid}
   end
 end

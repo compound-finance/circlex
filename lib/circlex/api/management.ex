@@ -1,0 +1,31 @@
+defmodule Circlex.Api.Management do
+  @moduledoc """
+  Core API...
+  """
+  import Circlex.Api
+
+  @doc ~S"""
+  Retrieves general configuration information.
+
+  Reference: https://developers.circle.com/reference/getconfig
+
+  ## Examples
+
+      iex> host = Circlex.Test.start_server()
+      iex> Circlex.Api.Management.get_config(host: host)
+      {:ok, %{payments: %{master_wallet_id: "1000216185"}}}
+
+      iex> host = Circlex.Test.start_server(no_load: true)
+      iex> Circlex.Api.Management.get_config(host: host)
+      {:error, %{error: "System Configuration Issue: no main \"merchant\" wallet specified"}}
+  """
+  def get_config(opts \\ []) do
+    case api_get("/v1/configuration", opts) do
+      {:ok, %{"payments" => %{"masterWalletId" => master_wallet_id}}} ->
+        {:ok, %{payments: %{master_wallet_id: master_wallet_id}}}
+
+      {:error, %{"error" => error}} ->
+        {:error, %{error: error}}
+    end
+  end
+end
