@@ -8,11 +8,18 @@ defmodule Circlex.ApiCase do
   end
 
   setup tags do
-    "test/support/initial_state.json"
-    |> File.read!()
-    |> Jason.decode!(keys: :atoms)
+    initial_state =
+      case Map.get(tags, :load) do
+        false ->
+          %{}
 
-    {:ok, state_pid} = State.start_link(name: nil, initial_state: %{})
+        _ ->
+          "test/support/initial_state.json"
+          |> File.read!()
+          |> Jason.decode!(keys: :atoms)
+      end
+
+    {:ok, state_pid} = State.start_link(name: nil, initial_state: initial_state)
     Process.put(:state_pid, state_pid)
 
     IO.inspect(State.serialize_state())

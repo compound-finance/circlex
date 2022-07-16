@@ -39,16 +39,31 @@ defmodule Circlex.Api do
 
       iex> host = Circlex.Test.start_server(no_load: true)
       iex> Circlex.Api.getconfig(host: host)
-      {:error, %{"error" => "System Configuration Issue: no main \"merchant\" wallet specified"}}
+      {:error, %{error: "System Configuration Issue: no main \"merchant\" wallet specified"}}
   """
   def getconfig(opts \\ []) do
     case api_get("/v1/configuration", opts) do
       {:ok, %{"payments" => %{"masterWalletId" => master_wallet_id}}} ->
         {:ok, %{payments: %{master_wallet_id: master_wallet_id}}}
 
-      {:error, error} ->
-        {:error, error}
+      {:error, %{"error" => error}} ->
+        {:error, %{error: error}}
     end
+  end
+
+  @doc ~S"""
+  Retrieves an RSA public key to be used in encrypting data sent to the API.
+
+  Reference: https://developers.circle.com/reference/getpublickey
+
+  ## Examples
+
+      iex> host = Circlex.Test.start_server()
+      iex> Circlex.Api.getpublickey(host: host)
+      {:error, %{error: "Not implemented by Circlex client"}}
+  """
+  def getpublickey(opts \\ []) do
+    {:error, %{error: "Not implemented by Circlex client"}}
   end
 
   defp api_get(path, opts) do

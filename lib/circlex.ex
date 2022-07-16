@@ -1,5 +1,3 @@
 defmodule Circlex do
   
-
-  
 end
