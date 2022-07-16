@@ -1,6 +1,11 @@
 defmodule Circlex.Emulator.Plug do
   use Plug.Router
 
+  def call(conn, opts) do
+    put_private(conn, :state_pid, opts)
+    |> super(opts)
+  end
+
   # if Mix.env() == :dev do
   #   use Plug.Debugger
   # end

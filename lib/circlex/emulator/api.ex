@@ -45,6 +45,7 @@ defmodule Circlex.Emulator.Api do
         use Plug.Router
 
         match route, via: method do
+          Process.put(:state_pid, var!(conn).private[:state_pid])
           params = Circlex.Emulator.Api.api_params(var!(conn))
 
           apply(unquote(module), unquote(fun), [params])

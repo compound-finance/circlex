@@ -12,10 +12,15 @@ defmodule Circlex.Emulator do
   def start(opts \\ []) do
     port = Keyword.get(opts, :port, @default_port)
     initial_state = Keyword.get(opts, :initial_state, %{})
+    state_name = Keyword.get(opts, :state_name, Circlex.Emulator.State)
+    cowboy_ref = Module.concat(__MODULE__, "Port_" <> to_string(port))
 
     children = [
-      {Plug.Cowboy, scheme: :http, plug: Circlex.Emulator.Plug, options: [port: port]},
-      {Circlex.Emulator.State, initial_state: initial_state}
+      {Plug.Cowboy,
+       scheme: :http,
+       plug: {Circlex.Emulator.Plug, state_name},
+       options: [ref: cowboy_ref, port: port]},
+      {Circlex.Emulator.State, name: state_name, initial_state: initial_state}
     ]
 
     Logger.info("Circlex Emulator starting on port #{port}...")

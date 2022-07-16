@@ -30,10 +30,12 @@ defmodule Circlex.Emulator.State do
       pid when is_pid(pid) ->
         pid
 
+      name when is_atom(name) and not is_nil(name) ->
+        Process.whereis(name)
+
       nil ->
         __MODULE__
     end
-    |> IO.inspect(label: "state pid")
   end
 
   def restore_state(json) do

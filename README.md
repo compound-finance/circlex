@@ -17,6 +17,25 @@ end
 
 ## Getting Started
 
+### API Client
+
+To start an API client, set-up your Circlex application by specifying the Circle host, e.g.
+
+**runtime.exs**
+
+```elixir
+config :circlex,
+  host: "https://api-sandbox.circle.com",
+  auth: System.get_env("CIRCLE_AUTH")
+```
+
+Then run:
+
+```elixir
+iex> Circlex.API.Health.ping()
+{:ok, %{message: "pong"}}
+```
+
 ### Emulator
 
 To run the emulator, run:

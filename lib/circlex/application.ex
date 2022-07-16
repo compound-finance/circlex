@@ -7,7 +7,6 @@ defmodule Circlex.Application do
 
   @impl true
   def start(_type, args) do
-    IO.inspect({args}, label: "args")
     children = [
       # Starts a worker by calling: Circlex.Worker.start_link(arg)
       # {Circlex.Worker, arg}

@@ -22,7 +22,10 @@ defmodule Circlex.Emulator.State.Wallet do
     State.update_in(
       :wallets,
       fn wallets ->
-        [%__MODULE__{wallet_id: wallet_id, entity_id: entity_id, type: type, balances: balances} | wallets]
+        [
+          %__MODULE__{wallet_id: wallet_id, entity_id: entity_id, type: type, balances: balances}
+          | wallets
+        ]
       end,
       []
     )
@@ -39,18 +42,24 @@ defmodule Circlex.Emulator.State.Wallet do
   end
 
   def deserialize(state) do
-    %{
-      state
-      | wallets:
-          Enum.map(state.wallets, fn wallet ->
-            %__MODULE__{
-              wallet_id: wallet.walletId,
-              entity_id: wallet.entityId,
-              type: wallet.type,
-              balances: []
-            }
-          end)
-    }
+    case Map.get(state, :wallets) do
+      nil ->
+        state
+
+      wallets ->
+        %{
+          state
+          | wallets:
+              Enum.map(wallets, fn wallet ->
+                %__MODULE__{
+                  wallet_id: wallet.walletId,
+                  entity_id: wallet.entityId,
+                  type: wallet.type,
+                  balances: []
+                }
+              end)
+        }
+    end
   end
 
   def serialize(state) do
