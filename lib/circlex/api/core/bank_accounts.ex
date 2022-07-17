@@ -3,7 +3,7 @@ defmodule Circlex.Api.Core.BankAccounts do
   Core API...
   """
   import Circlex.Api
-  alias Circlex.Objects.BankAccount
+  alias Circlex.Struct.BankAccount
 
   @doc ~S"""
   Create a bank account (wires).
@@ -18,7 +18,7 @@ defmodule Circlex.Api.Core.BankAccounts do
       iex> Circlex.Api.Core.BankAccounts.create("1000000001", "999999999", billing_details, bank_address, host: host)
       {
         :ok,
-        %Circlex.Objects.BankAccount{
+        %Circlex.Struct.BankAccount{
           description: "HSBC Canada 0001",
           bank_address: %{"bankName" => "HSBC Canada", "city" => "Toronto", "country" => "CA"},
           billing_details: %{"city" => "Toronto", "country" => "CA", "district" => "ON", "line1" => "100 Money St", "name" => "Satoshi Nakamoto", "postalCode" => "ON M5J 1S9"},
@@ -84,7 +84,7 @@ defmodule Circlex.Api.Core.BankAccounts do
       {
         :ok,
         [
-          %Circlex.Objects.BankAccount{
+          %Circlex.Struct.BankAccount{
             description: "HSBC Canada ****4444",
             bank_address: %{"bankName" => "HSBC Canada", "city" => "Toronto", "country" => "CA"},
             billing_details: %{"city" => "Toronto", "country" => "CA", "district" => "ON", "line1" => "100 Money St", "name" => "Satoshi Nakamoto", "postalCode" => "ON M5J 1S9"},
@@ -115,7 +115,7 @@ defmodule Circlex.Api.Core.BankAccounts do
       iex> Circlex.Api.Core.BankAccounts.get_bank_account("fce6d303-2923-43cf-a66a-1e4690e08d1b", host: host)
       {
         :ok,
-        %Circlex.Objects.BankAccount{
+        %Circlex.Struct.BankAccount{
           description: "HSBC Canada ****4444",
           bank_address: %{"bankName" => "HSBC Canada", "city" => "Toronto", "country" => "CA"},
           billing_details: %{"city" => "Toronto", "country" => "CA", "district" => "ON", "line1" => "100 Money St", "name" => "Satoshi Nakamoto", "postalCode" => "ON M5J 1S9"},

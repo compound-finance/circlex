@@ -4,7 +4,7 @@ defmodule Circlex.Emulator.Api.Accounts.WalletsApi do
   """
   use Circlex.Emulator.Api
   alias Circlex.Emulator.State.WalletState
-  alias Circlex.Objects.Wallet
+  alias Circlex.Struct.Wallet
 
   # https://developers.circle.com/reference/accounts-wallets-get
   @route "/"

@@ -5,8 +5,8 @@ defmodule Circlex.Emulator.State do
 
   def start_link(opts \\ []) do
     name = Keyword.get(opts, :name, __MODULE__)
-    initial_state = Keyword.get(opts, :initial_state, %{})
-    next = Keyword.get(opts, :next, %{}) |> IO.inspect(label: "next")
+    initial_state = Keyword.get(opts, :initial_state, nil)
+    next = Keyword.get(opts, :next, %{})
     Logger.info("Starting Circlex.Emulator.State #{name}...")
 
     GenServer.start_link(
@@ -71,6 +71,7 @@ defmodule Circlex.Emulator.State do
     {:noreply, Map.put(state, :st, do_restore_st(new_st))}
   end
 
+  defp do_restore_st(nil), do: %{}
   defp do_restore_st(st) do
     st
     |> WalletState.deserialize()

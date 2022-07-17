@@ -4,10 +4,12 @@ defmodule Circlex.Emulator.Api.ManagementApi do
   """
   use Circlex.Emulator.Api
 
+  alias Circlex.Emulator.State.WalletState
+
   # https://developers.circle.com/reference/getconfig
   @route "/"
   def get_config(%{}) do
-    with {:ok, master_wallet} <- State.Wallet.master_wallet() do
+    with {:ok, master_wallet} <- WalletState.master_wallet() do
       {:ok,
        %{
          payments: %{

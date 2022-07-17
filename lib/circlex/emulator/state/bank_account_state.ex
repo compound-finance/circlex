@@ -1,6 +1,6 @@
 defmodule Circlex.Emulator.State.BankAccountState do
   alias Circlex.Emulator.State
-  alias Circlex.Objects.BankAccount
+  alias Circlex.Struct.BankAccount
 
   import State.Util
 

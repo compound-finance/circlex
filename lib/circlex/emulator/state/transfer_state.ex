@@ -1,6 +1,6 @@
 defmodule Circlex.Emulator.State.TransferState do
   alias Circlex.Emulator.State
-  alias Circlex.Objects.Transfer
+  alias Circlex.Struct.Transfer
 
   import State.Util
 

@@ -1,4 +1,4 @@
-defmodule Circlex.Objects.BankAccount do
+defmodule Circlex.Struct.BankAccount do
   defstruct [
     :id,
     :status,
@@ -12,7 +12,7 @@ defmodule Circlex.Objects.BankAccount do
   ]
 
   alias Circlex.Emulator.State
-  import Circlex.Objects.Util
+  import Circlex.Struct.Util
 
   # Note: emulator-world only?
   def new(account_number, routing_number, billing_details, bank_address) do

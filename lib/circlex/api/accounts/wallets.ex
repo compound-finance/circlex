@@ -3,7 +3,7 @@ defmodule Circlex.Api.Accounts.Wallets do
   Core API...
   """
   import Circlex.Api
-  alias Circlex.Objects.Wallet
+  alias Circlex.Struct.Wallet
 
   @doc ~S"""
   Creates an end user wallet.
@@ -16,12 +16,12 @@ defmodule Circlex.Api.Accounts.Wallets do
       iex> Circlex.Api.Accounts.Wallets.create("Test Wallet", host: host)
       {
         :ok,
-        %Circlex.Objects.Wallet{
+        %Circlex.Struct.Wallet{
           balances: [],
           description: "Test Wallet",
-          entity_id: "4b8a0908-05a2-11ed-899c-6a1733211c18",
+          entity_id: "a033a6d8-05ae-11ed-9e62-6a1733211c00",
           type: "end_user_wallet",
-          wallet_id: 1000955467
+          wallet_id: "1000000500"
         }
       }
   """
@@ -64,7 +64,7 @@ defmodule Circlex.Api.Accounts.Wallets do
       {
         :ok,
         [
-          %Circlex.Objects.Wallet{
+          %Circlex.Struct.Wallet{
             balances: [],
             description: "Master Wallet",
             entity_id: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",
@@ -91,7 +91,7 @@ defmodule Circlex.Api.Accounts.Wallets do
       iex> Circlex.Api.Accounts.Wallets.get_wallet(1000216185, host: host)
       {
         :ok,
-        %Circlex.Objects.Wallet{
+        %Circlex.Struct.Wallet{
           balances: [],
           description: "Master Wallet",
           entity_id: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",

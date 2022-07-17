@@ -3,7 +3,7 @@ defmodule Circlex.Test do
     initial_state =
       case Keyword.get(opts, :no_load) do
         true ->
-          %{}
+          nil
 
         _ ->
           "test/support/initial_state.json"

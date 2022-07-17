@@ -11,7 +11,7 @@ defmodule Circlex.Emulator do
   @spec start([opt()]) :: {:ok, pid()} | {:error, String.t()}
   def start(opts \\ []) do
     port = Keyword.get(opts, :port, @default_port)
-    initial_state = Keyword.get(opts, :initial_state, %{})
+    initial_state = Keyword.get(opts, :initial_state, nil)
     state_name = Keyword.get(opts, :state_name, Circlex.Emulator.State)
     cowboy_ref = Module.concat(__MODULE__, "Port_" <> to_string(port))
     next = Keyword.get(opts, :next, %{})

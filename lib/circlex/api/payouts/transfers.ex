@@ -3,7 +3,7 @@ defmodule Circlex.Api.Payouts.Transfers do
   Core API...
   """
   import Circlex.Api
-  alias Circlex.Objects.Transfer
+  alias Circlex.Struct.Transfer
 
   @doc ~S"""
   A transfer can be made from an existing funded wallet to a blockchain address or another wallet.
@@ -19,7 +19,7 @@ defmodule Circlex.Api.Payouts.Transfers do
       iex> Circlex.Api.Payouts.Transfers.create(source, destination, amount, host: host)
       {
         :ok,
-         %Circlex.Objects.Transfer{
+         %Circlex.Struct.Transfer{
           amount: %{"amount" => "12345.00", "currency" => "USD"},
           create_date: nil,
           destination: %{"address" => "0x871A9FF377eCf2632A0928950dCEb181557F2e17", "chain" => "ETH", "type" => "blockchain"},
@@ -80,7 +80,7 @@ defmodule Circlex.Api.Payouts.Transfers do
       {
         :ok,
         [
-          %Circlex.Objects.Transfer{
+          %Circlex.Struct.Transfer{
             amount: %{"amount" => "12345.00", "currency" => "USD"},
             create_date: "2022-07-15T23:51:42.729Z",
             destination: %{"address" => "0x871A9FF377eCf2632A0928950dCEb181557F2e17", "chain" => "ETH", "type" => "blockchain"},
@@ -109,7 +109,7 @@ defmodule Circlex.Api.Payouts.Transfers do
       iex> Circlex.Api.Payouts.Transfers.get_transfer("588aa258-51c4-4a69-a3bc-88f007375364", host: host)
       {
         :ok,
-        %Circlex.Objects.Transfer{
+        %Circlex.Struct.Transfer{
           amount: %{"amount" => "12345.00", "currency" => "USD"},
           create_date: "2022-07-15T23:51:42.729Z",
           destination: %{"address" => "0x871A9FF377eCf2632A0928950dCEb181557F2e17", "chain" => "ETH", "type" => "blockchain"},

@@ -4,7 +4,7 @@ defmodule Circlex.Emulator.Api.Core.BankAccountsApi do
   """
   use Circlex.Emulator.Api
   alias Circlex.Emulator.State.BankAccountState
-  alias Circlex.Objects.BankAccount
+  alias Circlex.Struct.BankAccount
 
   ### Wires
 

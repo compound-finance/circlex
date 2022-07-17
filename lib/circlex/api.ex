@@ -45,7 +45,13 @@ defmodule Circlex.Api do
               end
 
             _ ->
-              {:error, json}
+              case json do
+                %{"error" => error} ->
+                  {:error, %{error: error}}
+
+                _ ->
+                  {:error, json}
+              end
           end
         end
 

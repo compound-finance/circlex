@@ -1,8 +1,8 @@
-defmodule Circlex.Objects.Transfer do
+defmodule Circlex.Struct.Transfer do
   defstruct [:id, :source, :destination, :amount, :transaction_hash, :status, :create_date]
 
   alias Circlex.Emulator.State
-  import Circlex.Objects.Util
+  import Circlex.Struct.Util
 
   # Note: emulator-world only?
   def new(source, destination, amount) do

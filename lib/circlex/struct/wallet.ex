@@ -1,8 +1,8 @@
-defmodule Circlex.Objects.Wallet do
+defmodule Circlex.Struct.Wallet do
   defstruct [:wallet_id, :entity_id, :type, :description, :balances]
 
   alias Circlex.Emulator.State
-  import Circlex.Objects.Util
+  import Circlex.Struct.Util
 
   # Note: emulator-world only?
   def new(type, description, balances \\ []) do
