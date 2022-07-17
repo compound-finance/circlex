@@ -19,7 +19,7 @@ defmodule Circlex.Emulator.Api do
 
       plug(Plug.Parsers,
         parsers: [:json],
-        json_decoder: {Jason, :decode!, [[keys: :atoms]]}
+        json_decoder: {Jason, :decode!, [[keys: :atomz]]}
       )
     end
   end
@@ -27,11 +27,14 @@ defmodule Circlex.Emulator.Api do
   def define_route(%{module: module}, kind, name, _args, _guards, _body) do
     case Module.get_attribute(module, :route) do
       path when is_binary(path) ->
-        Module.put_attribute(module, :__routes__, {path, :get, name})
+        Module.put_attribute(module, :__routes__, {path, :get, name, false})
         Module.put_attribute(module, :route, nil)
 
-      [path: path, method: method] ->
-        Module.put_attribute(module, :__routes__, {path, method, name})
+      opts when is_list(opts) ->
+        path = Keyword.get(opts, :path)
+        method = Keyword.get(opts, :method)
+        no_data_key = Keyword.get(opts, :no_data_key, false)
+        Module.put_attribute(module, :__routes__, {path, method, name, no_data_key})
         Module.put_attribute(module, :route, nil)
 
       _ ->
@@ -40,16 +43,25 @@ defmodule Circlex.Emulator.Api do
   end
 
   defmacro define_routes(%{module: module}) do
-    for {route, method, fun} <- Module.get_attribute(module, :__routes__) do
-      quote bind_quoted: [module: module, fun: fun, route: route, method: method] do
+    for {route, method, fun, no_data_key} <- Module.get_attribute(module, :__routes__) do
+      quote bind_quoted: [
+              module: module,
+              fun: fun,
+              no_data_key: no_data_key,
+              route: route,
+              method: method
+            ] do
         use Plug.Router
 
         match route, via: method do
-          Process.put(:state_pid, var!(conn).private[:state_pid])
-          params = Circlex.Emulator.Api.api_params(var!(conn))
+          parser_opts = [parsers: [:json], json_decoder: Jason]
+
+          conn = Plug.Parsers.call(var!(conn), Plug.Parsers.init(parser_opts))
+          Process.put(:state_pid, conn.private[:state_pid])
+          params = Circlex.Emulator.Api.api_params(conn)
 
           apply(unquote(module), unquote(fun), [params])
-          |> Circlex.Emulator.Api.api_handle(var!(conn))
+          |> Circlex.Emulator.Api.api_handle(conn, unquote(no_data_key))
         end
       end
     end
@@ -62,13 +74,19 @@ defmodule Circlex.Emulator.Api do
   end
 
   def api_params(conn) do
-    conn.params
+    for {k, v} <- conn.params, into: %{} do
+      {String.to_atom(k), v}
+    end
   end
 
-  def api_handle(res, conn) do
+  def api_handle(res, conn, no_data_key) do
     case res do
       {:ok, val} ->
-        json!(val, conn)
+        if no_data_key do
+          json!(val, conn)
+        else
+          json!(%{data: val}, conn)
+        end
 
       {:error, error} ->
         json!(%{error: to_string(error)}, conn, 500)

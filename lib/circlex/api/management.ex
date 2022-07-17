@@ -20,12 +20,9 @@ defmodule Circlex.Api.Management do
       {:error, %{error: "System Configuration Issue: no main \"merchant\" wallet specified"}}
   """
   def get_config(opts \\ []) do
-    case api_get("/v1/configuration", opts) do
-      {:ok, %{"payments" => %{"masterWalletId" => master_wallet_id}}} ->
-        {:ok, %{payments: %{master_wallet_id: master_wallet_id}}}
-
-      {:error, %{"error" => error}} ->
-        {:error, %{error: error}}
+    with {:ok, %{"payments" => %{"masterWalletId" => master_wallet_id}}} <-
+           api_get("/v1/configuration", opts) do
+      {:ok, %{payments: %{master_wallet_id: master_wallet_id}}}
     end
   end
 end

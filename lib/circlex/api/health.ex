@@ -16,7 +16,7 @@ defmodule Circlex.Api.Health do
       {:ok, %{message: "pong"}}
   """
   def ping(opts \\ []) do
-    case api_get("/ping", opts) do
+    case api_get("/ping", Keyword.put(opts, :no_data_key, true)) do
       {:ok, %{"message" => message}} ->
         {:ok, %{message: message}}
 

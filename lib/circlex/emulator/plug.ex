@@ -1,5 +1,6 @@
 defmodule Circlex.Emulator.Plug do
   use Plug.Router
+  require Logger
 
   def call(conn, opts) do
     put_private(conn, :state_pid, opts)
@@ -15,9 +16,18 @@ defmodule Circlex.Emulator.Plug do
   plug(:match)
   plug(:dispatch)
 
+  forward("/circlex", to: Circlex.Emulator.Api.CirclexApi)
+
+  # Base
   forward("/ping", to: Circlex.Emulator.Api.HealthApi)
   forward("/v1/configuration", to: Circlex.Emulator.Api.ManagementApi)
-  forward("/circlex", to: Circlex.Emulator.Api.CirclexApi)
+
+  # Core
+  forward("/v1/businessAccount/balances", to: Circlex.Emulator.Api.Core.BalancesApi)
+  forward("/v1/businessAccount/banks", to: Circlex.Emulator.Api.Core.BankAccountsApi)
+
+  # Accounts
+  forward("/v1/wallets", to: Circlex.Emulator.Api.Accounts.WalletsApi)
 
   get "/" do
     conn
@@ -25,7 +35,9 @@ defmodule Circlex.Emulator.Plug do
     |> send_resp(200, Jason.encode!(%{message: "Welcome to the Circlex Emulator 🦦"}))
   end
 
-  defp handle_errors(conn, a = %{kind: _kind, reason: reason, stack: _stack}) do
+  defp handle_errors(conn, error = %{kind: _kind, reason: reason, stack: _stack}) do
+    Logger.error(inspect(error))
+
     failure_reason =
       case reason do
         %FunctionClauseError{function: function} ->

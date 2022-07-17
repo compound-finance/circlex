@@ -8,18 +8,12 @@ defmodule Circlex.ApiCase do
   end
 
   setup tags do
-    initial_state =
-      case Map.get(tags, :load) do
-        false ->
-          %{}
+    no_load = Map.get(tags, :load) == false
+    opts = Circlex.Test.get_opts(no_load: no_load)
+    next = Keyword.get(opts, :next)
+    initial_state = Keyword.get(opts, :initial_state)
 
-        _ ->
-          "test/support/initial_state.json"
-          |> File.read!()
-          |> Jason.decode!(keys: :atoms)
-      end
-
-    {:ok, state_pid} = State.start_link(name: nil, initial_state: initial_state)
+    {:ok, state_pid} = State.start_link(name: nil, initial_state: initial_state, next: next)
     Process.put(:state_pid, state_pid)
 
     {:ok, state_pid: state_pid}

@@ -1,28 +1,30 @@
 defmodule Circlex.Emulator.State do
   use GenServer
   require Logger
-  alias Circlex.Emulator.State.{Wallet}
+  alias Circlex.Emulator.State.{BankAccountState, WalletState}
 
-  def start_link([]), do: start_link(initial_state: %{})
-
-  def start_link(initial_state: initial_state),
-    do: start_link(name: __MODULE__, initial_state: initial_state)
-
-  def start_link(name: name, initial_state: initial_state) do
+  def start_link(opts \\ []) do
+    name = Keyword.get(opts, :name, __MODULE__)
+    initial_state = Keyword.get(opts, :initial_state, %{})
+    next = Keyword.get(opts, :next, %{}) |> IO.inspect(label: "next")
     Logger.info("Starting Circlex.Emulator.State #{name}...")
 
     GenServer.start_link(
       __MODULE__,
-      initial_state,
+      %{st: initial_state, next: next},
       name: name
     )
   end
 
   @impl true
-  def init(state) do
-    initial_state = Map.merge(Wallet.initial_state(), do_restore_state(state))
-    Logger.debug("Initial state: #{inspect(initial_state)}")
-    {:ok, initial_state}
+  def init(state = %{st: st}) do
+    initial_st =
+      WalletState.initial_state()
+      |> Map.merge(BankAccountState.initial_state())
+      |> Map.merge(do_restore_st(st))
+
+    Logger.debug("Initial state: #{inspect(initial_st)}")
+    {:ok, Map.put(state, :st, initial_st)}
   end
 
   defp get_pid() do
@@ -36,6 +38,10 @@ defmodule Circlex.Emulator.State do
       nil ->
         __MODULE__
     end
+  end
+
+  def next(type) do
+    GenServer.call(get_pid(), {:next, type})
   end
 
   def restore_state(json) do
@@ -60,20 +66,52 @@ defmodule Circlex.Emulator.State do
     __MODULE__.put_in(keys, next)
   end
 
-  def handle_cast({:restore_state, new_state}, _state) do
-    {:noreply, do_restore_state(new_state)}
+  def handle_cast({:restore_state, new_st}, state) do
+    {:noreply, Map.put(state, :st, do_restore_st(new_st))}
   end
 
-  defp do_restore_state(st) do
+  defp do_restore_st(st) do
     st
-    |> Wallet.deserialize()
+    |> WalletState.deserialize()
+    |> BankAccountState.deserialize()
   end
 
-  def handle_call(:serialize_state, _from, state) do
-    {:reply, state |> Wallet.serialize(), state}
+  defp generate_type(:uuid), do: UUID.uuid1()
+  defp generate_type(:wallet_id), do: Enum.random(1_000_000_000..1_001_000_000) |> to_string()
+  defp generate_type(:date), do: DateTime.to_iso8601(DateTime.utc_now())
+  defp generate_type(:tracking_ref), do: "CIR3KXLL" <> to_string(System.unique_integer([:positive]))
+
+  # TODO: We could simplify this down to just transform all
+  #       fn calls to be `{fn, acc}`-style, but this is easier
+  #       for now, since it's less burden on the caller.
+  def handle_call({:next, type}, _from, state = %{next: next}) do
+    case next[type] do
+      nil ->
+        {:reply, generate_type(type), state}
+
+      [] ->
+        {:reply, generate_type(type), state}
+
+      f when is_function(f) ->
+        {:reply, f.(), state}
+
+      {f, acc} when is_function(f) ->
+        {v, new_acc} = f.(acc)
+        {:reply, next, %{state | next: Map.put(next, type, {f, new_acc})}}
+
+      [v | rest] ->
+        {:reply, v, %{state | next: Map.put(next, type, rest)}}
+    end
   end
 
-  def handle_call({:get_in, keys, default}, _from, state) do
+  def handle_call(:serialize_state, _from, state = %{st: st}) do
+    {:reply,
+     st
+     |> WalletState.serialize()
+     |> BankAccountState.serialize(), state}
+  end
+
+  def handle_call({:get_in, keys, default}, _from, state = %{st: st}) do
     keys =
       case keys do
         keys when is_list(keys) ->
@@ -83,10 +121,10 @@ defmodule Circlex.Emulator.State do
           [key]
       end
 
-    {:reply, do_get_in(state, keys, default), state}
+    {:reply, do_get_in(st, keys, default), state}
   end
 
-  def handle_call({:put_in, keys, val}, _from, state) do
+  def handle_call({:put_in, keys, val}, _from, state = %{st: st}) do
     keys =
       case keys do
         keys when is_list(keys) ->
@@ -96,18 +134,18 @@ defmodule Circlex.Emulator.State do
           [key]
       end
 
-    {:reply, nil, do_put_in(state, keys, val)}
+    {:reply, nil, %{state | st: do_put_in(st, keys, val)}}
   end
 
   defp do_get_in(nil, _, default), do: default
-  defp do_get_in(state, [], _), do: state
+  defp do_get_in(st, [], _), do: st
 
-  defp do_get_in(state, [k | rest], default) when is_map(state) do
-    do_get_in(state[k], rest, default)
+  defp do_get_in(st, [k | rest], default) when is_map(st) do
+    do_get_in(st[k], rest, default)
   end
 
-  defp do_put_in(state, [key], val) when is_map(state), do: Map.put(state, key, val)
+  defp do_put_in(st, [key], val) when is_map(st), do: Map.put(st, key, val)
 
-  defp do_put_in(state, [key | rest], val) when is_map(state),
-    do: Map.put(state, key, do_put_in(Map.get(state, key, %{}), rest, val))
+  defp do_put_in(st, [key | rest], val) when is_map(st),
+    do: Map.put(st, key, do_put_in(Map.get(st, key, %{}), rest, val))
 end

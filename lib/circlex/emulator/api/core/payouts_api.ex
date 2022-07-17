@@ -1,4 +1,4 @@
-defmodule Circlex.Emulator.Api.Core.PayoutApi do
+defmodule Circlex.Emulator.Api.Core.PayoutsApi do
   use Circlex.Emulator.Api
 
   @route path: "/", method: :post
