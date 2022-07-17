@@ -12,7 +12,7 @@ defmodule Circlex.Api.Accounts.Wallets do
 
   ## Examples
 
-      iex> host = Circlex.Test.start_server(next: %{uuid: ["4b8a0908-05a2-11ed-899c-6a1733211c18"], wallet_id: [1000955467]})
+      iex> host = Circlex.Test.start_server()
       iex> Circlex.Api.Accounts.Wallets.create("Test Wallet", host: host)
       {
         :ok,

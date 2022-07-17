@@ -1,7 +1,7 @@
 defmodule Circlex.Emulator.State do
   use GenServer
   require Logger
-  alias Circlex.Emulator.State.{BankAccountState, WalletState}
+  alias Circlex.Emulator.State.{BankAccountState, WalletState, TransferState}
 
   def start_link(opts \\ []) do
     name = Keyword.get(opts, :name, __MODULE__)
@@ -21,6 +21,7 @@ defmodule Circlex.Emulator.State do
     initial_st =
       WalletState.initial_state()
       |> Map.merge(BankAccountState.initial_state())
+      |> Map.merge(TransferState.initial_state())
       |> Map.merge(do_restore_st(st))
 
     Logger.debug("Initial state: #{inspect(initial_st)}")
@@ -74,12 +75,15 @@ defmodule Circlex.Emulator.State do
     st
     |> WalletState.deserialize()
     |> BankAccountState.deserialize()
+    |> TransferState.deserialize()
   end
 
   defp generate_type(:uuid), do: UUID.uuid1()
   defp generate_type(:wallet_id), do: Enum.random(1_000_000_000..1_001_000_000) |> to_string()
   defp generate_type(:date), do: DateTime.to_iso8601(DateTime.utc_now())
-  defp generate_type(:tracking_ref), do: "CIR3KXLL" <> to_string(System.unique_integer([:positive]))
+
+  defp generate_type(:tracking_ref),
+    do: "CIR3KXLL" <> to_string(System.unique_integer([:positive]))
 
   # TODO: We could simplify this down to just transform all
   #       fn calls to be `{fn, acc}`-style, but this is easier
@@ -108,7 +112,8 @@ defmodule Circlex.Emulator.State do
     {:reply,
      st
      |> WalletState.serialize()
-     |> BankAccountState.serialize(), state}
+     |> BankAccountState.serialize()
+     |> TransferState.serialize(), state}
   end
 
   def handle_call({:get_in, keys, default}, _from, state = %{st: st}) do

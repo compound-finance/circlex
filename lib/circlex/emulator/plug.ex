@@ -29,6 +29,9 @@ defmodule Circlex.Emulator.Plug do
   # Accounts
   forward("/v1/wallets", to: Circlex.Emulator.Api.Accounts.WalletsApi)
 
+  # Payouts
+  forward("/v1/transfers", to: Circlex.Emulator.Api.Payouts.TransfersApi)
+
   get "/" do
     conn
     |> put_resp_content_type("application/json")
