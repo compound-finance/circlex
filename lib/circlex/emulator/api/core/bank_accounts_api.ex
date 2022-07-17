@@ -1,6 +1,6 @@
 defmodule Circlex.Emulator.Api.Core.BankAccountsApi do
   @moduledoc """
-  Mounted under `/v1/businessAccount/banks`.
+  Mounted under `/v1/businessAccount/banks` and `/v1/banks`
   """
   use Circlex.Emulator.Api
   alias Circlex.Emulator.State.BankAccountState
