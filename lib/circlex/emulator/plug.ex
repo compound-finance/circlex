@@ -32,6 +32,7 @@ defmodule Circlex.Emulator.Plug do
   # Payouts
   forward("/v1/transfers", to: Circlex.Emulator.Api.Payouts.TransfersApi)
   forward("/v1/banks", to: Circlex.Emulator.Api.Core.BankAccountsApi)
+  forward("/v1/payouts", to: Circlex.Emulator.Api.Payouts.PayoutsApi)
 
   get "/" do
     conn
