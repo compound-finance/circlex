@@ -19,7 +19,7 @@ defmodule Circlex.Emulator do
     children = [
       {Plug.Cowboy,
        scheme: :http,
-       plug: {Circlex.Emulator.Plug, state_name},
+       plug: {Circlex.Emulator.Router, state_name},
        options: [ref: cowboy_ref, port: port]},
       {Circlex.Emulator.State, name: state_name, initial_state: initial_state, next: next}
     ]

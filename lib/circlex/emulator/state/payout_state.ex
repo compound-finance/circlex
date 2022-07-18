@@ -4,12 +4,23 @@ defmodule Circlex.Emulator.State.PayoutState do
 
   import State.Util
 
-  def all() do
-    State.get_in(:payouts)
+  defp test_filter(payout, {:source_wallet_id, source_wallet_id}) do
+    payout.source_wallet_id == source_wallet_id
   end
 
-  def get(id) do
-    all()
+  defp apply_filters(vals, filters) do
+    Enum.filter(vals, fn val ->
+      Enum.all?(filters, fn filter -> test_filter(val, filter) end)
+    end)
+  end
+
+  def all(filters \\ []) do
+    State.get_in(:payouts)
+    |> apply_filters(filters)
+  end
+
+  def get(id, filters \\ []) do
+    all(filters)
     |> find!(fn %Payout{id: payout_id} ->
       to_string(id) == to_string(payout_id)
     end)

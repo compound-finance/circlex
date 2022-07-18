@@ -1,4 +1,4 @@
-defmodule Circlex.Emulator.Plug do
+defmodule Circlex.Emulator.Router do
   use Plug.Router
   require Logger
 
@@ -24,7 +24,7 @@ defmodule Circlex.Emulator.Plug do
 
   # Core
   forward("/v1/businessAccount/balances", to: Circlex.Emulator.Api.Core.BalancesApi)
-  # forward("/v1/businessAccount/payouts", to: Circlex.Emulator.Api.Core.PayoutsApi)
+  forward("/v1/businessAccount/payouts", to: Circlex.Emulator.Api.Core.PayoutsApi)
   forward("/v1/businessAccount/banks", to: Circlex.Emulator.Api.Core.BankAccountsApi)
   # forward("/v1/businessAccount/transfers", to: Circlex.Emulator.Api.Core.TransfersApi)
   forward("/v1/businessAccount/wallets/addresses", to: Circlex.Emulator.Api.Core.AddressesApi)

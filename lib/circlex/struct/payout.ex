@@ -19,7 +19,7 @@ defmodule Circlex.Struct.Payout do
 
   # Note: emulator-world only?
   # TODO: Get source wallet id better
-  def new(source, destination, amount, metadata) do
+  def new(source, destination, amount, _metadata) do
     {:ok,
      %__MODULE__{
        id: State.next(:uuid),

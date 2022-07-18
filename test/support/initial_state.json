@@ -96,6 +96,26 @@
       },
       "createDate": "2022-07-15T20:03:32.718Z",
       "updateDate": "2022-07-15T20:20:32.255Z"
+    },
+    {
+      "id": "6e2e20bd-6ad6-4603-950b-64803647a4e6",
+      "amount": {
+        "amount": "12111.00",
+        "currency": "USD"
+      },
+      "status": "complete",
+      "sourceWalletId": "1000216185",
+      "destination": {
+        "type": "wire",
+        "id": "4847be95-8b73-44cc-a329-549a25a776e2",
+        "name": "CAIXABANK, S.A. ****6789"
+      },
+      "fees": {
+        "amount": "25.00",
+        "currency": "USD"
+      },
+      "createDate": "2022-07-15T20:03:32.718Z",
+      "updateDate": "2022-07-15T20:20:32.255Z"
     }
   ],
   "recipients": [
