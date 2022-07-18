@@ -22,6 +22,7 @@ defmodule Circlex.Emulator.Router do
   forward("/ping", to: Circlex.Emulator.Api.HealthApi)
   forward("/v1/configuration", to: Circlex.Emulator.Api.ManagementApi)
   forward("/v1/stablecoins", to: Circlex.Emulator.Api.StablecoinsApi)
+  forward("/v1/notifications/subscriptions", to: Circlex.Emulator.Api.SubscriptionsApi)
 
   # Core
   forward("/v1/businessAccount/balances", to: Circlex.Emulator.Api.Core.BalancesApi)

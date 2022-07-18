@@ -152,5 +152,21 @@
       "currency": "USD",
       "description": "Fireblocks Address"
     }
+  ],
+  "subscriptions": [
+    {
+      "id": "8e25e48a-8c84-4186-988c-4055bda7807a",
+      "endpoint": "https://us-west1-treasury-stage.cloudfunctions.net/treasury-circle-sns-subscriber-function-443f885",
+      "subscriptionDetails": [
+        {
+          "url": "arn:aws:sns:us-east-1:908968368384:sandbox_platform-notifications-topic:3c849cdd-af12-4c28-a4fe-d0d037079cc0",
+          "status": "confirmed"
+        },
+        {
+          "url": "arn:aws:sns:us-west-2:908968368384:sandbox_platform-notifications-topic:48a51c19-6549-4b9c-be4a-926f77bb95a0",
+          "status": "confirmed"
+        }
+      ]
+    }
   ]
 }

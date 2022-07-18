@@ -6,6 +6,7 @@ defmodule Circlex.Emulator.State do
     BankAccountState,
     PayoutState,
     RecipientState,
+    SubscriptionState,
     TransferState,
     WalletState
   }
@@ -31,6 +32,7 @@ defmodule Circlex.Emulator.State do
       |> Map.merge(TransferState.initial_state())
       |> Map.merge(PayoutState.initial_state())
       |> Map.merge(RecipientState.initial_state())
+      |> Map.merge(SubscriptionState.initial_state())
       |> Map.merge(do_restore_st(st))
 
     Logger.debug("Initial state: #{inspect(initial_st)}")
@@ -89,6 +91,7 @@ defmodule Circlex.Emulator.State do
     |> TransferState.deserialize()
     |> PayoutState.deserialize()
     |> RecipientState.deserialize()
+    |> SubscriptionState.deserialize()
   end
 
   defp generate_type(:uuid), do: UUID.uuid1()
@@ -122,13 +125,16 @@ defmodule Circlex.Emulator.State do
   end
 
   def handle_call(:serialize_state, _from, state = %{st: st}) do
-    {:reply,
-     st
-     |> WalletState.serialize()
-     |> BankAccountState.serialize()
-     |> TransferState.serialize()
-     |> PayoutState.serialize()
-     |> RecipientState.serialize(), state}
+    serialized =
+      st
+      |> WalletState.serialize()
+      |> BankAccountState.serialize()
+      |> TransferState.serialize()
+      |> PayoutState.serialize()
+      |> RecipientState.serialize()
+      |> SubscriptionState.serialize()
+
+    {:reply, serialized, state}
   end
 
   def handle_call({:get_in, keys, default}, _from, state = %{st: st}) do

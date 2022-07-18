@@ -15,6 +15,10 @@ defmodule Circlex.Api do
     api_request(:post, path, params, opts)
   end
 
+  def api_delete(path, opts) do
+    api_request(:delete, path, nil, opts)
+  end
+
   # TODO: Handle errors better
   defp api_request(method, path, params, opts) do
     host = Keyword.get(opts, :host, env_host())
