@@ -88,7 +88,7 @@ defmodule Circlex.Api.Accounts.Wallets do
   ## Examples
 
       iex> host = Circlex.Test.start_server()
-      iex> Circlex.Api.Accounts.Wallets.get_wallet(1000216185, host: host)
+      iex> Circlex.Api.Accounts.Wallets.get_wallet("1000216185", host: host)
       {
         :ok,
         %Circlex.Struct.Wallet{
@@ -114,11 +114,35 @@ defmodule Circlex.Api.Accounts.Wallets do
   ## Examples
 
       iex> host = Circlex.Test.start_server()
-      iex> Circlex.Api.Accounts.Wallets.generate_address(host: host)
-      {:error, %{error: "Not implemented by Circlex client"}}
+      iex> Circlex.Api.Accounts.Wallets.generate_address("1000216185", "USD", "ETH", host: host)
+      {:ok,
+        %{
+          address: "0x6a9de7df6a986a0398348efb0ecd91f341547b31",
+          chain: "ETH",
+          currency: "USD"
+        }}
   """
-  def generate_address(opts \\ []) do
-    not_implemented()
+  def generate_address(wallet_id, currency, chain, opts \\ []) do
+    idempotency_key = Keyword.get(opts, :idempotency_key, UUID.uuid1())
+
+    case api_post(
+           Path.join(["/v1/wallets", wallet_id, "addresses"]),
+           %{idempotencyKey: idempotency_key, currency: currency, chain: chain},
+           opts
+         ) do
+      {:ok,
+       %{
+         "address" => address,
+         "chain" => chain,
+         "currency" => currency
+       }} ->
+        {:ok,
+         %{
+           address: address,
+           chain: chain,
+           currency: currency
+         }}
+    end
   end
 
   @doc ~S"""
@@ -129,10 +153,26 @@ defmodule Circlex.Api.Accounts.Wallets do
   ## Examples
 
       iex> host = Circlex.Test.start_server()
-      iex> Circlex.Api.Accounts.Wallets.list_addresses(host: host)
-      {:error, %{error: "Not implemented by Circlex client"}}
+      iex> Circlex.Api.Accounts.Wallets.list_addresses("1000216185", host: host)
+      {
+        :ok,
+        [
+          %{address: "0x522c4caaf435fdf1822c7b6a081858344623cf84", chain: "ETH", currency: "USD"},
+          %{address: "mpLQ2waXiQW6aAtnp9XMWh52R42k3QVjtU", chain: "BTC", currency: "BTC"},
+          %{address: "0x6a9de7df6a986a0398348efb0ecd91f341547b31", chain: "ETH", currency: "USD"}
+        ]
+      }
   """
-  def list_addresses(opts \\ []) do
-    not_implemented()
+  def list_addresses(wallet_id, opts \\ []) do
+    with {:ok, addresses} <- api_get(Path.join(["/v1/wallets", wallet_id, "addresses"]), opts) do
+      {:ok,
+       Enum.map(addresses, fn %{
+                                "address" => address,
+                                "chain" => chain,
+                                "currency" => currency
+                              } ->
+         %{address: address, chain: chain, currency: currency}
+       end)}
+    end
   end
 end

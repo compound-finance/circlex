@@ -1,20 +1,8 @@
 defmodule Circlex.Struct.Wallet do
-  defstruct [:wallet_id, :entity_id, :type, :description, :balances]
+  defstruct [:wallet_id, :entity_id, :type, :description, :balances, :addresses]
 
   alias Circlex.Emulator.State
   import Circlex.Struct.Util
-
-  # Note: emulator-world only?
-  def new(type, description, balances \\ []) do
-    {:ok,
-     %__MODULE__{
-       wallet_id: State.next(:wallet_id),
-       entity_id: State.next(:uuid),
-       description: description,
-       type: type,
-       balances: balances
-     }}
-  end
 
   def deserialize(wallet) do
     %__MODULE__{
@@ -22,17 +10,21 @@ defmodule Circlex.Struct.Wallet do
       entity_id: fetch(wallet, :entityId),
       description: fetch(wallet, :description),
       type: fetch(wallet, :type),
-      balances: fetch(wallet, :balances)
+      balances: fetch(wallet, :balances),
+      addresses: fetch(wallet, :addresses)
     }
   end
 
-  def serialize(wallet) do
-    %{
-      walletId: wallet.wallet_id,
-      entityId: wallet.entity_id,
-      description: wallet.description,
-      type: wallet.type,
-      balances: []
-    }
+  def serialize(wallet, include_addresses \\ true) do
+    Map.merge(
+      %{
+        walletId: wallet.wallet_id,
+        entityId: wallet.entity_id,
+        description: wallet.description,
+        type: wallet.type,
+        balances: wallet.balances
+      },
+      if(include_addresses, do: %{addresses: wallet.addresses}, else: %{})
+    )
   end
 end

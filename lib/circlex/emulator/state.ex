@@ -1,7 +1,14 @@
 defmodule Circlex.Emulator.State do
   use GenServer
   require Logger
-  alias Circlex.Emulator.State.{BankAccountState, PayoutState, TransferState, WalletState}
+
+  alias Circlex.Emulator.State.{
+    BankAccountState,
+    PayoutState,
+    RecipientState,
+    TransferState,
+    WalletState
+  }
 
   def start_link(opts \\ []) do
     name = Keyword.get(opts, :name, __MODULE__)
@@ -23,6 +30,7 @@ defmodule Circlex.Emulator.State do
       |> Map.merge(BankAccountState.initial_state())
       |> Map.merge(TransferState.initial_state())
       |> Map.merge(PayoutState.initial_state())
+      |> Map.merge(RecipientState.initial_state())
       |> Map.merge(do_restore_st(st))
 
     Logger.debug("Initial state: #{inspect(initial_st)}")
@@ -80,6 +88,7 @@ defmodule Circlex.Emulator.State do
     |> BankAccountState.deserialize()
     |> TransferState.deserialize()
     |> PayoutState.deserialize()
+    |> RecipientState.deserialize()
   end
 
   defp generate_type(:uuid), do: UUID.uuid1()
@@ -118,7 +127,8 @@ defmodule Circlex.Emulator.State do
      |> WalletState.serialize()
      |> BankAccountState.serialize()
      |> TransferState.serialize()
-     |> PayoutState.serialize(), state}
+     |> PayoutState.serialize()
+     |> RecipientState.serialize(), state}
   end
 
   def handle_call({:get_in, keys, default}, _from, state = %{st: st}) do

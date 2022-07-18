@@ -35,6 +35,23 @@
           "amount": "150234.93",
           "currency": "USD"
         }
+      ],
+      "addresses": [
+        {
+          "address": "0x522c4caaf435fdf1822c7b6a081858344623cf84",
+          "currency": "USD",
+          "chain": "ETH"
+        },
+        {
+          "address": "mpLQ2waXiQW6aAtnp9XMWh52R42k3QVjtU",
+          "currency": "BTC",
+          "chain": "BTC"
+        },
+        {
+          "address": "0x6a9de7df6a986a0398348efb0ecd91f341547b31",
+          "currency": "USD",
+          "chain": "ETH"
+        }
       ]
     }
   ],
@@ -79,6 +96,22 @@
       },
       "createDate": "2022-07-15T20:03:32.718Z",
       "updateDate": "2022-07-15T20:20:32.255Z"
+    }
+  ],
+  "recipients": [
+    {
+      "id": "7bfd6d2a-3682-52b5-a041-714af6913086",
+      "address": "0x9dfb4f706a4747355a7ef65cd341a0289034a385",
+      "chain": "ETH",
+      "currency": "USD",
+      "description": "Treasury Adaptor v1"
+    },
+    {
+      "id": "b2cef1b0-6c54-52b8-9d62-71b85f5b51ed",
+      "address": "0x2eb953f992d4fa6e769fabf25d8218f21b793558",
+      "chain": "ETH",
+      "currency": "USD",
+      "description": "Fireblocks Address"
     }
   ]
 }

@@ -24,20 +24,28 @@ defmodule Circlex.Emulator.Plug do
 
   # Core
   forward("/v1/businessAccount/balances", to: Circlex.Emulator.Api.Core.BalancesApi)
+  # forward("/v1/businessAccount/payouts", to: Circlex.Emulator.Api.Core.PayoutsApi)
   forward("/v1/businessAccount/banks", to: Circlex.Emulator.Api.Core.BankAccountsApi)
+  # forward("/v1/businessAccount/transfers", to: Circlex.Emulator.Api.Core.TransfersApi)
+  forward("/v1/businessAccount/wallets/addresses", to: Circlex.Emulator.Api.Core.AddressesApi)
+  # forward("/v1/businessAccount/deposits", to: Circlex.Emulator.Api.Core.DepositsApi)
+
+  # TODO: Payments API
+
+  # Payouts
+  forward("/v1/payouts", to: Circlex.Emulator.Api.Payouts.PayoutsApi)
+  forward("/v1/banks", to: Circlex.Emulator.Api.Core.BankAccountsApi)
+  forward("/v1/transfers", to: Circlex.Emulator.Api.Payouts.TransfersApi)
+  # forward("/v1/returns", to: Circlex.Emulator.Api.Payouts.ReturnsApi)
 
   # Accounts
   forward("/v1/wallets", to: Circlex.Emulator.Api.Accounts.WalletsApi)
-
-  # Payouts
-  forward("/v1/transfers", to: Circlex.Emulator.Api.Payouts.TransfersApi)
-  forward("/v1/banks", to: Circlex.Emulator.Api.Core.BankAccountsApi)
-  forward("/v1/payouts", to: Circlex.Emulator.Api.Payouts.PayoutsApi)
+  # Mirrors /v1/transfers
 
   get "/" do
     conn
     |> put_resp_content_type("application/json")
-    |> send_resp(200, Jason.encode!(%{message: "Welcome to the Circlex Emulator 🦦"}))
+    |> send_resp(200, Jason.encode!(%{message: "Welcome to the Circlex Emulator 🦦🪨"}))
   end
 
   defp handle_errors(conn, error = %{kind: _kind, reason: reason, stack: _stack}) do

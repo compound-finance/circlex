@@ -22,6 +22,14 @@ defmodule Circlex.Emulator.State.WalletState do
     State.update_in(:wallets, fn wallets -> [wallet | wallets] end)
   end
 
+  def update_wallet(wallet_id, f) do
+    State.update_in(:wallets, fn wallets ->
+      Enum.map(wallets, fn wallet ->
+        if wallet.wallet_id == wallet_id, do: f.(wallet), else: wallet
+      end)
+    end)
+  end
+
   def deserialize(st) do
     %{st | wallets: Enum.map(st.wallets, &Wallet.deserialize/1)}
   end
@@ -32,5 +40,17 @@ defmodule Circlex.Emulator.State.WalletState do
 
   def initial_state() do
     %{wallets: []}
+  end
+
+  def new_wallet(type, description) do
+    {:ok,
+     %Wallet{
+       wallet_id: State.next(:wallet_id),
+       entity_id: State.next(:uuid),
+       description: description,
+       type: type,
+       balances: [],
+       addresses: []
+     }}
   end
 end
