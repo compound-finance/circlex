@@ -13,7 +13,7 @@ defmodule Circlex.Emulator.Api.Core.AddressesApi do
         currency: currency,
         chain: chain
       }) do
-    with {:ok, master_wallet} <- Api.ManagementApi.get_master_wallet() do
+    with {:ok, master_wallet} <- get_master_wallet() do
       Api.Accounts.WalletsApi.generate_blockchain_address(%{
         wallet_id: master_wallet.wallet_id,
         idempotencyKey: idempotency_key,
@@ -26,7 +26,7 @@ defmodule Circlex.Emulator.Api.Core.AddressesApi do
   # https://developers.circle.com/reference/getbusinessaccountdepositaddresses
   @route "/deposit"
   def list_deposit_addresses(%{}) do
-    with {:ok, master_wallet} <- Api.ManagementApi.get_master_wallet() do
+    with {:ok, master_wallet} <- get_master_wallet() do
       Api.Accounts.WalletsApi.list_addresses(%{
         wallet_id: master_wallet.wallet_id
       })

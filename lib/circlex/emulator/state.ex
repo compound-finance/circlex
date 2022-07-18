@@ -35,7 +35,7 @@ defmodule Circlex.Emulator.State do
       |> Map.merge(SubscriptionState.initial_state())
       |> Map.merge(do_restore_st(st))
 
-    Logger.debug("Initial state: #{inspect(initial_st)}")
+    # Logger.debug("Initial state: #{inspect(initial_st)}")
     {:ok, Map.put(state, :st, initial_st)}
   end
 

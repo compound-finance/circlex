@@ -88,6 +88,19 @@ defmodule Circlex.Api.Payouts.Transfers do
             source: %{"id" => "1000788811", "type" => "wallet"},
             status: "complete",
             transaction_hash: "0x69c8f26c43ec6028c785ab64083758857719806a444135d978c6e730f565ad18"
+          },
+          %Circlex.Struct.Transfer{
+            amount: %{"amount" => "8999998.14", "currency" => "USD"},
+            create_date: "2022-05-05T16:49:04.541Z",
+            destination: %{
+              "address" => "0x2eb953f992d4fa6e769fabf25d8218f21b793558",
+              "chain" => "ETH",
+              "type" => "blockchain"
+            },
+            id: "83f18616-0f26-499a-aa8f-4fa4d563b974",
+            source: %{"id" => "1000216185", "type" => "wallet"},
+            status: "complete",
+            transaction_hash: "0xef6cf276368eb0e36162074b1c17a3256df14635c8603f076e826650c9f8a9ff"
           }
         ]
       }
@@ -125,5 +138,4 @@ defmodule Circlex.Api.Payouts.Transfers do
       {:ok, Transfer.deserialize(transfer)}
     end
   end
-
 end
