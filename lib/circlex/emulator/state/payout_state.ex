@@ -4,16 +4,6 @@ defmodule Circlex.Emulator.State.PayoutState do
 
   import State.Util
 
-  defp test_filter(payout, {:source_wallet_id, source_wallet_id}) do
-    payout.source_wallet_id == source_wallet_id
-  end
-
-  defp apply_filters(vals, filters) do
-    Enum.filter(vals, fn val ->
-      Enum.all?(filters, fn filter -> test_filter(val, filter) end)
-    end)
-  end
-
   def all(filters \\ []) do
     State.get_in(:payouts)
     |> apply_filters(filters)

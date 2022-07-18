@@ -4,12 +4,13 @@ defmodule Circlex.Emulator.State.TransferState do
 
   import State.Util
 
-  def all() do
+  def all(filters \\ []) do
     State.get_in(:transfers)
+    |> apply_filters(filters)
   end
 
-  def get(id) do
-    all()
+  def get(id, filters \\ []) do
+    all(filters)
     |> find!(fn %Transfer{id: transfer_id} ->
       to_string(id) == to_string(transfer_id)
     end)

@@ -26,7 +26,7 @@ defmodule Circlex.Emulator.Router do
   forward("/v1/businessAccount/balances", to: Circlex.Emulator.Api.Core.BalancesApi)
   forward("/v1/businessAccount/payouts", to: Circlex.Emulator.Api.Core.PayoutsApi)
   forward("/v1/businessAccount/banks", to: Circlex.Emulator.Api.Core.BankAccountsApi)
-  # forward("/v1/businessAccount/transfers", to: Circlex.Emulator.Api.Core.TransfersApi)
+  forward("/v1/businessAccount/transfers", to: Circlex.Emulator.Api.Core.TransfersApi)
   forward("/v1/businessAccount/wallets/addresses", to: Circlex.Emulator.Api.Core.AddressesApi)
   # forward("/v1/businessAccount/deposits", to: Circlex.Emulator.Api.Core.DepositsApi)
 

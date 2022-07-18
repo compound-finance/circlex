@@ -1,6 +1,8 @@
 defmodule Circlex.Emulator.Api do
   import Plug.Conn
 
+  alias Circlex.Emulator.State.WalletState
+
   defmacro __using__([]) do
     quote do
       @on_definition {Circlex.Emulator.Api, :define_route}
@@ -90,6 +92,21 @@ defmodule Circlex.Emulator.Api do
 
       {:error, error} ->
         json!(%{error: to_string(error)}, conn, 500)
+    end
+  end
+
+  def get_master_wallet() do
+    with {:ok, master_wallet} <- WalletState.master_wallet() do
+      {:ok, master_wallet}
+    else
+      :not_found ->
+        {:error, "System Configuration Issue: no main \"merchant\" wallet specified"}
+    end
+  end
+
+  def get_master_source() do
+    with {:ok, master_wallet} <- get_master_wallet() do
+      {:ok, %{type: "wallet", id: master_wallet.wallet_id}}
     end
   end
 end
