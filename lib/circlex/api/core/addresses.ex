@@ -3,7 +3,7 @@ defmodule Circlex.Api.Core.Addresses do
   Core API...
   """
   import Circlex.Api
-  alias Circlex.Struct.Wallet
+  alias Circlex.Struct.{Recipient, Wallet}
 
   @doc ~S"""
   Generates a new blockchain address for a wallet for a given currency/chain pair.
@@ -71,6 +71,107 @@ defmodule Circlex.Api.Core.Addresses do
                                 "currency" => currency
                               } ->
          %{address: address, chain: chain, currency: currency}
+       end)}
+    end
+  end
+
+  @doc ~S"""
+  Stores an external blockchain address.
+
+  Reference: https://developers.circle.com/reference/createbusinessaccountrecipientaddress
+
+  ## Examples
+
+      iex> host = Circlex.Test.start_server()
+      iex> Circlex.Api.Core.Addresses.add_recipient_address("0x9999999999999999999999999999999999999999", "USD", "ETH", "Nines", host: host)
+      {:ok,
+        %Circlex.Struct.Recipient{
+          address: "0x9999999999999999999999999999999999999999",
+          chain: "ETH",
+          currency: "USD",
+          description: "Nines",
+          id: "a033a6d8-05ae-11ed-9e62-6a1733211c00"
+        }}
+  """
+  def add_recipient_address(address, currency, chain, description, opts \\ []) do
+    idempotency_key = Keyword.get(opts, :idempotency_key, UUID.uuid1())
+
+    case api_post(
+           "/v1/businessAccount/wallets/addresses/recipient",
+           %{
+             idempotencyKey: idempotency_key,
+             address: address,
+             currency: currency,
+             chain: chain,
+             description: description
+           },
+           opts
+         ) do
+      {:ok,
+       %{
+         "id" => id,
+         "address" => address,
+         "chain" => chain,
+         "currency" => currency,
+         "description" => description
+       }} ->
+        {:ok,
+         %Recipient{
+           id: id,
+           address: address,
+           chain: chain,
+           currency: currency,
+           description: description
+         }}
+    end
+  end
+
+  @doc ~S"""
+  Get a list of verified recipient addresses.
+
+  Reference: https://developers.circle.com/reference/getbusinessaccountrecipientaddresses
+
+  ## Examples
+
+      iex> host = Circlex.Test.start_server()
+      iex> Circlex.Api.Core.Addresses.list_recipient_address(host: host)
+      {
+        :ok,
+        [
+          %Circlex.Struct.Recipient{
+            address: "0x9dfb4f706a4747355a7ef65cd341a0289034a385",
+            chain: "ETH",
+            currency: "USD",
+            description: "Treasury Adaptor v1",
+            id: "7bfd6d2a-3682-52b5-a041-714af6913086"
+          },
+          %Circlex.Struct.Recipient{
+            address: "0x2eb953f992d4fa6e769fabf25d8218f21b793558",
+            chain: "ETH",
+            currency: "USD",
+            description: "Fireblocks Address",
+            id: "b2cef1b0-6c54-52b8-9d62-71b85f5b51ed"
+          }
+        ]
+      }
+  """
+  def list_recipient_address(opts \\ []) do
+    with {:ok, recipients} <- api_get("/v1/businessAccount/wallets/addresses/recipient", opts) do
+      {:ok,
+       Enum.map(recipients, fn %{
+                                 "id" => id,
+                                 "address" => address,
+                                 "chain" => chain,
+                                 "currency" => currency,
+                                 "description" => description
+                               } ->
+         %Recipient{
+           id: id,
+           address: address,
+           chain: chain,
+           currency: currency,
+           description: description
+         }
        end)}
     end
   end
