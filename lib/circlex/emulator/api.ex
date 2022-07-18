@@ -54,6 +54,7 @@ defmodule Circlex.Emulator.Api do
               method: method
             ] do
         use Plug.Router
+        require Logger
 
         match route, via: method do
           parser_opts = [parsers: [:json], json_decoder: Jason]
@@ -62,8 +63,26 @@ defmodule Circlex.Emulator.Api do
           Process.put(:state_pid, conn.private[:state_pid])
           params = Circlex.Emulator.Api.api_params(conn)
 
-          apply(unquote(module), unquote(fun), [params])
-          |> Circlex.Emulator.Api.api_handle(conn, unquote(no_data_key))
+          Logger.info("#{conn.method} #{conn.request_path}")
+          {elapsed, res} = :timer.tc(unquote(module), unquote(fun), [params])
+          Circlex.Emulator.Api.api_handle(res, conn, unquote(no_data_key))
+
+          elapsed_str =
+            case floor(elapsed / 1000) do
+              0 ->
+                "#{elapsed}µs"
+
+              els ->
+                "#{els}ms"
+            end
+
+          case res do
+            {:ok, _} ->
+              Logger.info("[Success] #{conn.method} #{conn.request_path} (#{elapsed_str})")
+
+            {:error, _} ->
+              Logger.error("[Error] #{conn.method} #{conn.request_path} (#{elapsed_str})")
+          end
         end
       end
     end

@@ -4,6 +4,7 @@ defmodule Circlex.Emulator.State do
 
   alias Circlex.Emulator.State.{
     BankAccountState,
+    PaymentState,
     PayoutState,
     RecipientState,
     SubscriptionState,
@@ -30,6 +31,7 @@ defmodule Circlex.Emulator.State do
       WalletState.initial_state()
       |> Map.merge(BankAccountState.initial_state())
       |> Map.merge(TransferState.initial_state())
+      |> Map.merge(PaymentState.initial_state())
       |> Map.merge(PayoutState.initial_state())
       |> Map.merge(RecipientState.initial_state())
       |> Map.merge(SubscriptionState.initial_state())
@@ -89,6 +91,7 @@ defmodule Circlex.Emulator.State do
     |> WalletState.deserialize()
     |> BankAccountState.deserialize()
     |> TransferState.deserialize()
+    |> PaymentState.deserialize()
     |> PayoutState.deserialize()
     |> RecipientState.deserialize()
     |> SubscriptionState.deserialize()
@@ -130,6 +133,7 @@ defmodule Circlex.Emulator.State do
       |> WalletState.serialize()
       |> BankAccountState.serialize()
       |> TransferState.serialize()
+      |> PaymentState.serialize()
       |> PayoutState.serialize()
       |> RecipientState.serialize()
       |> SubscriptionState.serialize()

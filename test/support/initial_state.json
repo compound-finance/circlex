@@ -168,5 +168,30 @@
         }
       ]
     }
+  ],
+  "payments": [
+    {
+      "id": "24c26e1b-8666-46fa-96ea-892afcadb9bb",
+      "type": "payment",
+      "status": "paid",
+      "description": "Merchant Push Payment",
+      "amount": {
+        "amount": "3.14",
+        "currency": "USD"
+      },
+      "fees": {
+        "amount": "2.00",
+        "currency": "USD"
+      },
+      "createDate": "2022-07-15T21:10:03.635Z",
+      "updateDate": "2022-07-15T21:11:03.863523Z",
+      "merchantId": "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",
+      "merchantWalletId": "1000216185",
+      "source": {
+        "id": "ad823515-3b51-4061-a016-d626e3cd105e",
+        "type": "wire"
+      },
+      "refunds": []
+    }
   ]
 }
