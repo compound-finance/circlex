@@ -16,10 +16,10 @@ defmodule Circlex.Emulator do
     cowboy_ref = Module.concat(__MODULE__, "Port_" <> to_string(port))
     next = Keyword.get(opts, :next, %{})
     emulator_config = Application.get_env(:circlex, :emulator)
-    signer_mfa = Map.fetch!(emulator_config, :signer_mfa)
-    chain_id = Map.fetch!(emulator_config, :chain_id)
-    ethereum_node = Map.fetch!(emulator_config, :ethereum_node)
-    usdc_address = Signet.Util.decode_hex!(Map.fetch!(emulator_config, :usdc_address))
+    signer_mfa = Keyword.fetch!(emulator_config, :signer_mfa)
+    chain_id = Keyword.fetch!(emulator_config, :chain_id)
+    ethereum_node = Keyword.fetch!(emulator_config, :ethereum_node)
+    usdc_address = Signet.Util.decode_hex!(Keyword.fetch!(emulator_config, :usdc_address))
 
     children = [
       {Plug.Cowboy,

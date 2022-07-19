@@ -65,7 +65,7 @@ defmodule Circlex.Emulator.Api do
 
           Logger.info("#{conn.method} #{conn.request_path}")
           {elapsed, res} = :timer.tc(unquote(module), unquote(fun), [params])
-          Circlex.Emulator.Api.api_handle(res, conn, unquote(no_data_key))
+          conn = Circlex.Emulator.Api.api_handle(res, conn, unquote(no_data_key))
 
           elapsed_str =
             case floor(elapsed / 1000) do
@@ -83,6 +83,8 @@ defmodule Circlex.Emulator.Api do
             {:error, _} ->
               Logger.error("[Error] #{conn.method} #{conn.request_path} (#{elapsed_str})")
           end
+
+          conn
         end
       end
     end
