@@ -1,17 +1,28 @@
 defmodule Circlex.Emulator.State.RecipientState do
   alias Circlex.Emulator.State
   alias Circlex.Struct.Recipient
-
-  # TODO: Add active/inactive?
+  alias Circlex.Emulator.Logic.RecipientLogic
 
   import State.Util
 
-  def all() do
-    State.get_in(:recipients)
+  # TODO: Add active/inactive?
+
+  def all_recipients(filters \\ []) do
+    get_recipients_st(fn recipients -> recipients end, filters)
+  end
+
+  def get_recipient(id, filters \\ []) do
+    get_recipients_st(fn recipients -> RecipientLogic.get_recipient(recipients, id) end, filters)
   end
 
   def add_recipient(recipient) do
-    State.update_in(:recipients, fn recipients -> [recipient | recipients] end)
+    update_recipients_st(fn recipients -> RecipientLogic.add_recipient(recipients, recipient) end)
+  end
+
+  def update_recipient(recipient_id, f) do
+    update_recipients_st(fn recipients ->
+      RecipientLogic.update_recipient(recipients, recipient_id, f)
+    end)
   end
 
   def deserialize(st) do
@@ -35,5 +46,13 @@ defmodule Circlex.Emulator.State.RecipientState do
        currency: currency,
        description: description
      }}
+  end
+
+  defp get_recipients_st(mfa_or_fn, filters \\ []) do
+    State.get_st(mfa_or_fn, [:recipients], &apply_filters(&1, filters))
+  end
+
+  defp update_recipients_st(mfa_or_fn, filters \\ []) do
+    State.update_st(mfa_or_fn, [:recipients], &apply_filters(&1, filters))
   end
 end

@@ -9,13 +9,13 @@ defmodule Circlex.Emulator.Api.Payouts.PayoutsApi do
   # https://developers.circle.com/reference/payouts-payouts-get
   @route "/"
   def list_payouts(%{}) do
-    {:ok, Enum.map(PayoutState.all(), &Payout.serialize/1)}
+    {:ok, Enum.map(PayoutState.all_payouts(), &Payout.serialize/1)}
   end
 
   # https://developers.circle.com/reference/payouts-payouts-get-id
   @route "/:payout_id"
   def get_payout(%{payout_id: payout_id}) do
-    with {:ok, payout} <- PayoutState.get(payout_id) do
+    with {:ok, payout} <- PayoutState.get_payout(payout_id) do
       {:ok, Payout.serialize(payout)}
     end
   end
@@ -32,7 +32,7 @@ defmodule Circlex.Emulator.Api.Payouts.PayoutsApi do
     # TODO: Check idempotency key
 
     with {:ok, payout} <-
-           Payout.new(source, destination, amount, metadata) do
+           Payout.new_payout(source, destination, amount, metadata) do
       PayoutState.add_payout(payout)
       {:ok, Payout.serialize(payout)}
     end

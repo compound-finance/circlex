@@ -9,7 +9,7 @@ defmodule Circlex.Emulator.Api.SubscriptionsApi do
   # https://developers.circle.com/reference/listsubscriptions
   @route "/"
   def list_subscriptions(%{}) do
-    {:ok, Enum.map(SubscriptionState.all(), &Subscription.serialize/1)}
+    {:ok, Enum.map(SubscriptionState.all_subscriptions(), &Subscription.serialize/1)}
   end
 
   # https://developers.circle.com/reference/subscribe
@@ -26,7 +26,7 @@ defmodule Circlex.Emulator.Api.SubscriptionsApi do
   # https://developers.circle.com/reference/unsubscribe
   @route path: "/:subscription_id", method: :delete
   def remove_subscription(%{subscription_id: subscription_id}) do
-    with {:ok, subscription} <- SubscriptionState.get(subscription_id) do
+    with {:ok, subscription} <- SubscriptionState.get_subscription(subscription_id) do
       SubscriptionState.remove_subscription(subscription.id)
       {:ok, %{}}
     end

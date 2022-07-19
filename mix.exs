@@ -23,7 +23,8 @@ defmodule Circlex.MixProject do
       {:plug_cowboy, "~> 2.5"},
       {:jason, "~> 1.2"},
       {:httpoison, "~> 1.8"},
-      {:uuid, "~> 1.1"}
+      {:uuid, "~> 1.1"},
+      {:decimal, "~> 2.0", only: [:test, :dev]}
     ]
   end
 end

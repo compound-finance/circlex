@@ -13,7 +13,10 @@ defmodule Circlex.Emulator.Api.Core.PayoutsApi do
   def list_payouts(%{}) do
     with {:ok, master_wallet} <- get_master_wallet() do
       {:ok,
-       Enum.map(PayoutState.all(source_wallet_id: master_wallet.wallet_id), &Payout.serialize/1)}
+       Enum.map(
+         PayoutState.all_payouts(source_wallet_id: master_wallet.wallet_id),
+         &Payout.serialize/1
+       )}
     end
   end
 
@@ -21,7 +24,8 @@ defmodule Circlex.Emulator.Api.Core.PayoutsApi do
   @route "/:payout_id"
   def get_payout(%{payout_id: payout_id}) do
     with {:ok, master_wallet} <- get_master_wallet() do
-      with {:ok, payout} <- PayoutState.get(payout_id, source_wallet_id: master_wallet.wallet_id) do
+      with {:ok, payout} <-
+             PayoutState.get_payout(payout_id, source_wallet_id: master_wallet.wallet_id) do
         {:ok, Payout.serialize(payout)}
       end
     end
@@ -37,7 +41,7 @@ defmodule Circlex.Emulator.Api.Core.PayoutsApi do
     # TODO: Check idempotency key
     with {:ok, source} <- get_master_source() do
       with {:ok, payout} <-
-             Payout.new(source, destination, amount, nil) do
+             Payout.new_payout(source, destination, amount, nil) do
         PayoutState.add_payout(payout)
         {:ok, Payout.serialize(payout)}
       end

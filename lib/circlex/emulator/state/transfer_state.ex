@@ -1,23 +1,26 @@
 defmodule Circlex.Emulator.State.TransferState do
   alias Circlex.Emulator.State
   alias Circlex.Struct.Transfer
+  alias Circlex.Emulator.Logic.TransferLogic
 
   import State.Util
 
-  def all(filters \\ []) do
-    State.get_in(:transfers)
-    |> apply_filters(filters)
+  def all_transfers(filters \\ []) do
+    get_transfers_st(fn transfers -> transfers end, filters)
   end
 
-  def get(id, filters \\ []) do
-    all(filters)
-    |> find!(fn %Transfer{id: transfer_id} ->
-      to_string(id) == to_string(transfer_id)
-    end)
+  def get_transfer(id, filters \\ []) do
+    get_transfers_st(fn transfers -> TransferLogic.get_transfer(transfers, id) end, filters)
   end
 
   def add_transfer(transfer) do
-    State.update_in(:transfers, fn transfers -> [transfer | transfers] end)
+    update_transfers_st(fn transfers -> TransferLogic.add_transfer(transfers, transfer) end)
+  end
+
+  def update_transfer(transfer_id, f) do
+    update_transfers_st(fn transfers ->
+      TransferLogic.update_transfer(transfers, transfer_id, f)
+    end)
   end
 
   def deserialize(st) do
@@ -30,5 +33,13 @@ defmodule Circlex.Emulator.State.TransferState do
 
   def initial_state() do
     %{transfers: []}
+  end
+
+  defp get_transfers_st(mfa_or_fn, filters \\ []) do
+    State.get_st(mfa_or_fn, [:transfers], &apply_filters(&1, filters))
+  end
+
+  defp update_transfers_st(mfa_or_fn, filters \\ []) do
+    State.update_st(mfa_or_fn, [:transfers], &apply_filters(&1, filters))
   end
 end

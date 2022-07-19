@@ -11,13 +11,13 @@ defmodule Circlex.Emulator.Api.Core.BankAccountsApi do
   # https://developers.circle.com/reference/getbusinessaccountwirebankaccounts
   @route "/wires"
   def list_bank_accounts(%{}) do
-    {:ok, Enum.map(BankAccountState.all(), &BankAccount.serialize/1)}
+    {:ok, Enum.map(BankAccountState.all_bank_accounts(), &BankAccount.serialize/1)}
   end
 
   # https://developers.circle.com/reference/payments-bank-accounts-wires-get-id
   @route "/wires/:bank_account_id"
   def get_bank_account(%{bank_account_id: bank_account_id}) do
-    with {:ok, bank_account} <- BankAccountState.get(bank_account_id) do
+    with {:ok, bank_account} <- BankAccountState.get_bank_account(bank_account_id) do
       {:ok, BankAccount.serialize(bank_account)}
     end
   end
@@ -34,7 +34,12 @@ defmodule Circlex.Emulator.Api.Core.BankAccountsApi do
     # TODO: Check idempotency key
 
     with {:ok, bank_account} <-
-           BankAccount.new(account_number, routing_number, billing_details, bank_address) do
+           BankAccount.new_bank_account(
+             account_number,
+             routing_number,
+             billing_details,
+             bank_address
+           ) do
       BankAccountState.add_bank_account(bank_account)
       {:ok, BankAccount.serialize(bank_account)}
     end

@@ -1,23 +1,24 @@
 defmodule Circlex.Emulator.State.PayoutState do
-  alias Circlex.Emulator.State
+    alias Circlex.Emulator.State
   alias Circlex.Struct.Payout
+  alias Circlex.Emulator.Logic.PayoutLogic
 
   import State.Util
 
-  def all(filters \\ []) do
-    State.get_in(:payouts)
-    |> apply_filters(filters)
+  def all_payouts(filters \\ []) do
+    get_payouts_st(fn payouts -> payouts end, filters)
   end
 
-  def get(id, filters \\ []) do
-    all(filters)
-    |> find!(fn %Payout{id: payout_id} ->
-      to_string(id) == to_string(payout_id)
-    end)
+  def get_payout(id, filters \\ []) do
+    get_payouts_st(fn payouts -> PayoutLogic.get_payout(payouts, id) end, filters)
   end
 
   def add_payout(payout) do
-    State.update_in(:payouts, fn payouts -> [payout | payouts] end)
+    update_payouts_st(fn payouts -> PayoutLogic.add_payout(payouts, payout) end)
+  end
+
+  def update_payout(payout_id, f) do
+    update_payouts_st(fn payouts -> PayoutLogic.update_payout(payouts, payout_id, f) end)
   end
 
   def deserialize(st) do
@@ -30,5 +31,13 @@ defmodule Circlex.Emulator.State.PayoutState do
 
   def initial_state() do
     %{payouts: []}
+  end
+
+  defp get_payouts_st(mfa_or_fn, filters \\ []) do
+    State.get_st(mfa_or_fn, [:payouts], &apply_filters(&1, filters))
+  end
+
+  defp update_payouts_st(mfa_or_fn, filters \\ []) do
+    State.update_st(mfa_or_fn, [:payouts], &apply_filters(&1, filters))
   end
 end

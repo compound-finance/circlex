@@ -1,7 +1,6 @@
 defmodule Circlex.Struct.Wallet do
   defstruct [:wallet_id, :entity_id, :type, :description, :balances, :addresses]
 
-  alias Circlex.Emulator.State
   import Circlex.Struct.Util
 
   def deserialize(wallet) do
@@ -10,7 +9,7 @@ defmodule Circlex.Struct.Wallet do
       entity_id: fetch(wallet, :entityId),
       description: fetch(wallet, :description),
       type: fetch(wallet, :type),
-      balances: fetch(wallet, :balances),
+      balances: fetch(wallet, :balances) |> Enum.map(&Circlex.Struct.Amount.deserialize/1),
       addresses: fetch(wallet, :addresses)
     }
   end
@@ -22,9 +21,25 @@ defmodule Circlex.Struct.Wallet do
         entityId: wallet.entity_id,
         description: wallet.description,
         type: wallet.type,
-        balances: wallet.balances
+        balances: Enum.map(wallet.balances, &Circlex.Struct.Amount.serialize/1)
       },
       if(include_addresses, do: %{addresses: wallet.addresses}, else: %{})
     )
+  end
+
+  # TODO: Test
+  def get_balance(wallet, currency) do
+    balance =
+      Enum.find_value(wallet.balances, fn balance ->
+        if balance.currency == currency, do: balance, else: nil
+      end)
+
+    case balance do
+      nil ->
+        "0.00"
+
+      _ ->
+        balance.amount
+    end
   end
 end

@@ -9,6 +9,6 @@ defmodule Circlex.Emulator.Api.MocksApi do
   # https://developers.circle.com/reference/payments-payments-mock-create
   @route path: "/payments/wire", method: :post
   def list_payments(%{}) do
-    {:ok, Enum.map(PaymentState.all(), &Payment.serialize/1)}
+    {:ok, Enum.map(PaymentState.all_payments(), &Payment.serialize/1)}
   end
 end

@@ -66,43 +66,55 @@ defmodule Circlex.Emulator.State do
     GenServer.call(get_pid(), :serialize_state)
   end
 
+  def get_st(mfa_or_fn, keys \\ [], filter_fn \\ nil) do
+    GenServer.call(get_pid(), {:get_st, mfa_or_fn, keys, filter_fn})
+  end
+
+  def update_st(mfa_or_fn, keys \\ [], filter_fn \\ nil) do
+    GenServer.cast(get_pid(), {:update_st, mfa_or_fn, keys, filter_fn})
+  end
+
   def get_in(keys, default \\ nil) do
-    GenServer.call(get_pid(), {:get_in, keys, default})
+    case get_st(fn x -> x end, keys) do
+      nil ->
+        default
+
+      els ->
+        els
+    end
   end
 
   def put_in(keys, val) do
-    GenServer.call(get_pid(), {:put_in, keys, val})
+    update_st(fn _ -> val end, keys)
   end
 
-  def update_in(keys, updater, default \\ nil) do
-    curr = __MODULE__.get_in(keys, default)
-    next = updater.(curr)
-    __MODULE__.put_in(keys, next)
+  def handle_cast({:update_st, {mod, fun, args}, keys, filter_fn}, state = %{st: st}) do
+    case apply(mod, fun, [get_val(st, keys, filter_fn) | args]) do
+      {:ok, res} ->
+        new_st = do_put_in(st, keys, res)
+        {:noreply, Map.put(state, :st, new_st)}
+    end
+  end
+
+  def handle_cast({:update_st, f, keys, filter_fn}, state = %{st: st}) when is_function(f) do
+    case f.(get_val(st, keys, filter_fn)) do
+      {:ok, res} ->
+        new_st = do_put_in(st, keys, res)
+        {:noreply, Map.put(state, :st, new_st)}
+    end
   end
 
   def handle_cast({:restore_state, new_st}, state) do
     {:noreply, Map.put(state, :st, do_restore_st(new_st))}
   end
 
-  defp do_restore_st(nil), do: %{}
-
-  defp do_restore_st(st) do
-    st
-    |> WalletState.deserialize()
-    |> BankAccountState.deserialize()
-    |> TransferState.deserialize()
-    |> PaymentState.deserialize()
-    |> PayoutState.deserialize()
-    |> RecipientState.deserialize()
-    |> SubscriptionState.deserialize()
+  def handle_call({:get_st, {mod, fun, args}, keys, filter_fn}, _from, state = %{st: st}) do
+    {:reply, apply(mod, fun, [get_val(st, keys, filter_fn) | args]), state}
   end
 
-  defp generate_type(:uuid), do: UUID.uuid1()
-  defp generate_type(:wallet_id), do: Enum.random(1_000_000_000..1_001_000_000) |> to_string()
-  defp generate_type(:date), do: DateTime.to_iso8601(DateTime.utc_now())
-
-  defp generate_type(:tracking_ref),
-    do: "CIR3KXLL" <> to_string(System.unique_integer([:positive]))
+  def handle_call({:get_st, f, keys, filter_fn}, _from, state = %{st: st}) when is_function(f) do
+    {:reply, f.(get_val(st, keys, filter_fn)), state}
+  end
 
   # TODO: We could simplify this down to just transform all
   #       fn calls to be `{fn, acc}`-style, but this is easier
@@ -141,32 +153,16 @@ defmodule Circlex.Emulator.State do
     {:reply, serialized, state}
   end
 
-  def handle_call({:get_in, keys, default}, _from, state = %{st: st}) do
-    keys =
-      case keys do
-        keys when is_list(keys) ->
-          keys
-
-        key when is_atom(key) ->
-          [key]
-      end
-
-    {:reply, do_get_in(st, keys, default), state}
+  defp get_val(st, keys, filter_fn) do
+    st
+    |> do_get_in(keys)
+    |> apply_filter(filter_fn)
   end
 
-  def handle_call({:put_in, keys, val}, _from, state = %{st: st}) do
-    keys =
-      case keys do
-        keys when is_list(keys) ->
-          keys
+  defp apply_filter(val, nil), do: val
+  defp apply_filter(val, f), do: f.(val)
 
-        key when is_atom(key) ->
-          [key]
-      end
-
-    {:reply, nil, %{state | st: do_put_in(st, keys, val)}}
-  end
-
+  defp do_get_in(st, keys, default \\ nil)
   defp do_get_in(nil, _, default), do: default
   defp do_get_in(st, [], _), do: st
 
@@ -174,8 +170,29 @@ defmodule Circlex.Emulator.State do
     do_get_in(st[k], rest, default)
   end
 
+  defp do_put_in(_, [], val), do: val
   defp do_put_in(st, [key], val) when is_map(st), do: Map.put(st, key, val)
 
   defp do_put_in(st, [key | rest], val) when is_map(st),
     do: Map.put(st, key, do_put_in(Map.get(st, key, %{}), rest, val))
+
+  defp do_restore_st(nil), do: %{}
+
+  defp do_restore_st(st) do
+    st
+    |> WalletState.deserialize()
+    |> BankAccountState.deserialize()
+    |> TransferState.deserialize()
+    |> PaymentState.deserialize()
+    |> PayoutState.deserialize()
+    |> RecipientState.deserialize()
+    |> SubscriptionState.deserialize()
+  end
+
+  defp generate_type(:uuid), do: UUID.uuid1()
+  defp generate_type(:wallet_id), do: Enum.random(1_000_000_000..1_001_000_000) |> to_string()
+  defp generate_type(:date), do: DateTime.to_iso8601(DateTime.utc_now())
+
+  defp generate_type(:tracking_ref),
+    do: "CIR3KXLL" <> to_string(System.unique_integer([:positive]))
 end

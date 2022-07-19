@@ -1,25 +1,36 @@
 defmodule Circlex.Emulator.State.SubscriptionState do
   alias Circlex.Emulator.State
   alias Circlex.Struct.Subscription
+  alias Circlex.Emulator.Logic.SubscriptionLogic
 
   import State.Util
 
-  def all() do
-    State.get_in(:subscriptions)
+  def all_subscriptions(filters \\ []) do
+    get_subscriptions_st(fn subscriptions -> subscriptions end, filters)
   end
 
-  def get(id) do
-    all()
-    |> find!(fn %Subscription{id: subscription_id} -> id == subscription_id end)
+  def get_subscription(id, filters \\ []) do
+    get_subscriptions_st(
+      fn subscriptions -> SubscriptionLogic.get_subscription(subscriptions, id) end,
+      filters
+    )
   end
 
   def add_subscription(subscription) do
-    State.update_in(:subscriptions, fn subscriptions -> [subscription | subscriptions] end)
+    update_subscriptions_st(fn subscriptions ->
+      SubscriptionLogic.add_subscription(subscriptions, subscription)
+    end)
+  end
+
+  def update_subscription(subscription_id, f) do
+    update_subscriptions_st(fn subscriptions ->
+      SubscriptionLogic.update_subscription(subscriptions, subscription_id, f)
+    end)
   end
 
   def remove_subscription(subscription_id) do
-    State.update_in(:subscriptions, fn subscriptions ->
-      Enum.filter(subscriptions, fn subscription -> subscription.id != subscription_id end)
+    update_subscriptions_st(fn subscriptions ->
+      SubscriptionLogic.remove_subscription(subscriptions, subscription_id)
     end)
   end
 
@@ -42,5 +53,13 @@ defmodule Circlex.Emulator.State.SubscriptionState do
        endpoint: endpoint,
        subscription_details: []
      }}
+  end
+
+  defp get_subscriptions_st(mfa_or_fn, filters \\ []) do
+    State.get_st(mfa_or_fn, [:subscriptions], &apply_filters(&1, filters))
+  end
+
+  defp update_subscriptions_st(mfa_or_fn, filters \\ []) do
+    State.update_st(mfa_or_fn, [:subscriptions], &apply_filters(&1, filters))
   end
 end

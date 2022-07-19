@@ -9,13 +9,13 @@ defmodule Circlex.Emulator.Api.Payouts.TransfersApi do
   # https://developers.circle.com/reference/payouts-transfers-get
   @route "/"
   def list_transfers(%{}) do
-    {:ok, Enum.map(TransferState.all(), &Transfer.serialize/1)}
+    {:ok, Enum.map(TransferState.all_transfers(), &Transfer.serialize/1)}
   end
 
   # https://developers.circle.com/reference/payouts-transfers-get-id
   @route "/:transfer_id"
   def get_transfer(%{transfer_id: transfer_id}) do
-    with {:ok, transfer} <- TransferState.get(transfer_id) do
+    with {:ok, transfer} <- TransferState.get_transfer(transfer_id) do
       {:ok, Transfer.serialize(transfer)}
     end
   end
@@ -31,7 +31,7 @@ defmodule Circlex.Emulator.Api.Payouts.TransfersApi do
     # TODO: Check idempotency key
 
     with {:ok, transfer} <-
-           Transfer.new(source, destination, amount) do
+           Transfer.new_transfer(source, destination, amount) do
       TransferState.add_transfer(transfer)
       {:ok, Transfer.serialize(transfer)}
     end

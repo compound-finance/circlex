@@ -4,7 +4,7 @@ defmodule Circlex.Emulator.Api.Core.AddressesApi do
   """
   use Circlex.Emulator.Api
   alias Circlex.Emulator.Api
-  alias Circlex.Emulator.State.RecipientState
+  alias Circlex.Emulator.State.{RecipientState, WalletState}
   alias Circlex.Struct.Recipient
 
   @route path: "/deposit", method: :post
@@ -52,6 +52,6 @@ defmodule Circlex.Emulator.Api.Core.AddressesApi do
   # https://developers.circle.com/reference/getbusinessaccountrecipientaddresses
   @route "/recipient"
   def list_recipient_addresses(%{}) do
-    {:ok, Enum.map(RecipientState.all(), &Recipient.serialize/1)}
+    {:ok, Enum.map(RecipientState.all_recipients(), &Recipient.serialize/1)}
   end
 end

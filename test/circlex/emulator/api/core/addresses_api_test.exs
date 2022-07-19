@@ -25,7 +25,7 @@ defmodule Circlex.Emulator.Api.Core.AddressesApiTest do
                 chain: "ETH",
                 currency: "USD"
               },
-              %{address: "mpLQ2waXiQW6aAtnp9XMWh52R42k3QVjtU", chain: "BTC", currency: "BTC"},
+              %{address: "mpLQ2waXiQW6aAtnp9XaWh52R42k3QVjtU", chain: "BTC", currency: "BTC"},
               %{
                 address: "0x6a9de7df6a986a0398348efb0ecd91f341547b31",
                 chain: "ETH",
