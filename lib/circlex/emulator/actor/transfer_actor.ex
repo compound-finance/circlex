@@ -22,9 +22,9 @@ defmodule Circlex.Emulator.Actor.TransferActor do
 
   @impl true
   def init({transfer_id, state_pid, signer_proc}) do
-    notify(transfer_id)
     Process.put(:state_pid, state_pid)
     Process.put(:signer_proc, signer_proc)
+    notify(transfer_id)
     Process.send_after(self(), :accept_transfer, action_delay())
     {:ok, %{transfer_id: transfer_id}}
   end

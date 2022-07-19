@@ -12,3 +12,5 @@ config :circlex, :emulator,
 config :circlex, :sns,
   http_client: MockHTTPoison,
   topic_arn: "arn:aws:sns:us-west-2:908968368384:sandbox_platform-notifications-topic"
+
+config :signet, :client, SignetPoisonMock

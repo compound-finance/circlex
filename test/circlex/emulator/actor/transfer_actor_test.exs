@@ -47,10 +47,13 @@ defmodule Circlex.Emulator.Actor.TransferActorTest do
   }
 
   setup do
-    {:ok, state_pid} = State.start_link(Circlex.Test.get_opts())
-    Process.put(:state_pid, state_pid)
     signer_proc = SignetHelper.start_signer()
     Process.put(:signer_proc, signer_proc)
+
+    {:ok, state_pid} =
+      State.start_link(Keyword.put(Circlex.Test.get_opts(), :signer_proc, signer_proc))
+
+    Process.put(:state_pid, state_pid)
 
     :ok
   end
@@ -67,7 +70,7 @@ defmodule Circlex.Emulator.Actor.TransferActorTest do
     :timer.sleep(2 * action_delay())
 
     assert TransferState.get_transfer(@transfer_b2w.id) ==
-             {:ok, %{@transfer | status: "complete"}}
+             {:ok, %{@transfer_b2w | status: "complete"}}
 
     {:ok, master_wallet} = WalletState.master_wallet()
     assert Wallet.get_balance(master_wallet, "USD") == "160234.93"
@@ -107,7 +110,13 @@ defmodule Circlex.Emulator.Actor.TransferActorTest do
     :timer.sleep(2 * action_delay())
 
     assert TransferState.get_transfer(@transfer_w2b.id) ==
-             {:ok, %{@transfer_w2b | status: "complete"}}
+             {:ok,
+              %{
+                @transfer_w2b
+                | status: "complete",
+                  transaction_hash:
+                    "0x04000000003B9ACA0000001407865C6E87B9F70255377E024ACE6630C1EAA37F"
+              }}
 
     {:ok, master_wallet} = WalletState.master_wallet()
     assert Wallet.get_balance(master_wallet, "USD") == "140234.93"

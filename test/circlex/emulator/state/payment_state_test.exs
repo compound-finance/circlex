@@ -10,11 +10,11 @@ defmodule Circlex.Emulator.State.PaymentStateTest do
     type: "payment",
     status: "paid",
     description: "Merchant Push Payment",
-    amount: %{
+    amount: %Circlex.Struct.Amount{
       amount: "3.14",
       currency: "USD"
     },
-    fees: %{
+    fees: %Circlex.Struct.Amount{
       amount: "2.00",
       currency: "USD"
     },

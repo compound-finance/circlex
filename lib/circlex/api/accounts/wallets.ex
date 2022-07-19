@@ -19,7 +19,7 @@ defmodule Circlex.Api.Accounts.Wallets do
         %Circlex.Struct.Wallet{
           balances: [],
           description: "Test Wallet",
-          entity_id: "a033a6d8-05ae-11ed-9e62-6a1733211c00",
+          entity_id: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",
           type: "end_user_wallet",
           wallet_id: "1000000500"
         }
@@ -65,11 +65,20 @@ defmodule Circlex.Api.Accounts.Wallets do
         :ok,
         [
           %Circlex.Struct.Wallet{
+            addresses: [],
             balances: [%Circlex.Struct.Amount{amount: "150234.93", currency: "USD"}],
             description: "Master Wallet",
             entity_id: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",
             type: "merchant",
             wallet_id: "1000216185"
+          },
+           %Circlex.Struct.Wallet{
+            addresses: [],
+            balances: [%Circlex.Struct.Amount{amount: "50.00", currency: "USD"}],
+            description: "end_user_wallet",
+            entity_id: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",
+            type: "merchant",
+            wallet_id: "1000216186"
           }
         ]
       }
@@ -96,7 +105,8 @@ defmodule Circlex.Api.Accounts.Wallets do
           description: "Master Wallet",
           entity_id: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",
           type: "merchant",
-          wallet_id: "1000216185"
+          wallet_id: "1000216185",
+          addresses: [],
         }
       }
   """

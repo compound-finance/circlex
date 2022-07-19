@@ -22,9 +22,9 @@ defmodule Circlex.Emulator.Actor.PaymentActor do
 
   @impl true
   def init({payment_id, state_pid}) do
-    notify(payment_id)
     Process.put(:state_pid, state_pid)
     Process.send_after(self(), :accept_wire, action_delay())
+    notify(payment_id)
     {:ok, %{payment_id: payment_id}}
   end
 

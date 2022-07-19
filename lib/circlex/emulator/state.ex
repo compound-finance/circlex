@@ -16,17 +16,20 @@ defmodule Circlex.Emulator.State do
     name = Keyword.get(opts, :name, __MODULE__)
     initial_state = Keyword.get(opts, :initial_state, nil)
     next = Keyword.get(opts, :next, %{})
+    signer_proc = Keyword.get(opts, :signer_proc, nil)
     Logger.info("Starting Circlex.Emulator.State #{name}...")
 
     GenServer.start_link(
       __MODULE__,
-      %{st: initial_state, next: next},
+      %{st: initial_state, signer_proc: signer_proc, next: next},
       name: name
     )
   end
 
   @impl true
-  def init(state = %{st: st}) do
+  def init(state = %{st: st, signer_proc: signer_proc}) do
+    Process.put(:signer_proc, signer_proc)
+
     initial_st =
       WalletState.initial_state()
       |> Map.merge(BankAccountState.initial_state())

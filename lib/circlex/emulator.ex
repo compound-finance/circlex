@@ -37,7 +37,7 @@ defmodule Circlex.Emulator do
 
     {filter_names, filter_children} =
       case ethereum_remote_node do
-        nil ->
+        :error ->
           {[local_filter_name], [local_filter_child]}
 
         {:ok, remote_node} ->

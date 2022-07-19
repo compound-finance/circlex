@@ -8,7 +8,7 @@ defmodule Circlex.Emulator.Api.Accounts.WalletsApiTest do
             %{
               balances: [],
               description: "My Wallet",
-              entityId: "a033a6d8-05ae-11ed-9e62-6a1733211c00",
+              entityId: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",
               type: :end_user_wallet,
               walletId: "1000000500"
             }} ==
@@ -24,6 +24,13 @@ defmodule Circlex.Emulator.Api.Accounts.WalletsApiTest do
                 description: "Master Wallet",
                 type: "merchant",
                 walletId: "1000216185"
+              },
+              %{
+                balances: [%{amount: "50.00", currency: "USD"}],
+                description: "end_user_wallet",
+                entityId: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",
+                type: "merchant",
+                walletId: "1000216186"
               }
             ]} == WalletsApi.list_wallets(%{})
   end

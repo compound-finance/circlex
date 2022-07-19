@@ -27,7 +27,7 @@ defmodule Circlex.Struct.Wallet do
         balances: Enum.map(wallet.balances, &Circlex.Struct.Amount.serialize/1)
       },
       if(include_addresses,
-        do: %{addresses: Enum.map(wallet.addresses, &Circlex.Struct.Amount.serialize/1)},
+        do: %{addresses: Enum.map(wallet.addresses, &Circlex.Struct.Address.serialize/1)},
         else: %{}
       )
     )

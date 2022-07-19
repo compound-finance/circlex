@@ -6,7 +6,7 @@ defmodule Circlex.Emulator.State.TransferStateTest do
   doctest TransferState
 
   @transfer %Circlex.Struct.Transfer{
-    amount: %{amount: "8999998.14", currency: "USD"},
+    amount: %Circlex.Struct.Amount{amount: "8999998.14", currency: "USD"},
     create_date: "2022-05-05T16:49:04.541Z",
     destination: %{
       address: "0x2eb953f992d4fa6e769fabf25d8218f21b793558",

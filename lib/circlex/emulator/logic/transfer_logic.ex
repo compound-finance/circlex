@@ -77,7 +77,8 @@ defmodule Circlex.Emulator.Logic.TransferLogic do
 
           {:ok, transfers} =
             update_transfer(transfers, transfer.id, fn t ->
-              %{t | transaction_hash: Signet.Util.encode_hex!(trx_id)}
+              # TODO: Wait for the tx to complete before "complete"
+              %{t | transaction_hash: Signet.Util.encode_hex(trx_id), status: "complete"}
             end)
 
           {wallets, transfers}

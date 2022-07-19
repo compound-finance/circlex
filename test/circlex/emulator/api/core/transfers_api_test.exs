@@ -7,7 +7,7 @@ defmodule Circlex.Emulator.Api.Core.TransfersApiTest do
     assert {:ok,
             %{
               amount: %{amount: "12345.00", currency: "USD"},
-              createDate: nil,
+              createDate: "2022-07-17T08:59:41.344582Z",
               destination: %{
                 address: "0x871A9FF377eCf2632A0928950dCEb181557F2e17",
                 chain: "ETH",
@@ -15,7 +15,7 @@ defmodule Circlex.Emulator.Api.Core.TransfersApiTest do
               },
               id: "a033a6d8-05ae-11ed-9e62-6a1733211c00",
               source: %{id: "1000216185", type: "wallet"},
-              status: nil,
+              status: "pending",
               transactionHash: nil
             }} ==
              TransfersApi.create_transfer(%{
