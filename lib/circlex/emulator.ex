@@ -66,7 +66,7 @@ defmodule Circlex.Emulator do
       ] ++
         filter_children ++
         [
-          {Circlex.Emulator.Actor.DepositActor, [filter_names, state_name]}
+          {Circlex.Emulator.DepositDetector, [filter_names, state_name]}
         ]
 
     Logger.info("Circlex Emulator starting on port #{port}...")

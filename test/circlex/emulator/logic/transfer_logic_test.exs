@@ -1,11 +1,11 @@
 defmodule Circlex.Emulator.Logic.TransferLogicTest do
   use ExUnit.Case
   alias Circlex.Emulator.Logic.TransferLogic
-  alias Circlex.Struct.Transfer
+  alias Circlex.Struct.{Amount, Transfer}
   doctest TransferLogic
 
   @transfer %Transfer{
-    amount: %{amount: "8999998.14", currency: "USD"},
+    amount: %Amount{amount: "8999998.14", currency: "USD"},
     create_date: "2022-05-05T16:49:04.541Z",
     destination: %{
       address: "0x2eb953f992d4fa6e769fabf25d8218f21b793558",

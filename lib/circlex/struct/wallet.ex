@@ -4,13 +4,16 @@ defmodule Circlex.Struct.Wallet do
   defstruct [:wallet_id, :entity_id, :type, :description, :balances, :addresses]
 
   def deserialize(wallet) do
+    IO.inspect(wallet)
+
     %__MODULE__{
       wallet_id: fetch(wallet, :walletId),
       entity_id: fetch(wallet, :entityId),
       description: fetch(wallet, :description),
       type: fetch(wallet, :type),
       balances: fetch(wallet, :balances) |> Enum.map(&Circlex.Struct.Amount.deserialize/1),
-      addresses: fetch(wallet, :addresses) |> Enum.map(&Circlex.Struct.Address.deserialize/1)
+      addresses:
+        (fetch(wallet, :addresses) || []) |> Enum.map(&Circlex.Struct.Address.deserialize/1)
     }
   end
 

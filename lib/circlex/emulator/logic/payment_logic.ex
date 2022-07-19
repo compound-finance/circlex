@@ -18,13 +18,24 @@ defmodule Circlex.Emulator.Logic.PaymentLogic do
 
   def process_payment(st = %{payments: payments, wallets: wallets}, payment_id) do
     {:ok, payment} = get_payment(payments, payment_id)
-    {:ok, master_wallet} = WalletLogic.master_wallet(wallets)
-    {:ok, wallets} = WalletLogic.update_balance(wallets, master_wallet.wallet_id, payment.amount)
-    {:ok, payments} = update_payment(payments, payment.id, fn p -> %{p | status: "paid"} end)
 
-    {:ok,
-     st
-     |> Map.put(:wallets, wallets)
-     |> Map.put(:payments, payments)}
+    case payment.source.type do
+      "wire" ->
+        {:ok, master_wallet} = WalletLogic.master_wallet(wallets)
+
+        {:ok, wallets} =
+          WalletLogic.update_balance(wallets, master_wallet.wallet_id, payment.amount)
+
+        {:ok, payments} = update_payment(payments, payment.id, fn p -> %{p | status: "paid"} end)
+
+        {:ok,
+         st
+         |> Map.put(:wallets, wallets)
+         |> Map.put(:payments, payments)}
+
+      _ ->
+        #  TODO: Handle other kinds of payments
+        {:ok, st}
+    end
   end
 end

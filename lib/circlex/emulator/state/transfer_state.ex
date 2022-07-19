@@ -23,13 +23,16 @@ defmodule Circlex.Emulator.State.TransferState do
     end)
   end
 
-  def new_transfer(source, destination, amount) do
+  def new_transfer(source, destination, amount, transaction_hash \\ nil) do
     {:ok,
      %Transfer{
        id: State.next(:uuid),
        source: source,
        destination: destination,
-       amount: amount
+       amount: amount,
+       status: "pending",
+       transaction_hash: transaction_hash,
+       create_date: State.next(:date)
      }}
   end
 

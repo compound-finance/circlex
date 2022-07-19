@@ -1,9 +1,12 @@
-defmodule Circlex.Emulator.Actor.WirePaymentActorTest do
+defmodule Circlex.Emulator.Actor.PaymentActorTest do
   use ExUnit.Case
-  alias Circlex.Emulator.Actor.WirePaymentActor
+  alias Circlex.Emulator.Actor.PaymentActor
   alias Circlex.Emulator.State
   alias Circlex.Emulator.State.{PaymentState, WalletState}
   alias Circlex.Struct.{Payment, Wallet}
+
+  defp action_delay(),
+    do: Keyword.fetch!(Application.get_env(:circlex, :emulator), :action_delay_ms)
 
   @payment %Payment{
     id: "24c26e1b-8666-46fa-96ea-892afcadb9bb",
@@ -36,18 +39,18 @@ defmodule Circlex.Emulator.Actor.WirePaymentActorTest do
     :ok
   end
 
-  test "wire processing flow" do
+  test "wire in processing flow" do
     PaymentState.add_payment(@payment)
     assert PaymentState.get_payment(@payment.id) == {:ok, @payment}
     {:ok, master_wallet} = WalletState.master_wallet()
     assert Wallet.get_balance(master_wallet, "USD") == "150234.93"
 
-    {:ok, actor} = WirePaymentActor.start_link(@payment.id) |> IO.inspect(label: "start")
+    {:ok, actor} = PaymentActor.start_link(@payment.id) |> IO.inspect(label: "start")
 
     # Allow processing time
-    :timer.sleep(2000)
+    :timer.sleep(2 * action_delay())
 
-    assert PaymentState.get_payment(@payment.id) == {:ok, %{@payment|status: "paid"}}
+    assert PaymentState.get_payment(@payment.id) == {:ok, %{@payment | status: "paid"}}
     {:ok, master_wallet} = WalletState.master_wallet()
     assert Wallet.get_balance(master_wallet, "USD") == "150284.93"
   end
