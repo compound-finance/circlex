@@ -2,11 +2,18 @@ defmodule Circlex.Emulator.State.SubscriptionState do
   alias Circlex.Emulator.State
   alias Circlex.Struct.Subscription
   alias Circlex.Emulator.Logic.SubscriptionLogic
+  alias Circlex.Emulator.SNS
 
   import State.Util
 
   def all_subscriptions(filters \\ []) do
     get_subscriptions_st(fn subscriptions -> subscriptions end, filters)
+  end
+
+  def send_notifications(notification, filters \\ []) do
+    for subscription <- all_subscriptions(filters) do
+      SNS.send_message(subscription.endpoint, notification)
+    end
   end
 
   def get_subscription(id, filters \\ []) do

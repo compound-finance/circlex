@@ -9,8 +9,9 @@ defmodule Circlex.Emulator.Actor.WirePaymentActor do
   use GenServer
 
   alias Circlex.Emulator.State
-  alias Circlex.Emulator.State.{PaymentState, WalletState}
+  alias Circlex.Emulator.State.{PaymentState, SubscriptionState, WalletState}
   alias Circlex.Emulator.Logic.{PaymentLogic, WalletLogic}
+  alias Circlex.Emulator.SNS.Notification
   alias Circlex.Struct.Payment
 
   def start_link(payment_id) do
@@ -29,7 +30,18 @@ defmodule Circlex.Emulator.Actor.WirePaymentActor do
 
     case payment.status do
       "pending" ->
+        # We've accepted the wire, set state and send notification
         State.update_st(fn st -> st |> PaymentLogic.process_payment(payment.id) end)
+
+        notification =
+          Notification.new(%{
+            clientId: "c60d2d5b-203c-45bb-9f6e-93641d40a599",
+            notificationType: "payments",
+            version: 1,
+            payment: Payment.serialize(payment)
+          })
+
+        SubscriptionState.send_notifications(notification)
     end
 
     {:noreply, state}
