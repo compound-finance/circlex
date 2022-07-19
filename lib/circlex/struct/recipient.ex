@@ -1,8 +1,7 @@
 defmodule Circlex.Struct.Recipient do
-  defstruct [:id, :address, :chain, :currency, :description]
-
-  alias Circlex.Emulator.State
   import Circlex.Struct.Util
+
+  defstruct [:id, :address, :chain, :currency, :description]
 
   def deserialize(recipient) do
     %__MODULE__{

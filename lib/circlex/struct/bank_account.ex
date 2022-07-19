@@ -1,4 +1,6 @@
 defmodule Circlex.Struct.BankAccount do
+  import Circlex.Struct.Util
+
   defstruct [
     :id,
     :status,
@@ -10,25 +12,6 @@ defmodule Circlex.Struct.BankAccount do
     :create_date,
     :update_date
   ]
-
-  alias Circlex.Emulator.State
-  import Circlex.Struct.Util
-
-  # Note: emulator-world only?
-  def new(account_number, routing_number, billing_details, bank_address) do
-    {:ok,
-     %__MODULE__{
-       id: State.next(:uuid),
-       status: "pending",
-       description: "#{fetch(bank_address, :bankName)} #{String.slice(account_number, -4..-1)}",
-       tracking_ref: State.next(:tracking_ref),
-       fingerprint: State.next(:uuid),
-       billing_details: billing_details,
-       bank_address: bank_address,
-       create_date: State.next(:date),
-       update_date: State.next(:date)
-     }}
-  end
 
   def deserialize(bank_account) do
     %__MODULE__{

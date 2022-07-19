@@ -1,7 +1,7 @@
 defmodule Circlex.Struct.Amount do
-  defstruct [:amount, :currency]
-
   import Circlex.Struct.Util
+
+  defstruct [:amount, :currency]
 
   def deserialize(amount) do
     %__MODULE__{

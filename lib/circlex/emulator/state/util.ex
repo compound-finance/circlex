@@ -1,16 +1,6 @@
 defmodule Circlex.Emulator.State.Util do
   alias Circlex.Struct.{Payout, Transfer}
 
-  def find!(arr, finder) do
-    case Enum.find(arr, finder) do
-      nil ->
-        :not_found
-
-      val ->
-        {:ok, val}
-    end
-  end
-
   defp test_filter(payout = %Payout{}, {:source_wallet_id, source_wallet_id}) do
     payout.source_wallet_id == source_wallet_id
   end
@@ -23,5 +13,15 @@ defmodule Circlex.Emulator.State.Util do
     Enum.filter(vals, fn val ->
       Enum.all?(filters, fn filter -> test_filter(val, filter) end)
     end)
+  end
+
+  def fetch(m, key) do
+    case Map.get(m, key) do
+      nil ->
+        Map.get(m, to_string(key))
+
+      els ->
+        els
+    end
   end
 end

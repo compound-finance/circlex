@@ -1,4 +1,6 @@
 defmodule Circlex.Struct.Payout do
+  import Circlex.Struct.Util
+
   defstruct [
     :id,
     :source_wallet_id,
@@ -13,26 +15,6 @@ defmodule Circlex.Struct.Payout do
     :create_date,
     :update_date
   ]
-
-  alias Circlex.Emulator.State
-  import Circlex.Struct.Util
-
-  # Note: emulator-world only?
-  # TODO: Get source wallet id better
-  def new(source, destination, amount, _metadata) do
-    {:ok,
-     %__MODULE__{
-       id: State.next(:uuid),
-       source_wallet_id: fetch(source, :id),
-       destination: destination,
-       amount: amount,
-       fees: [],
-       status: "pending",
-       tracking_ref: State.next(:tracking_ref),
-       create_date: State.next(:date),
-       update_date: State.next(:date)
-     }}
-  end
 
   def deserialize(payout) do
     %__MODULE__{

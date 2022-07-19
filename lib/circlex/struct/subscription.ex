@@ -1,8 +1,7 @@
 defmodule Circlex.Struct.Subscription do
-  defstruct [:id, :endpoint, :subscription_details]
-
-  alias Circlex.Emulator.State
   import Circlex.Struct.Util
+
+  defstruct [:id, :endpoint, :subscription_details]
 
   def deserialize(subscription) do
     %__MODULE__{

@@ -10,15 +10,38 @@ defmodule Circlex.Emulator.State.BankAccountState do
   end
 
   def get_bank_account(id, filters \\ []) do
-    get_bank_accounts_st(fn bank_accounts -> BankAccountLogic.get_bank_account(bank_accounts, id) end, filters)
+    get_bank_accounts_st(
+      fn bank_accounts -> BankAccountLogic.get_bank_account(bank_accounts, id) end,
+      filters
+    )
   end
 
   def add_bank_account(bank_account) do
-    update_bank_accounts_st(fn bank_accounts -> BankAccountLogic.add_bank_account(bank_accounts, bank_account) end)
+    update_bank_accounts_st(fn bank_accounts ->
+      BankAccountLogic.add_bank_account(bank_accounts, bank_account)
+    end)
   end
 
   def update_bank_account(bank_account_id, f) do
-    update_bank_accounts_st(fn bank_accounts -> BankAccountLogic.update_bank_account(bank_accounts, bank_account_id, f) end)
+    update_bank_accounts_st(fn bank_accounts ->
+      BankAccountLogic.update_bank_account(bank_accounts, bank_account_id, f)
+    end)
+  end
+
+  # TODO: Test
+  def new_bank_account(account_number, routing_number, billing_details, bank_address) do
+    {:ok,
+     %BankAccount{
+       id: State.next(:uuid),
+       status: "pending",
+       description: "#{fetch(bank_address, :bankName)} #{String.slice(account_number, -4..-1)}",
+       tracking_ref: State.next(:tracking_ref),
+       fingerprint: State.next(:uuid),
+       billing_details: billing_details,
+       bank_address: bank_address,
+       create_date: State.next(:date),
+       update_date: State.next(:date)
+     }}
   end
 
   def deserialize(st) do

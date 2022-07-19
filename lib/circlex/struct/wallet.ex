@@ -1,7 +1,7 @@
 defmodule Circlex.Struct.Wallet do
-  defstruct [:wallet_id, :entity_id, :type, :description, :balances, :addresses]
-
   import Circlex.Struct.Util
+
+  defstruct [:wallet_id, :entity_id, :type, :description, :balances, :addresses]
 
   def deserialize(wallet) do
     %__MODULE__{

@@ -1,4 +1,6 @@
 defmodule Circlex.Struct.Payment do
+  import Circlex.Struct.Util
+
   defstruct [
     :id,
     :type,
@@ -13,9 +15,6 @@ defmodule Circlex.Struct.Payment do
     :source,
     :refunds
   ]
-
-  alias Circlex.Emulator.State
-  import Circlex.Struct.Util
 
   def deserialize(payment) do
     %__MODULE__{

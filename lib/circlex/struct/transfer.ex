@@ -1,19 +1,7 @@
 defmodule Circlex.Struct.Transfer do
-  defstruct [:id, :source, :destination, :amount, :transaction_hash, :status, :create_date]
-
-  alias Circlex.Emulator.State
   import Circlex.Struct.Util
 
-  # Note: emulator-world only?
-  def new(source, destination, amount) do
-    {:ok,
-     %__MODULE__{
-       id: State.next(:uuid),
-       source: source,
-       destination: destination,
-       amount: amount
-     }}
-  end
+  defstruct [:id, :source, :destination, :amount, :transaction_hash, :status, :create_date]
 
   def deserialize(transfer) do
     %__MODULE__{

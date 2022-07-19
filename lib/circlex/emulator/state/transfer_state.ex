@@ -23,6 +23,16 @@ defmodule Circlex.Emulator.State.TransferState do
     end)
   end
 
+  def new_transfer(source, destination, amount) do
+    {:ok,
+     %Transfer{
+       id: State.next(:uuid),
+       source: source,
+       destination: destination,
+       amount: amount
+     }}
+  end
+
   def deserialize(st) do
     %{st | transfers: Enum.map(st.transfers, &Transfer.deserialize/1)}
   end

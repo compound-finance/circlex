@@ -34,7 +34,7 @@ defmodule Circlex.Emulator.Api.Core.BankAccountsApi do
     # TODO: Check idempotency key
 
     with {:ok, bank_account} <-
-           BankAccount.new_bank_account(
+           BankAccountState.new_bank_account(
              account_number,
              routing_number,
              billing_details,
