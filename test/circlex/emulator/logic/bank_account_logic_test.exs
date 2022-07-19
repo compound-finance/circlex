@@ -4,7 +4,7 @@ defmodule Circlex.Emulator.Logic.BankAccountLogicTest do
   alias Circlex.Struct.BankAccount
   doctest BankAccountLogic
 
-  @bank_account %Circlex.Struct.BankAccount{
+  @bank_account %BankAccount{
     description: "HSBC Canada ****4444",
     bank_address: %{bankName: "HSBC Canada", city: "Toronto", country: "CA"},
     billing_details: %{

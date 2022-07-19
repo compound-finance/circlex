@@ -35,9 +35,9 @@ defmodule Circlex.Emulator.Logic.WalletLogicTest do
     test "existing balance", %{wallets: wallets} do
       assert {:ok,
               [
-                %Circlex.Struct.Wallet{
+                %Wallet{
                   addresses: nil,
-                  balances: [%Circlex.Struct.Amount{amount: "151234.93", currency: "USD"}],
+                  balances: [%Amount{amount: "151234.93", currency: "USD"}],
                   description: "Master Wallet",
                   entity_id: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",
                   type: "merchant",
@@ -53,11 +53,11 @@ defmodule Circlex.Emulator.Logic.WalletLogicTest do
     test "new balance", %{wallets: wallets} do
       assert {:ok,
               [
-                %Circlex.Struct.Wallet{
+                %Wallet{
                   addresses: nil,
                   balances: [
-                    %Circlex.Struct.Amount{amount: "1000.00", currency: "GBP"},
-                    %Circlex.Struct.Amount{amount: "150234.93", currency: "USD"}
+                    %Amount{amount: "1000.00", currency: "GBP"},
+                    %Amount{amount: "150234.93", currency: "USD"}
                   ],
                   description: "Master Wallet",
                   entity_id: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",

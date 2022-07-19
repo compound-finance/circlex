@@ -4,7 +4,7 @@ defmodule Circlex.Emulator.Logic.TransferLogicTest do
   alias Circlex.Struct.Transfer
   doctest TransferLogic
 
-  @transfer %Circlex.Struct.Transfer{
+  @transfer %Transfer{
     amount: %{amount: "8999998.14", currency: "USD"},
     create_date: "2022-05-05T16:49:04.541Z",
     destination: %{

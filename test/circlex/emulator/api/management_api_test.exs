@@ -3,7 +3,6 @@ defmodule Circlex.Emulator.Api.ManagementApiTest do
   doctest Circlex.Emulator.Api.ManagementApi
 
   alias Circlex.Emulator.Api.ManagementApi
-  alias Circlex.Emulator.State.Wallet
 
   test "gets the master wallet" do
     {:ok, config} = ManagementApi.get_config(%{})

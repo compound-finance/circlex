@@ -4,7 +4,7 @@ defmodule Circlex.Emulator.Logic.RecipientLogicTest do
   alias Circlex.Struct.Recipient
   doctest RecipientLogic
 
-  @recipient %Circlex.Struct.Recipient{
+  @recipient %Recipient{
     address: "0x9dfb4f706a4747355a7ef65cd341a0289034a385",
     chain: "ETH",
     currency: "USD",

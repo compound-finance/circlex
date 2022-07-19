@@ -3,7 +3,7 @@ defmodule Circlex.Emulator.Actor.WirePaymentActorTest do
   alias Circlex.Emulator.Actor.WirePaymentActor
   alias Circlex.Emulator.State
   alias Circlex.Emulator.State.{PaymentState, WalletState}
-  alias Circlex.Struct.{Amount, Payment, Wallet}
+  alias Circlex.Struct.{Payment, Wallet}
 
   @payment %Payment{
     id: "24c26e1b-8666-46fa-96ea-892afcadb9bb",

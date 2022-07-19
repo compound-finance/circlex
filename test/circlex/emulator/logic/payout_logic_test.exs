@@ -4,7 +4,7 @@ defmodule Circlex.Emulator.Logic.PayoutLogicTest do
   alias Circlex.Struct.Payout
   doctest PayoutLogic
 
-  @payout %Circlex.Struct.Payout{
+  @payout %Payout{
     adjustments: nil,
     amount: %{amount: "12111.00", currency: "USD"},
     create_date: "2022-07-15T20:03:32.718Z",
