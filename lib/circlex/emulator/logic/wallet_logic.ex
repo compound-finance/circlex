@@ -1,10 +1,18 @@
 defmodule Circlex.Emulator.Logic.WalletLogic do
   alias Circlex.Emulator.Logic
   import Logic.LogicUtil
-  alias Circlex.Struct.{Amount, Wallet}
+  alias Circlex.Struct.{Address, Amount, Wallet}
 
   def get_wallet(wallets, wallet_id) do
     find(wallets, fn %Wallet{wallet_id: id} -> id == wallet_id end)
+  end
+
+  def get_wallet_by_address(wallets, chain, currency, address) do
+    find(wallets, fn %Wallet{addresses: addresses} ->
+      Enum.any?(addresses, fn address_struct = %Address{} ->
+        Address.match?(address_struct, chain, currency, address)
+      end)
+    end)
   end
 
   def master_wallet(wallets) do

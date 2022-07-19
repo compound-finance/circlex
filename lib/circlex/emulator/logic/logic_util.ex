@@ -38,7 +38,6 @@ defmodule Circlex.Emulator.Logic.LogicUtil do
     end
   end
 
-  # TODO: Remove from State?
   def find(arr, finder) do
     case Enum.find(arr, finder) do
       nil ->

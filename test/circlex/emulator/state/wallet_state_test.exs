@@ -7,13 +7,17 @@ defmodule Circlex.Emulator.State.WalletStateTest do
 
   @wallet %Circlex.Struct.Wallet{
     addresses: [
-      %{
+      %Circlex.Struct.Address{
         address: "0x522c4caaf435fdf1822c7b6a081858344623cf84",
         chain: "ETH",
         currency: "USD"
       },
-      %{address: "mpLQ2waXiQW6aAtnp9XMWh52R42k3QVjtU", chain: "BTC", currency: "BTC"},
-      %{
+      %Circlex.Struct.Address{
+        address: "mpLQ2waXiQW6aAtnp9XMWh52R42k3QVjtU",
+        chain: "BTC",
+        currency: "BTC"
+      },
+      %Circlex.Struct.Address{
         address: "0x6a9de7df6a986a0398348efb0ecd91f341547b31",
         chain: "ETH",
         currency: "USD"
@@ -44,6 +48,16 @@ defmodule Circlex.Emulator.State.WalletStateTest do
 
     test "not found" do
       assert :not_found == WalletState.get_wallet("55")
+    end
+  end
+
+  describe "get_wallet_by_address/1" do
+    test "found" do
+      assert {:ok, @wallet} == WalletState.get_wallet_by_address("BTC", "BTC", "mpLQ2waXiQW6aAtnp9XMWh52R42k3QVjtU")
+    end
+
+    test "not found" do
+      assert :not_found == WalletState.get_wallet_by_address("BTC", "USD", "mpLQ2waXiQW6aAtnp9XMWh52R42k3QVjtU")
     end
   end
 

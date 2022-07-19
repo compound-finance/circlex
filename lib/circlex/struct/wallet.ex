@@ -10,7 +10,7 @@ defmodule Circlex.Struct.Wallet do
       description: fetch(wallet, :description),
       type: fetch(wallet, :type),
       balances: fetch(wallet, :balances) |> Enum.map(&Circlex.Struct.Amount.deserialize/1),
-      addresses: fetch(wallet, :addresses)
+      addresses: fetch(wallet, :addresses) |> Enum.map(&Circlex.Struct.Address.deserialize/1)
     }
   end
 
@@ -23,7 +23,10 @@ defmodule Circlex.Struct.Wallet do
         type: wallet.type,
         balances: Enum.map(wallet.balances, &Circlex.Struct.Amount.serialize/1)
       },
-      if(include_addresses, do: %{addresses: wallet.addresses}, else: %{})
+      if(include_addresses,
+        do: %{addresses: Enum.map(wallet.addresses, &Circlex.Struct.Amount.serialize/1)},
+        else: %{}
+      )
     )
   end
 

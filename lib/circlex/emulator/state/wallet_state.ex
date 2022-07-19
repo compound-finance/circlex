@@ -13,6 +13,10 @@ defmodule Circlex.Emulator.State.WalletState do
     get_wallets_st(fn wallets -> WalletLogic.get_wallet(wallets, id) end)
   end
 
+  def get_wallet_by_address(chain, currency, address) do
+    get_wallets_st(fn wallets -> WalletLogic.get_wallet_by_address(wallets, chain, currency, address) end)
+  end
+
   def master_wallet() do
     get_wallets_st(&WalletLogic.master_wallet/1)
   end
