@@ -7,6 +7,10 @@ defmodule Circlex.Emulator.Logic.BankAccountLogic do
     find(bank_accounts, fn %BankAccount{id: id} -> id == bank_account_id end)
   end
 
+  def get_bank_account_by(bank_accounts, key, value) do
+    find(bank_accounts, fn bank_account -> Map.get(bank_account, key) == value end)
+  end
+
   def add_bank_account(bank_accounts, bank_account) do
     {:ok, [bank_account | bank_accounts]}
   end

@@ -16,6 +16,15 @@ defmodule Circlex.Emulator.State.BankAccountState do
     )
   end
 
+  def get_bank_account_by_tracking_ref(tracking_ref, filters \\ []) do
+    get_bank_accounts_st(
+      fn bank_accounts ->
+        BankAccountLogic.get_bank_account_by(bank_accounts, :tracking_ref, tracking_ref)
+      end,
+      filters
+    )
+  end
+
   def add_bank_account(bank_account) do
     update_bank_accounts_st(fn bank_accounts ->
       BankAccountLogic.add_bank_account(bank_accounts, bank_account)

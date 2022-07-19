@@ -41,7 +41,7 @@ defmodule Circlex.Emulator.State.WalletState do
     {:ok,
      %Wallet{
        wallet_id: State.next(:wallet_id),
-       entity_id: State.next(:uuid),
+       entity_id: merchant_id(),
        description: description,
        type: type,
        balances: [],

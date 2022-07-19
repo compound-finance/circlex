@@ -1,6 +1,8 @@
 defmodule Circlex.Struct.Payment do
   import Circlex.Struct.Util
 
+  alias Circlex.Struct.Amount
+
   defstruct [
     :id,
     :type,
@@ -22,8 +24,8 @@ defmodule Circlex.Struct.Payment do
       type: fetch(payment, :type),
       status: fetch(payment, :status),
       description: fetch(payment, :description),
-      amount: fetch(payment, :amount),
-      fees: fetch(payment, :fees),
+      amount: fetch(payment, :amount) |> Amount.deserialize(),
+      fees: fetch(payment, :fees) |> Amount.deserialize(),
       create_date: fetch(payment, :createDate),
       update_date: fetch(payment, :updateDate),
       merchant_id: fetch(payment, :merchantId),
@@ -39,8 +41,8 @@ defmodule Circlex.Struct.Payment do
       type: fetch(payment, :type),
       status: fetch(payment, :status),
       description: fetch(payment, :description),
-      amount: fetch(payment, :amount),
-      fees: fetch(payment, :fees),
+      amount: fetch(payment, :amount) |> Amount.serialize(),
+      fees: fetch(payment, :fees) |> Amount.serialize(),
       createDate: fetch(payment, :create_date),
       updateDate: fetch(payment, :update_date),
       merchantId: fetch(payment, :merchant_id),

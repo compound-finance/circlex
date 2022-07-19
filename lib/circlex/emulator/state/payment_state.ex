@@ -1,6 +1,6 @@
 defmodule Circlex.Emulator.State.PaymentState do
   alias Circlex.Emulator.State
-  alias Circlex.Struct.Payment
+  alias Circlex.Struct.{Amount, Payment}
   alias Circlex.Emulator.Logic.PaymentLogic
 
   import State.Util
@@ -19,6 +19,33 @@ defmodule Circlex.Emulator.State.PaymentState do
 
   def update_payment(payment_id, f) do
     update_payments_st(fn payments -> PaymentLogic.update_payment(payments, payment_id, f) end)
+  end
+
+  def new_payment(wallet_id, bank_account_id, amount, currency) do
+    {:ok,
+     %Payment{
+       id: State.next(:uuid),
+       type: "payment",
+       status: "pending",
+       description: "Merchant Push Payment",
+       amount: %Amount{
+         amount: amount,
+         currency: currency
+       },
+       fees: %Amount{
+         amount: "2.00",
+         currency: "USD"
+       },
+       create_date: State.next(:date),
+       update_date: State.next(:date),
+       merchant_id: merchant_id(),
+       merchant_wallet_id: wallet_id,
+       source: %{
+         id: bank_account_id,
+         type: "wire"
+       },
+       refunds: []
+     }}
   end
 
   def deserialize(st) do

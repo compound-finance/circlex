@@ -15,11 +15,12 @@ defmodule Circlex.Emulator.Actor.WirePaymentActor do
   alias Circlex.Struct.Payment
 
   def start_link(payment_id) do
-    GenServer.start_link(__MODULE__, {payment_id})
+    GenServer.start_link(__MODULE__, {payment_id, Process.get(:state_pid)})
   end
 
   @impl true
-  def init({payment_id}) do
+  def init({payment_id, state_pid}) do
+    Process.put(:state_pid, state_pid)
     Process.send_after(self(), :accept_wire, 1000)
     {:ok, %{payment_id: payment_id}}
   end
@@ -39,7 +40,7 @@ defmodule Circlex.Emulator.Actor.WirePaymentActor do
             notificationType: "payments",
             version: 1,
             payment: Payment.serialize(payment)
-          })
+          }) |> IO.inspect(label: "notification")
 
         SubscriptionState.send_notifications(notification)
     end
