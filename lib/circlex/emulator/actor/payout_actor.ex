@@ -9,10 +9,10 @@ defmodule Circlex.Emulator.Actor.PayoutActor do
   use GenServer
 
   alias Circlex.Emulator
+  alias Circlex.Emulator.Notifier
   alias Circlex.Emulator.State
   alias Circlex.Emulator.State.{PayoutState, SubscriptionState, WalletState}
   alias Circlex.Emulator.Logic.{PayoutLogic, WalletLogic}
-  alias Circlex.Emulator.SNS.Notification
   alias Circlex.Struct.Payout
 
   def start_link(payout_id) do
@@ -23,7 +23,7 @@ defmodule Circlex.Emulator.Actor.PayoutActor do
   def init({payout_id, state_pid}) do
     Process.put(:state_pid, state_pid)
     Process.send_after(self(), :push_wire, Emulator.action_delay())
-    notify(payout_id)
+    Notifier.notify_payout(payout_id)
     {:ok, %{payout_id: payout_id}}
   end
 
@@ -35,23 +35,9 @@ defmodule Circlex.Emulator.Actor.PayoutActor do
       "pending" ->
         # We've accepted the wire, set state and send notification
         State.update_st(fn st -> st |> PayoutLogic.process_payout(payout.id) end)
-        notify(payout.id)
+        Notifier.notify_payout(payout.id)
     end
 
     {:noreply, state}
-  end
-
-  defp notify(payout_id) when is_binary(payout_id) do
-    {:ok, payout} = PayoutState.get_payout(payout_id)
-
-    notification =
-      Notification.new(%{
-        clientId: "c60d2d5b-203c-45bb-9f6e-93641d40a599",
-        notificationType: "payouts",
-        version: 1,
-        payout: Payout.serialize(payout)
-      })
-
-    SubscriptionState.send_notifications(notification)
   end
 end

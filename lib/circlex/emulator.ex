@@ -23,6 +23,7 @@ defmodule Circlex.Emulator do
     state_name = Keyword.get(opts, :state_name, Circlex.Emulator.State)
     cowboy_ref = Module.concat(__MODULE__, "Port_" <> to_string(port))
     next = Keyword.get(opts, :next, %{})
+    listeners = Keyword.get(opts, :listeners, [])
     ethereum_node = Signet.Application.ethereum_node()
 
     children = [
@@ -33,7 +34,8 @@ defmodule Circlex.Emulator do
       {Circlex.Emulator.State, name: state_name, initial_state: initial_state, next: next},
       {Signet.Filter,
        [name: USDCDepositFilter, address: usdc_address(), events: [@transfer_event]]},
-      {Circlex.Emulator.DepositDetector, [[USDCDepositFilter], state_name]}
+      {Circlex.Emulator.DepositDetector, [[USDCDepositFilter], state_name]},
+      {Circlex.Emulator.Notifier, listeners: listeners}
     ]
 
     Logger.info("Circlex Emulator starting on port #{port} connected to #{ethereum_node}...")
