@@ -1,7 +1,9 @@
 defmodule Circlex.Emulator.Logic.PaymentLogic do
   import Circlex.Emulator.Logic.LogicUtil
 
-  alias Circlex.Struct.{Payment, Wallet}
+  require Logger
+
+  alias Circlex.Struct.{Amount, Payment, Wallet}
   alias Circlex.Emulator.Logic.WalletLogic
 
   def get_payment(payments, payment_id) do
@@ -28,13 +30,14 @@ defmodule Circlex.Emulator.Logic.PaymentLogic do
 
         {:ok, payments} = update_payment(payments, payment.id, fn p -> %{p | status: "paid"} end)
 
+        Logger.warn("[NOTICE] Just received wire for #{Amount.display(payment.amount)}")
+
         {:ok,
          st
          |> Map.put(:wallets, wallets)
          |> Map.put(:payments, payments)}
 
       _ ->
-        #  TODO: Handle other kinds of payments
         {:ok, st}
     end
   end

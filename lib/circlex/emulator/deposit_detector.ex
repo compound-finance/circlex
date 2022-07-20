@@ -30,14 +30,14 @@ defmodule Circlex.Emulator.DepositDetector do
   end
 
   @impl true
-  def handle_info({:event, event}, state) do
-    # Deposit detected!
-
+  def handle_info({:event, event, log}, state) do
     case event do
-      {"Transfer", %{from: from, to: to, amount: amount}} ->
+      {"Transfer", %{"from" => from, "to" => to, "amount" => amount}} ->
         # Okay, now let's see if it matches any known wallet.
         case WalletState.get_wallet_by_address(@chain, @currency, Signet.Util.encode_hex(to)) do
           {:ok, wallet} ->
+            trx_id = Signet.Util.encode_hex(log.transaction_hash)
+
             {:ok, transfer} =
               TransferState.new_transfer(
                 %{
@@ -55,11 +55,10 @@ defmodule Circlex.Emulator.DepositDetector do
             TransferState.add_transfer(transfer)
 
             TransferActor.start_link(transfer.id)
-
-            Logger.info("Detected New On-Chain Transfer: #{inspect(transfer)}")
+            Logger.info("Detected new USDC transfer to wallet via trx: #{trx_id}: #{inspect(transfer)}")
 
           :not_found ->
-            Logger.debug("Detected irrevelevant transfer")
+            Logger.debug("Ignoring irrevelevant USDC transfer...")
         end
 
       _ ->

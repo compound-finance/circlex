@@ -27,7 +27,7 @@ defmodule Circlex.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:signet, "~> 0.1.0-rc0"},
+      {:signet, "~> 0.1.0-rc4"},
       {:plug_cowboy, "~> 2.5"},
       {:jason, "~> 1.2"},
       {:httpoison, "~> 1.8"},

@@ -9,11 +9,11 @@ defmodule Circlex.Emulator.Logic.PaymentLogicTest do
     type: "payment",
     status: "paid",
     description: "Merchant Push Payment",
-    amount: %{
+    amount: %Amount{
       amount: "50.00",
       currency: "USD"
     },
-    fees: %{
+    fees: %Amount{
       amount: "2.00",
       currency: "USD"
     },
@@ -54,10 +54,10 @@ defmodule Circlex.Emulator.Logic.PaymentLogicTest do
              %{
                payments: [
                  %Payment{
-                   amount: %{amount: "50.00", currency: "USD"},
+                   amount: %Amount{amount: "50.00", currency: "USD"},
                    create_date: "2022-07-15T21:10:03.635Z",
                    description: "Merchant Push Payment",
-                   fees: %{amount: "2.00", currency: "USD"},
+                   fees: %Amount{amount: "2.00", currency: "USD"},
                    id: "24c26e1b-8666-46fa-96ea-892afcadb9bb",
                    merchant_id: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",
                    merchant_wallet_id: "1000216185",

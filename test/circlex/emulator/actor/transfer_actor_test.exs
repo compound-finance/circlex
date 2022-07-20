@@ -5,9 +5,6 @@ defmodule Circlex.Emulator.Actor.TransferActorTest do
   alias Circlex.Emulator.State.{TransferState, WalletState}
   alias Circlex.Struct.{Amount, Transfer, Wallet}
 
-  defp action_delay(),
-    do: Keyword.fetch!(Application.get_env(:circlex, :emulator), :action_delay_ms)
-
   @transfer_b2w %Transfer{
     amount: %Amount{amount: "10000.00", currency: "USD"},
     create_date: "2022-05-05T16:49:04.541Z",
@@ -67,7 +64,7 @@ defmodule Circlex.Emulator.Actor.TransferActorTest do
     {:ok, _actor} = TransferActor.start_link(@transfer_b2w.id)
 
     # Allow processing time
-    :timer.sleep(2 * action_delay())
+    :timer.sleep(2 * Circlex.Emulator.action_delay())
 
     assert TransferState.get_transfer(@transfer_b2w.id) ==
              {:ok, %{@transfer_b2w | status: "complete"}}
@@ -87,7 +84,7 @@ defmodule Circlex.Emulator.Actor.TransferActorTest do
     {:ok, _actor} = TransferActor.start_link(@transfer_w2w.id)
 
     # Allow processing time
-    :timer.sleep(2 * action_delay())
+    :timer.sleep(2 * Circlex.Emulator.action_delay())
 
     assert TransferState.get_transfer(@transfer_w2w.id) ==
              {:ok, %{@transfer_w2w | status: "complete"}}
@@ -107,7 +104,7 @@ defmodule Circlex.Emulator.Actor.TransferActorTest do
     {:ok, _actor} = TransferActor.start_link(@transfer_w2b.id)
 
     # Allow processing time
-    :timer.sleep(2 * action_delay())
+    :timer.sleep(2 * Circlex.Emulator.action_delay())
 
     assert TransferState.get_transfer(@transfer_w2b.id) ==
              {:ok,

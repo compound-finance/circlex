@@ -15,7 +15,7 @@ defmodule Circlex.Emulator.Api.Core.PayoutsApiTest do
               },
               id: "a033a6d8-05ae-11ed-9e62-6a1733211c00",
               status: "pending",
-              fees: [],
+              fees: %{amount: "0.00", currency: "USD"},
               sourceWalletId: "1000216185",
               trackingRef: "CIR3KXZZ00",
               updateDate: "2022-07-17T08:59:41.344582Z"

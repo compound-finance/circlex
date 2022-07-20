@@ -6,6 +6,6 @@ if config_env() == :dev do
   end
 
   if not is_nil(System.get_env("ETHEREUM_REMOTE_NODE")) do
-    config :circlex, :emulator, ethereum_remote_node: System.get_env("ETHEREUM_REMOTE_NODE")
+    config :signet, :ethereum_node, System.get_env("ETHEREUM_REMOTE_NODE")
   end
 end

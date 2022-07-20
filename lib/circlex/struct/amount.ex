@@ -43,4 +43,8 @@ defmodule Circlex.Struct.Amount do
 
   def encode_amount(amount), do: :erlang.float_to_binary(amount, decimals: 2)
   def decode_amount(amount), do: :erlang.binary_to_float(amount)
+
+  def display(%__MODULE__{amount: amount, currency: "USD"}) do
+    "$" <> amount
+  end
 end

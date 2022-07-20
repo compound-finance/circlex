@@ -3,21 +3,18 @@ defmodule Circlex.Emulator.Actor.PaymentActorTest do
   alias Circlex.Emulator.Actor.PaymentActor
   alias Circlex.Emulator.State
   alias Circlex.Emulator.State.{PaymentState, WalletState}
-  alias Circlex.Struct.{Payment, Wallet}
-
-  defp action_delay(),
-    do: Keyword.fetch!(Application.get_env(:circlex, :emulator), :action_delay_ms)
+  alias Circlex.Struct.{Amount, Payment, Wallet}
 
   @payment %Payment{
     id: "24c26e1b-8666-46fa-96ea-892afcadb9bb",
     type: "payment",
     status: "pending",
     description: "Merchant Push Payment",
-    amount: %{
+    amount: %Amount{
       amount: "50.00",
       currency: "USD"
     },
-    fees: %{
+    fees: %Amount{
       amount: "2.00",
       currency: "USD"
     },
@@ -48,7 +45,7 @@ defmodule Circlex.Emulator.Actor.PaymentActorTest do
     {:ok, actor} = PaymentActor.start_link(@payment.id)
 
     # Allow processing time
-    :timer.sleep(2 * action_delay())
+    :timer.sleep(2 * Circlex.Emulator.action_delay())
 
     assert PaymentState.get_payment(@payment.id) == {:ok, %{@payment | status: "paid"}}
     {:ok, master_wallet} = WalletState.master_wallet()

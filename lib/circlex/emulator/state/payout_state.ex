@@ -1,6 +1,6 @@
 defmodule Circlex.Emulator.State.PayoutState do
   alias Circlex.Emulator.State
-  alias Circlex.Struct.Payout
+  alias Circlex.Struct.{Amount, Payout}
   alias Circlex.Emulator.Logic.PayoutLogic
 
   import State.Util
@@ -21,14 +21,20 @@ defmodule Circlex.Emulator.State.PayoutState do
     update_payouts_st(fn payouts -> PayoutLogic.update_payout(payouts, payout_id, f) end)
   end
 
-  def new_payout(source, destination, amount, _metadata) do
+  def new_payout(source, destination, amount, currency, _metadata) do
     {:ok,
      %Payout{
        id: State.next(:uuid),
        source_wallet_id: fetch(source, :id),
        destination: destination,
-       amount: amount,
-       fees: [],
+       amount: %Amount{
+         amount: amount,
+         currency: currency
+       },
+       fees: %Amount{
+         amount: "0.00",
+         currency: "USD"
+       },
        status: "pending",
        tracking_ref: State.next(:tracking_ref),
        create_date: State.next(:date),

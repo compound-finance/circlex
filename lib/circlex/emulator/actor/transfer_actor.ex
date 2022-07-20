@@ -1,21 +1,21 @@
 defmodule Circlex.Emulator.Actor.TransferActor do
   @moduledoc """
-  Handles a transfer, either in or out.
+  Handles a transfer, either in or out, specifically handling:
 
-  # TODO: Handle out
+  ```md
+  1. Blockchain -> Wallet
+  2. Wallet -> Wallet
+  3. Wallet -> Blockchain
+  ```
   """
   use GenServer
 
+  alias Circlex.Emulator
   alias Circlex.Emulator.State
   alias Circlex.Emulator.State.{SubscriptionState, TransferState}
   alias Circlex.Emulator.Logic.TransferLogic
   alias Circlex.Emulator.SNS.Notification
   alias Circlex.Struct.Transfer
-
-  require Logger
-
-  defp action_delay(),
-    do: Keyword.fetch!(Application.get_env(:circlex, :emulator), :action_delay_ms)
 
   def start_link(transfer_id) do
     GenServer.start_link(
@@ -29,7 +29,7 @@ defmodule Circlex.Emulator.Actor.TransferActor do
     Process.put(:state_pid, state_pid)
     if not is_nil(signer_proc), do: Process.put(:signer_proc, signer_proc)
     notify(transfer_id)
-    Process.send_after(self(), :accept_transfer, action_delay())
+    Process.send_after(self(), :accept_transfer, Emulator.action_delay())
     {:ok, %{transfer_id: transfer_id}}
   end
 

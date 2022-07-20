@@ -22,10 +22,10 @@ defmodule Circlex.Api.Payouts.Payouts do
         :ok,
         %Circlex.Struct.Payout{
           adjustments: nil,
-          amount: %{"amount" => "12345.00", "currency" => "USD"},
+          amount: %Circlex.Struct.Amount{amount: "12345.00", currency: "USD"},
           create_date: "2022-07-17T08:59:41.344582Z",
           destination: %{"address" => "0x871A9FF377eCf2632A0928950dCEb181557F2e17", "chain" => "ETH", "type" => "blockchain"},
-          fees: [],
+          fees: %Circlex.Struct.Amount{amount: "0.00", currency: "USD"},
           id: "a033a6d8-05ae-11ed-9e62-6a1733211c00",
           return: nil,
           risk_evaluation: nil,
@@ -39,41 +39,19 @@ defmodule Circlex.Api.Payouts.Payouts do
   def create(source, destination, amount, metadata, opts \\ []) do
     idempotency_key = Keyword.get(opts, :idempotency_key, UUID.uuid1())
 
-    case api_post(
-           "/v1/payouts",
-           %{
-             idempotencyKey: idempotency_key,
-             source: source,
-             destination: destination,
-             amount: amount,
-             metadata: metadata
-           },
-           opts
-         ) do
-      {:ok,
-       %{
-         "id" => id,
-         "sourceWalletId" => source_wallet_id,
-         "destination" => destination,
-         "amount" => amount,
-         "fees" => fees,
-         "status" => status,
-         "trackingRef" => tracking_ref,
-         "createDate" => create_date,
-         "updateDate" => update_date
-       }} ->
-        {:ok,
-         %Payout{
-           id: id,
-           source_wallet_id: source_wallet_id,
-           destination: destination,
-           amount: amount,
-           fees: fees,
-           status: status,
-           tracking_ref: tracking_ref,
-           create_date: create_date,
-           update_date: update_date
-         }}
+    with {:ok, payout} <-
+           api_post(
+             "/v1/payouts",
+             %{
+               idempotencyKey: idempotency_key,
+               source: source,
+               destination: destination,
+               amount: amount,
+               metadata: metadata
+             },
+             opts
+           ) do
+      {:ok, Payout.deserialize(payout)}
     end
   end
 
@@ -93,10 +71,10 @@ defmodule Circlex.Api.Payouts.Payouts do
         [
           %Circlex.Struct.Payout{
             adjustments: nil,
-            amount: %{"amount" => "12111.00", "currency" => "USD"},
+            amount: %Circlex.Struct.Amount{amount: "12111.00", currency: "USD"},
             create_date: "2022-07-15T20:03:32.718Z",
             destination: %{"id" => "4847be95-8b73-44cc-a329-549a25a776e2", "name" => "CAIXABANK, S.A. ****6789", "type" => "wire"},
-            fees: %{"amount" => "25.00", "currency" => "USD"},
+            fees: %Circlex.Struct.Amount{amount: "25.00", currency: "USD"},
             id: "5e2e20bd-6ad6-4603-950b-64803647a4e5",
             return: nil,
             risk_evaluation: nil,
@@ -107,14 +85,14 @@ defmodule Circlex.Api.Payouts.Payouts do
           },
           %Circlex.Struct.Payout{
             adjustments: nil,
-            amount: %{"amount" => "12111.00", "currency" => "USD"},
+            amount: %Circlex.Struct.Amount{amount: "12111.00", currency: "USD"},
             create_date: "2022-07-15T20:03:32.718Z",
             destination: %{
               "id" => "4847be95-8b73-44cc-a329-549a25a776e2",
               "name" => "CAIXABANK, S.A. ****6789",
               "type" => "wire"
             },
-            fees: %{"amount" => "25.00", "currency" => "USD"},
+            fees: %Circlex.Struct.Amount{amount: "25.00", currency: "USD"},
             id: "6e2e20bd-6ad6-4603-950b-64803647a4e6",
             return: nil,
             risk_evaluation: nil,
@@ -145,10 +123,10 @@ defmodule Circlex.Api.Payouts.Payouts do
         :ok,
         %Circlex.Struct.Payout{
           adjustments: nil,
-          amount: %{"amount" => "12111.00", "currency" => "USD"},
+          amount: %Circlex.Struct.Amount{amount: "12111.00", currency: "USD"},
           create_date: "2022-07-15T20:03:32.718Z",
           destination: %{"id" => "4847be95-8b73-44cc-a329-549a25a776e2", "name" => "CAIXABANK, S.A. ****6789", "type" => "wire"},
-          fees: %{"amount" => "25.00", "currency" => "USD"},
+          fees: %Circlex.Struct.Amount{amount: "25.00", currency: "USD"},
           id: "5e2e20bd-6ad6-4603-950b-64803647a4e5",
           return: nil,
           risk_evaluation: nil,
