@@ -5,6 +5,7 @@ defmodule Circlex.Emulator.Api.Core.TransfersApi do
   use Circlex.Emulator.Api
 
   alias Circlex.Emulator.State.TransferState
+  alias Circlex.Emulator.Actor.TransferActor
   alias Circlex.Struct.Transfer
 
   # https://developers.circle.com/reference/searchbusinessaccounttransfers
@@ -42,6 +43,7 @@ defmodule Circlex.Emulator.Api.Core.TransfersApi do
       with {:ok, transfer} <-
              TransferState.new_transfer(source, destination, amount) do
         TransferState.add_transfer(transfer)
+        TransferActor.start_link(transfer.id)
         {:ok, Transfer.serialize(transfer)}
       end
     end

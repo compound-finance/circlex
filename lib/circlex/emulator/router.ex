@@ -17,6 +17,7 @@ defmodule Circlex.Emulator.Router do
   plug(:dispatch)
 
   forward("/circlex", to: Circlex.Emulator.Api.CirclexApi)
+  forward("/v1/mocks", to: Circlex.Emulator.Api.MocksApi)
 
   # Base
   forward("/ping", to: Circlex.Emulator.Api.HealthApi)

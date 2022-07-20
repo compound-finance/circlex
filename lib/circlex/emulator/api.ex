@@ -96,10 +96,23 @@ defmodule Circlex.Emulator.Api do
     |> send_resp(status, Jason.encode!(value))
   end
 
-  def api_params(conn) do
-    for {k, v} <- conn.params, into: %{} do
-      {String.to_atom(k), v}
+  defp deep_keys_to_atoms(map) do
+    for {k, v} <- map, into: %{} do
+      k_sym =
+        cond do
+          is_binary(k) ->
+            String.to_atom(k)
+
+          is_atom(k) ->
+            k
+        end
+
+      {k_sym, if(is_map(v), do: deep_keys_to_atoms(v), else: v)}
     end
+  end
+
+  def api_params(conn) do
+    deep_keys_to_atoms(conn.params)
   end
 
   def api_handle(res, conn, no_data_key) do

@@ -20,7 +20,7 @@ defmodule Circlex.Emulator.SNS do
       :unsubscribe_url
     ]
 
-    def serialize(%Notification{}=notification) do
+    def serialize(%Notification{} = notification) do
       %{
         "Type" => notification.type,
         "MessageId" => notification.message_id,
@@ -43,8 +43,8 @@ defmodule Circlex.Emulator.SNS do
         timestamp: DateTime.utc_now(),
         signature_version: "1",
         signature: "",
-        signing_cert_url: "",
-        unsubscribe_url: ""
+        signing_cert_url: "http://example.com",
+        unsubscribe_url: "http://example.com"
       }
     end
   end
@@ -55,7 +55,10 @@ defmodule Circlex.Emulator.SNS do
       |> Notification.serialize()
       |> Jason.encode!()
 
-    headers = [{"Content-Type", "application/json"}]
+    headers = [
+      {"Content-Type", "text/plain"},
+      {"x-amz-sns-message-type", notification.type}
+    ]
 
     case sns_http_client().post(endpoint, body, headers) do
       {:ok, %HTTPoison.Response{status_code: code}} when code in 200..299 ->

@@ -64,7 +64,7 @@ defmodule Circlex.Emulator.Actor.TransferActorTest do
     {:ok, master_wallet} = WalletState.master_wallet()
     assert Wallet.get_balance(master_wallet, "USD") == "150234.93"
 
-    {:ok, actor} = TransferActor.start_link(@transfer_b2w.id) |> IO.inspect(label: "start")
+    {:ok, actor} = TransferActor.start_link(@transfer_b2w.id)
 
     # Allow processing time
     :timer.sleep(2 * action_delay())
@@ -84,7 +84,7 @@ defmodule Circlex.Emulator.Actor.TransferActorTest do
     {:ok, dest_wallet} = WalletState.get_wallet("1000216186")
     assert Wallet.get_balance(dest_wallet, "USD") == "50.00"
 
-    {:ok, actor} = TransferActor.start_link(@transfer_w2w.id) |> IO.inspect(label: "start")
+    {:ok, actor} = TransferActor.start_link(@transfer_w2w.id)
 
     # Allow processing time
     :timer.sleep(2 * action_delay())
@@ -104,7 +104,7 @@ defmodule Circlex.Emulator.Actor.TransferActorTest do
     {:ok, master_wallet} = WalletState.master_wallet()
     assert Wallet.get_balance(master_wallet, "USD") == "150234.93"
 
-    {:ok, actor} = TransferActor.start_link(@transfer_w2b.id) |> IO.inspect(label: "start")
+    {:ok, actor} = TransferActor.start_link(@transfer_w2b.id)
 
     # Allow processing time
     :timer.sleep(2 * action_delay())

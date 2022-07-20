@@ -69,8 +69,7 @@ defmodule Circlex.Emulator.Logic.TransferLogic do
               Process.get(:signer_proc, Circlex.Emulator.Signer),
               ethereum_node(),
               usdc_address,
-              {"transfer(address,uint256)", [to_addr, wei_amount]}
-              |> IO.inspect(label: "trx info"),
+              {"transfer(address,uint256)", [to_addr, wei_amount]},
               gas_price: {1, :gwei},
               value: 0
             )

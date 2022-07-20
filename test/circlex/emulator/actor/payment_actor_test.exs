@@ -45,7 +45,7 @@ defmodule Circlex.Emulator.Actor.PaymentActorTest do
     {:ok, master_wallet} = WalletState.master_wallet()
     assert Wallet.get_balance(master_wallet, "USD") == "150234.93"
 
-    {:ok, actor} = PaymentActor.start_link(@payment.id) |> IO.inspect(label: "start")
+    {:ok, actor} = PaymentActor.start_link(@payment.id)
 
     # Allow processing time
     :timer.sleep(2 * action_delay())

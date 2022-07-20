@@ -14,16 +14,20 @@ defmodule Circlex.Emulator.Actor.TransferActor do
 
   require Logger
 
-  defp action_delay(), do: Keyword.fetch!(Application.get_env(:circlex, :emulator), :action_delay_ms)
+  defp action_delay(),
+    do: Keyword.fetch!(Application.get_env(:circlex, :emulator), :action_delay_ms)
 
   def start_link(transfer_id) do
-    GenServer.start_link(__MODULE__, {transfer_id, Process.get(:state_pid), Process.get(:signer_proc)})
+    GenServer.start_link(
+      __MODULE__,
+      {transfer_id, Process.get(:state_pid), Process.get(:signer_proc)}
+    )
   end
 
   @impl true
   def init({transfer_id, state_pid, signer_proc}) do
     Process.put(:state_pid, state_pid)
-    Process.put(:signer_proc, signer_proc)
+    if not is_nil(signer_proc), do: Process.put(:signer_proc, signer_proc)
     notify(transfer_id)
     Process.send_after(self(), :accept_transfer, action_delay())
     {:ok, %{transfer_id: transfer_id}}
@@ -54,7 +58,6 @@ defmodule Circlex.Emulator.Actor.TransferActor do
         version: 1,
         transfer: Transfer.serialize(transfer)
       })
-      |> IO.inspect(label: "transfer notification")
 
     SubscriptionState.send_notifications(notification)
   end

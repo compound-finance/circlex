@@ -14,7 +14,8 @@ defmodule Circlex.Emulator.Actor.PaymentActor do
   alias Circlex.Emulator.SNS.Notification
   alias Circlex.Struct.Payment
 
-  defp action_delay(), do: Keyword.fetch!(Application.get_env(:circlex, :emulator), :action_delay_ms)
+  defp action_delay(),
+    do: Keyword.fetch!(Application.get_env(:circlex, :emulator), :action_delay_ms)
 
   def start_link(payment_id) do
     GenServer.start_link(__MODULE__, {payment_id, Process.get(:state_pid)})
@@ -36,6 +37,7 @@ defmodule Circlex.Emulator.Actor.PaymentActor do
       "pending" ->
         # We've accepted the wire, set state and send notification
         State.update_st(fn st -> st |> PaymentLogic.process_payment(payment.id) end)
+        notify(payment.id)
     end
 
     {:noreply, state}
@@ -51,7 +53,6 @@ defmodule Circlex.Emulator.Actor.PaymentActor do
         version: 1,
         payment: Payment.serialize(payment)
       })
-      |> IO.inspect(label: "payment notification")
 
     SubscriptionState.send_notifications(notification)
   end

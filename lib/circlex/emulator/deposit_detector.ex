@@ -32,7 +32,6 @@ defmodule Circlex.Emulator.DepositDetector do
   @impl true
   def handle_info({:event, event}, state) do
     # Deposit detected!
-    IO.inspect(event, label: "deposit detected")
 
     case event do
       {"Transfer", %{from: from, to: to, amount: amount}} ->
@@ -57,10 +56,10 @@ defmodule Circlex.Emulator.DepositDetector do
 
             TransferActor.start_link(transfer.id)
 
-            Logger.debug("Detected transfer: #{inspect(transfer)}")
+            Logger.info("Detected New On-Chain Transfer: #{inspect(transfer)}")
 
           :not_found ->
-            nil
+            Logger.debug("Detected irrevelevant transfer")
         end
 
       _ ->

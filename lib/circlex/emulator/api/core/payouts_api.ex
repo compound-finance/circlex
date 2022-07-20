@@ -43,6 +43,7 @@ defmodule Circlex.Emulator.Api.Core.PayoutsApi do
       with {:ok, payout} <-
              PayoutState.new_payout(source, destination, amount, nil) do
         PayoutState.add_payout(payout)
+        
         {:ok, Payout.serialize(payout)}
       end
     end

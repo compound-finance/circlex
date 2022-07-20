@@ -14,6 +14,7 @@ defmodule Circlex.Emulator.Api.MocksApi do
       with {:ok, bank_account} <- BankAccountState.get_bank_account_by_tracking_ref(tracking_ref) do
         {:ok, payment} =
           PaymentState.new_payment(master_wallet.wallet_id, bank_account.id, amount, currency)
+
           PaymentState.add_payment(payment)
 
         PaymentActor.start_link(payment.id)

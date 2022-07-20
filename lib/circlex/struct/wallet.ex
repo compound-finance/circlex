@@ -4,8 +4,6 @@ defmodule Circlex.Struct.Wallet do
   defstruct [:wallet_id, :entity_id, :type, :description, :balances, :addresses]
 
   def deserialize(wallet) do
-    IO.inspect(wallet)
-
     %__MODULE__{
       wallet_id: fetch(wallet, :walletId),
       entity_id: fetch(wallet, :entityId),

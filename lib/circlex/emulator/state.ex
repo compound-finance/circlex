@@ -28,7 +28,7 @@ defmodule Circlex.Emulator.State do
 
   @impl true
   def init(state = %{st: st, signer_proc: signer_proc}) do
-    Process.put(:signer_proc, signer_proc)
+    if not is_nil(signer_proc), do: Process.put(:signer_proc, signer_proc)
 
     initial_st =
       WalletState.initial_state()
