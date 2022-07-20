@@ -6,7 +6,8 @@ defmodule Circlex.Application do
   use Application
 
   @impl true
-  def start(_type, args) do
+  def start(_type, _args) do
+
     children = [
       # Starts a worker by calling: Circlex.Worker.start_link(arg)
       # {Circlex.Worker, arg}

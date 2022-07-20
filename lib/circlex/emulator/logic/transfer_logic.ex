@@ -6,10 +6,6 @@ defmodule Circlex.Emulator.Logic.TransferLogic do
 
   @usdc_decimals 6
 
-  defp emulator_config(), do: Application.get_env(:circlex, :emulator)
-  defp ethereum_node(), do: Keyword.fetch!(emulator_config, :ethereum_node)
-  defp usdc_address(), do: Signet.Util.decode_hex!(Keyword.fetch!(emulator_config, :usdc_address))
-
   def get_transfer(transfers, transfer_id) do
     find(transfers, fn %Transfer{id: id} -> id == transfer_id end)
   end
@@ -66,9 +62,7 @@ defmodule Circlex.Emulator.Logic.TransferLogic do
 
           {:ok, trx_id} =
             Signet.RPC.execute_trx(
-              Process.get(:signer_proc, Circlex.Emulator.Signer),
-              ethereum_node(),
-              usdc_address,
+              Circlex.Emulator.usdc_address(),
               {"transfer(address,uint256)", [to_addr, wei_amount]},
               gas_price: {1, :gwei},
               value: 0

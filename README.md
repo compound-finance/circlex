@@ -74,4 +74,4 @@ be found at <https://hexdocs.pm/circlex>.
 
 ## Contributing
 
-Create a PR to contribute to Circlex. All contirbutors agree to accept the license specified in this repository for all contributions to this project.
+Create a PR to contribute to Circlex. All contributors agree to accept the license specified in this repository for all contributions to this project. See [LICENSE.md](/LICENSE.md).
