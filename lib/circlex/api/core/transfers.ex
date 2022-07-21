@@ -1,8 +1,12 @@
 defmodule Circlex.Api.Core.Transfers do
   @moduledoc """
-  Core API...
+  API Client to the Core Transfers API.
+
+  Reference: https://developers.circle.com/reference/createbusinessaccounttransfer
   """
-  import Circlex.Api
+
+  import Circlex.Api.Tooling
+
   alias Circlex.Struct.Transfer
 
   @doc ~S"""

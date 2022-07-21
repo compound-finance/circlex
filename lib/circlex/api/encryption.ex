@@ -1,8 +1,13 @@
 defmodule Circlex.Api.Encryption do
   @moduledoc """
-  Core API...
+  API Client to the Encryption API.
+
+  Note: not currently implemented.
+
+  Reference: https://developers.circle.com/reference/getpublickey
   """
-  import Circlex.Api
+
+  import Circlex.Api.Tooling
 
   @doc ~S"""
   Retrieves an RSA public key to be used in encrypting data sent to the API.

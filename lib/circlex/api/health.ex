@@ -1,8 +1,11 @@
 defmodule Circlex.Api.Health do
   @moduledoc """
-  Core API...
+  API Client to the Health API.
+
+  Reference: https://developers.circle.com/reference/ping
   """
-  import Circlex.Api
+
+  import Circlex.Api.Tooling
 
   @doc ~S"""
   Pings a server to check connectivity.

@@ -1,8 +1,12 @@
 defmodule Circlex.Api.Core.BankAccounts do
   @moduledoc """
-  Core API...
+  API Client to the Core Bank Accounts API.
+
+  Reference: https://developers.circle.com/reference/createbusinessaccountwirebankaccount
   """
-  import Circlex.Api
+
+  import Circlex.Api.Tooling
+
   alias Circlex.Struct.BankAccount
 
   @doc ~S"""

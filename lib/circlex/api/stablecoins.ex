@@ -1,8 +1,11 @@
 defmodule Circlex.Api.Stablecoins do
   @moduledoc """
-  Core API...
+  API Client to the Stabecoins API.
+
+  Reference: https://developers.circle.com/reference/getstablecoins
   """
-  import Circlex.Api
+
+  import Circlex.Api.Tooling
 
   @doc ~S"""
   Retrieves total circulating supply for supported stablecoins across all chains.

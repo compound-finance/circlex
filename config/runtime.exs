@@ -8,4 +8,8 @@ if config_env() == :dev do
   if not is_nil(System.get_env("ETHEREUM_REMOTE_NODE")) do
     config :signet, :ethereum_node, System.get_env("ETHEREUM_REMOTE_NODE")
   end
+
+  if not is_nil(System.get_env("USDC_ADDRESS")) do
+    config :circlex, :emulator, usdc_address: System.get_env("USDC_ADDRESS")
+  end
 end

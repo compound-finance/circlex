@@ -16,7 +16,6 @@ defmodule Circlex.Emulator.State do
     name = Keyword.get(opts, :name, __MODULE__)
     next = Keyword.get(opts, :next, %{})
     signer_proc = Keyword.get(opts, :signer_proc, nil)
-    IO.inspect(signer_proc, label: "signer_proc")
 
     initial_state =
       case Keyword.get(opts, :initial_state, nil) do

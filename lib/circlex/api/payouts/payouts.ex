@@ -1,8 +1,12 @@
 defmodule Circlex.Api.Payouts.Payouts do
   @moduledoc """
-  Core API...
+  API Client to the Payouts Payouts API.
+
+  Reference: https://developers.circle.com/reference/payouts-payouts-create
   """
-  import Circlex.Api
+
+  import Circlex.Api.Tooling
+
   alias Circlex.Struct.Payout
 
   @doc ~S"""

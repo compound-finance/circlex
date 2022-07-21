@@ -1,8 +1,12 @@
 defmodule Circlex.Api.Payouts.BankAccounts do
   @moduledoc """
-  Payouts API...
+  API Client to the Payouts Bank Accounts API.
+
+  Reference: https://developers.circle.com/reference/payments-bank-accounts-wires-create
   """
-  import Circlex.Api
+
+  import Circlex.Api.Tooling
+
   alias Circlex.Struct.BankAccount
 
   @doc ~S"""

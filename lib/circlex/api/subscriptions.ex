@@ -1,8 +1,12 @@
 defmodule Circlex.Api.Subscriptions do
   @moduledoc """
-  Core API...
+  API Client to the Subscriptions API.
+
+  Reference: https://developers.circle.com/reference/listsubscriptions
   """
-  import Circlex.Api
+
+  import Circlex.Api.Tooling
+
   alias Circlex.Struct.Subscription
 
   @doc ~S"""

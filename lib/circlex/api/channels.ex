@@ -1,8 +1,11 @@
 defmodule Circlex.Api.Channels do
   @moduledoc """
-  Core API...
+  API Client to the Channels API.
+
+  Reference: https://developers.circle.com/reference/listchannels
   """
-  import Circlex.Api
+
+  import Circlex.Api.Tooling
 
   @doc ~S"""
   Retrieve a list of channels with details (e.g. cardDescriptor, achDescriptor,

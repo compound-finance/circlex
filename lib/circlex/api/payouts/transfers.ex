@@ -1,8 +1,12 @@
 defmodule Circlex.Api.Payouts.Transfers do
   @moduledoc """
-  Core API...
+  API Client to the Payouts Transfers API.
+
+  Reference: https://developers.circle.com/reference/payouts-transfers-create
   """
-  import Circlex.Api
+
+  import Circlex.Api.Tooling
+
   alias Circlex.Struct.{Amount, Transfer}
 
   @doc ~S"""

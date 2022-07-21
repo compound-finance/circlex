@@ -1,8 +1,12 @@
 defmodule Circlex.Api.Payments.Payments do
   @moduledoc """
-  Core API...
+  API Client to the Payments Payments API.
+
+  Reference: https://developers.circle.com/reference/payments-payments-get
   """
-  import Circlex.Api
+
+  import Circlex.Api.Tooling
+
   alias Circlex.Struct.Payment
 
   @doc ~S"""

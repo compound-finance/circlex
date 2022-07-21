@@ -1,8 +1,52 @@
 defmodule Circlex.Api.Core.Addresses do
   @moduledoc """
-  Core API...
+  API Client to the Circle Core Addresses API.
+
+  For example, to create a deposit address:
+
+  ```elixir
+  > Circlex.Api.Core.Addresses.generate_deposit_address("USD", "ETH")
+  {:ok,
+    %{
+      address: "0x6a9DE7dF6a986a0398348EFB0ECD91f341547b31",
+      chain: "ETH",
+      currency: "USD"
+    }}
+  ```
+
+  To get a list of deposit addresses:
+
+  ```elixir
+  > Circlex.Api.Core.Addresses.list_deposit_addresses()
+  {
+    :ok,
+    [
+      %{address: "0x522C4caaf435FDF1822C7b6A081858344623Cf84", chain: "ETH", currency: "USD"},
+      %{address: "mpLQ2waXiQW6aAtnp9XMWh52R42k3QVjtU", chain: "BTC", currency: "BTC"},
+      %{address: "0x6a9DE7dF6a986a0398348EFB0ECD91f341547b31", chain: "ETH", currency: "USD"}
+    ]
+  }
+  ```
+
+  Or to add a recipient address:
+
+  ```elixir
+  > Circlex.Api.Core.Addresses.add_recipient_address("0x9999999999999999999999999999999999999999", "USD", "ETH", "Nines", host: host)
+  {:ok,
+    %Circlex.Struct.Recipient{
+      address: "0x9999999999999999999999999999999999999999",
+      chain: "ETH",
+      currency: "USD",
+      description: "Nines",
+      id: "a033a6d8-05ae-11ed-9e62-6a1733211c00"
+    }}
+  ```
+
+  Reference: https://developers.circle.com/reference/generatebusinessaccountdepositaddress
   """
-  import Circlex.Api
+
+  import Circlex.Api.Tooling
+
   alias Circlex.Struct.Recipient
 
   @doc ~S"""

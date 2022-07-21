@@ -43,15 +43,16 @@ defmodule Circlex.Struct.SourceDest do
         }
 
       :wallet ->
-        %{
-          type: "wallet",
-          id: source_dest.id,
-          address:
-            if(is_nil(source_dest.address),
-              do: nil,
-              else: Signet.Util.checksum_address(source_dest.address)
-            )
-        }
+        Map.merge(
+          %{
+            type: "wallet",
+            id: source_dest.id
+          },
+          if(is_nil(source_dest.address),
+            do: %{},
+            else: %{address: Signet.Util.checksum_address(source_dest.address)}
+          )
+        )
 
       :blockchain ->
         case source_dest.chain do

@@ -1,8 +1,11 @@
 defmodule Circlex.Api.Core.Balances do
   @moduledoc """
-  Core API...
+  API Client to the Core Balances API.
+
+  References: https://developers.circle.com/reference/getbusinessaccountbalances
   """
-  import Circlex.Api
+
+  import Circlex.Api.Tooling
 
   @doc ~S"""
   Retrieves the balance of funds that are available for use.

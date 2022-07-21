@@ -1,8 +1,11 @@
 defmodule Circlex.Api.Management do
   @moduledoc """
-  Core API...
+  API Client to the Management API.
+
+  Reference: https://developers.circle.com/reference/getconfig
   """
-  import Circlex.Api
+
+  import Circlex.Api.Tooling
 
   @doc ~S"""
   Retrieves general configuration information.
