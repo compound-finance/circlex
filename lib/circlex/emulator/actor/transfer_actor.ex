@@ -18,6 +18,7 @@ defmodule Circlex.Emulator.Actor.TransferActor do
   alias Circlex.Struct.Transfer
 
   def start_link(transfer_id) do
+    IO.puts("a0")
     GenServer.start_link(
       __MODULE__,
       {transfer_id, Process.get(:state_pid), Process.get(:signer_proc)}

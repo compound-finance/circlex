@@ -2,19 +2,19 @@ defmodule Circlex.Emulator.State.PaymentStateTest do
   use ExUnit.Case
   alias Circlex.Emulator.State.PaymentState
   alias Circlex.Emulator.State
-  alias Circlex.Struct.Payment
+  alias Circlex.Struct.{Amount, Payment}
   doctest PaymentState
 
-  @payment %Circlex.Struct.Payment{
+  @payment %Payment{
     id: "24c26e1b-8666-46fa-96ea-892afcadb9bb",
     type: "payment",
     status: "paid",
     description: "Merchant Push Payment",
-    amount: %Circlex.Struct.Amount{
+    amount: %Amount{
       amount: "3.14",
       currency: "USD"
     },
-    fees: %Circlex.Struct.Amount{
+    fees: %Amount{
       amount: "2.00",
       currency: "USD"
     },

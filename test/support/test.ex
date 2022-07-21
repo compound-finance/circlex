@@ -6,9 +6,7 @@ defmodule Circlex.Test do
           nil
 
         _ ->
-          "test/support/initial_state.json"
-          |> File.read!()
-          |> Jason.decode!(keys: :atoms)
+          {:file, "test/support/initial_state.json"}
       end
 
     port = 11111 + System.unique_integer([:positive])

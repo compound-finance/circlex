@@ -2,11 +2,11 @@ defmodule Circlex.Emulator.State.TransferStateTest do
   use ExUnit.Case
   alias Circlex.Emulator.State.TransferState
   alias Circlex.Emulator.State
-  alias Circlex.Struct.Transfer
+  alias Circlex.Struct.{Amount, Transfer}
   doctest TransferState
 
-  @transfer %Circlex.Struct.Transfer{
-    amount: %Circlex.Struct.Amount{amount: "8999998.14", currency: "USD"},
+  @transfer %Transfer{
+    amount: %Amount{amount: "8999998.14", currency: "USD"},
     create_date: "2022-05-05T16:49:04.541Z",
     destination: %{
       address: "0x2eb953f992d4fa6e769fabf25d8218f21b793558",

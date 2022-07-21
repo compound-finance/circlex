@@ -5,6 +5,9 @@ defmodule Circlex.Emulator.Notifier do
 
   use GenServer
 
+  require Logger
+
+  alias Circlex.Emulator.SNS
   alias Circlex.Emulator.SNS.Notification
   alias Circlex.Emulator.State.{PaymentState, PayoutState, SubscriptionState, TransferState}
   alias Circlex.Struct.{Payment, Payout, Transfer}
@@ -12,7 +15,9 @@ defmodule Circlex.Emulator.Notifier do
   def start_link(opts \\ []) do
     listeners = Keyword.get(opts, :listeners, [])
 
-    GenServer.start_link(__MODULE__, %{state_pid: Process.get(:state_pid), listeners: listeners})
+    GenServer.start_link(__MODULE__, %{state_pid: Process.get(:state_pid), listeners: listeners},
+      name: __MODULE__
+    )
   end
 
   @impl true
@@ -67,11 +72,23 @@ defmodule Circlex.Emulator.Notifier do
   @impl true
   def handle_cast({:notify, notification}, state = %{listeners: listeners}) do
     # First, send notification to anything in notification state
-    SubscriptionState.send_notifications(notification)
+    for subscription <- SubscriptionState.all_subscriptions() do
+      Logger.info("Sending `#{notification.message.notificationType}` Notification")
+      SNS.send_message(subscription.endpoint, notification)
+    end
 
     # Also, send to any registered listeners
     for listener <- listeners do
-      send(listener, {:notify, notification})
+      case listener do
+        pid when is_pid(listener) or is_atom(pid) ->
+          send(listener, {:notify, notification})
+
+        f when is_function(f) ->
+          f.(notification)
+
+        {mod, fun, args} ->
+          apply(mod, fun, [notification | args])
+      end
     end
 
     {:noreply, state}

@@ -3,7 +3,9 @@ defmodule Circlex.Emulator.Router do
   require Logger
 
   def call(conn, opts) do
-    put_private(conn, :state_pid, opts)
+    conn
+    |> put_private(:state_pid, Keyword.get(opts, :state_pid))
+    |> put_private(:signer_proc, Keyword.get(opts, :signer_proc))
     |> super(opts)
   end
 

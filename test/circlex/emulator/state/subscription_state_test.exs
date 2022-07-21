@@ -5,7 +5,7 @@ defmodule Circlex.Emulator.State.SubscriptionStateTest do
   alias Circlex.Struct.Subscription
   doctest SubscriptionState
 
-  @subscription %Circlex.Struct.Subscription{
+  @subscription %Subscription{
     endpoint:
       "https://us-west1-treasury-stage.cloudfunctions.net/treasury-circle-sns-subscriber-function-443f885",
     id: "8e25e48a-8c84-4186-988c-4055bda7807a",

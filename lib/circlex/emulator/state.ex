@@ -14,9 +14,20 @@ defmodule Circlex.Emulator.State do
 
   def start_link(opts \\ []) do
     name = Keyword.get(opts, :name, __MODULE__)
-    initial_state = Keyword.get(opts, :initial_state, nil)
     next = Keyword.get(opts, :next, %{})
     signer_proc = Keyword.get(opts, :signer_proc, nil)
+
+    initial_state =
+      case Keyword.get(opts, :initial_state, nil) do
+        {:file, file} ->
+          file
+          |> File.read!()
+          |> Jason.decode!(keys: :atoms)
+
+        els ->
+          els
+      end
+
     Logger.info("Starting Circlex.Emulator.State #{name}...")
 
     GenServer.start_link(
@@ -40,7 +51,7 @@ defmodule Circlex.Emulator.State do
       |> Map.merge(SubscriptionState.initial_state())
       |> Map.merge(do_restore_st(st))
 
-    # Logger.debug("Initial state: #{inspect(initial_st)}")
+    Logger.info("Initial state: #{inspect(initial_st)}")
     {:ok, Map.put(state, :st, initial_st)}
   end
 

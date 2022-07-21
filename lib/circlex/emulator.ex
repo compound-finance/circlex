@@ -15,23 +15,34 @@ defmodule Circlex.Emulator do
   def action_delay(),
     do: Keyword.fetch!(Application.get_env(:circlex, :emulator), :action_delay_ms)
 
+  def child_spec(opts) do
+    %{
+      id: __MODULE__,
+      start: {__MODULE__, :start, [opts]},
+      type: :worker,
+      restart: :permanent,
+      shutdown: 500
+    }
+  end
+
   @spec start() :: {:ok, pid()} | {:error, String.t()}
   @spec start([opt()]) :: {:ok, pid()} | {:error, String.t()}
   def start(opts \\ []) do
     port = Keyword.get(opts, :port, @default_port)
-    initial_state = Keyword.get(opts, :initial_state, nil)
+    initial_state = Keyword.get(opts, :initial_state, emulator_config()[:initial_state])
     state_name = Keyword.get(opts, :state_name, Circlex.Emulator.State)
     cowboy_ref = Module.concat(__MODULE__, "Port_" <> to_string(port))
     next = Keyword.get(opts, :next, %{})
     listeners = Keyword.get(opts, :listeners, [])
     ethereum_node = Signet.Application.ethereum_node()
+    signer = Keyword.get(opts, :signer, Signet.Signer.Default)
 
     children = [
       {Plug.Cowboy,
        scheme: :http,
-       plug: {Circlex.Emulator.Router, state_name},
+       plug: {Circlex.Emulator.Router, [state_pid: state_name, signer_proc: signer]},
        options: [ref: cowboy_ref, port: port]},
-      {Circlex.Emulator.State, name: state_name, initial_state: initial_state, next: next},
+      {Circlex.Emulator.State, name: state_name, initial_state: initial_state, next: next, signer_proc: signer},
       {Signet.Filter,
        [name: USDCDepositFilter, address: usdc_address(), events: [@transfer_event]]},
       {Circlex.Emulator.DepositDetector, [[USDCDepositFilter], state_name]},

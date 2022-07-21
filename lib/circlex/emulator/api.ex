@@ -53,14 +53,14 @@ defmodule Circlex.Emulator.Api do
               route: route,
               method: method
             ] do
-        use Plug.Router
-        require Logger
-
         match route, via: method do
+          require Logger
+
           parser_opts = [parsers: [:json], json_decoder: Jason]
 
           conn = Plug.Parsers.call(var!(conn), Plug.Parsers.init(parser_opts))
           Process.put(:state_pid, conn.private[:state_pid])
+          Process.put(:signer_proc, conn.private[:signer_proc])
           params = Circlex.Emulator.Api.api_params(conn)
 
           Logger.info("#{conn.method} #{conn.request_path}")

@@ -2,28 +2,28 @@ defmodule Circlex.Emulator.State.WalletStateTest do
   use ExUnit.Case
   alias Circlex.Emulator.State.WalletState
   alias Circlex.Emulator.State
-  alias Circlex.Struct.Wallet
+  alias Circlex.Struct.{Address, Amount, Wallet}
   doctest WalletState
 
-  @wallet %Circlex.Struct.Wallet{
+  @wallet %Wallet{
     addresses: [
-      %Circlex.Struct.Address{
+      %Address{
         address: "0x522c4caaf435fdf1822c7b6a081858344623cf84",
         chain: "ETH",
         currency: "USD"
       },
-      %Circlex.Struct.Address{
+      %Address{
         address: "mpLQ2waXiQW6aAtnp9XMWh52R42k3QVjtU",
         chain: "BTC",
         currency: "BTC"
       },
-      %Circlex.Struct.Address{
+      %Address{
         address: "0x6a9de7df6a986a0398348efb0ecd91f341547b31",
         chain: "ETH",
         currency: "USD"
       }
     ],
-    balances: [%Circlex.Struct.Amount{amount: "150234.93", currency: "USD"}],
+    balances: [%Amount{amount: "150234.93", currency: "USD"}],
     description: "Master Wallet",
     entity_id: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",
     type: "merchant",

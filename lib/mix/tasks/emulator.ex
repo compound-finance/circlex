@@ -37,11 +37,6 @@ defmodule Mix.Tasks.Emulator do
   defp do_parse_args(["-l", file | rest], opts), do: do_load_file(file, rest, opts)
 
   defp do_load_file(file, rest, opts) do
-    initial_state =
-      file
-      |> File.read!()
-      |> Jason.decode!(keys: :atoms)
-
-    do_parse_args(rest, Keyword.put(opts, :initial_state, initial_state))
+    do_parse_args(rest, Keyword.put(opts, :initial_state, {:file, file}))
   end
 end

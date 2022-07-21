@@ -1,7 +1,7 @@
 defmodule Circlex.Emulator.Logic.TransferLogic do
   import Circlex.Emulator.Logic.LogicUtil
 
-  alias Circlex.Emulator.Logic.WalletLogic
+  alias Circlex.Emulator.Logic.{RecipientLogic, WalletLogic}
   alias Circlex.Struct.{Amount, Transfer}
 
   @usdc_decimals 6
@@ -18,7 +18,7 @@ defmodule Circlex.Emulator.Logic.TransferLogic do
     update(transfers, fn %Transfer{id: id} -> id == transfer_id end, f)
   end
 
-  def process_transfer(st = %{transfers: transfers, wallets: wallets}, transfer_id) do
+  def process_transfer(st = %{transfers: transfers, wallets: wallets, recipients: recipients}, transfer_id) do
     {:ok, transfer} = get_transfer(transfers, transfer_id)
 
     {wallets, transfers} =
@@ -65,7 +65,35 @@ defmodule Circlex.Emulator.Logic.TransferLogic do
               Circlex.Emulator.usdc_address(),
               {"transfer(address,uint256)", [to_addr, wei_amount]},
               gas_price: {1, :gwei},
-              value: 0
+              value: 0,
+              signer: Process.get(:signer_proc)
+            )
+
+          {:ok, transfers} =
+            update_transfer(transfers, transfer.id, fn t ->
+              # TODO: Wait for the tx to complete before "complete"
+              %{t | transaction_hash: Signet.Util.encode_hex(trx_id), status: "complete"}
+            end)
+
+          {wallets, transfers}
+
+        {"wallet", "verified_blockchain"} ->
+          {:ok, wallet} = WalletLogic.get_wallet(wallets, transfer.source.id)
+          {:ok, recipient} = RecipientLogic.get_recipient(recipients, transfer.destination.addressId)
+
+          {:ok, wallets} =
+            WalletLogic.update_balance(wallets, wallet.wallet_id, Amount.negate(transfer.amount))
+
+          to_addr = :binary.decode_unsigned(Signet.Util.decode_hex!(recipient.address))
+          wei_amount = Amount.to_wei(transfer.amount, @usdc_decimals)
+
+          {:ok, trx_id} =
+            Signet.RPC.execute_trx(
+              Circlex.Emulator.usdc_address(),
+              {"transfer(address,uint256)", [to_addr, wei_amount]},
+              gas_price: {1, :gwei},
+              value: 0,
+              signer: Process.get(:signer_proc)
             )
 
           {:ok, transfers} =

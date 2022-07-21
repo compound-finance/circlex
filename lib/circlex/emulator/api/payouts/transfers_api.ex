@@ -30,7 +30,6 @@ defmodule Circlex.Emulator.Api.Payouts.TransfersApi do
         amount: amount
       }) do
     # TODO: Check idempotency key
-
     with {:ok, transfer} <-
            TransferState.new_transfer(source, destination, amount) do
       TransferState.add_transfer(transfer)

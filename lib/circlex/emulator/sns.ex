@@ -3,9 +3,11 @@ defmodule Circlex.Emulator.SNS do
   Service to simulate sending SNS notifications.
   """
 
-  defp sns_config(), do: Application.get_env(:circlex, :sns)
-  def sns_http_client(), do: Keyword.fetch!(sns_config(), :http_client)
-  def sns_topic_arn(), do: Keyword.fetch!(sns_config(), :topic_arn)
+  require Logger
+
+  defp sns_config(), do: Application.get_env(:circlex, :sns, [])
+  def sns_http_client(), do: Keyword.get(sns_config(), :http_client)
+  def sns_topic_arn(), do: Keyword.get(sns_config(), :topic_arn)
 
   defmodule Notification do
     defstruct [
@@ -38,7 +40,7 @@ defmodule Circlex.Emulator.SNS do
       %__MODULE__{
         type: "Notification",
         message_id: UUID.uuid1(),
-        topic_arn: Circlex.Emulator.SNS.sns_topic_arn(),
+        topic_arn: "yolo",
         message: message,
         timestamp: DateTime.utc_now(),
         signature_version: "1",
@@ -50,19 +52,25 @@ defmodule Circlex.Emulator.SNS do
   end
 
   def send_message(endpoint, notification = %Notification{}) do
-    body =
-      notification
-      |> Notification.serialize()
-      |> Jason.encode!()
+    case sns_http_client() do
+      nil ->
+        Logger.warn("Not sending SNS message as no http client configured")
 
-    headers = [
-      {"Content-Type", "text/plain"},
-      {"x-amz-sns-message-type", notification.type}
-    ]
+      http_client ->
+        body =
+          notification
+          |> Notification.serialize()
+          |> Jason.encode!()
 
-    case sns_http_client().post(endpoint, body, headers) do
-      {:ok, %HTTPoison.Response{status_code: code}} when code in 200..299 ->
-        :ok
+        headers = [
+          {"Content-Type", "text/plain"},
+          {"x-amz-sns-message-type", notification.type}
+        ]
+
+        case http_client.post(endpoint, body, headers) do
+          {:ok, %HTTPoison.Response{status_code: code}} when code in 200..299 ->
+            :ok
+        end
     end
   end
 end

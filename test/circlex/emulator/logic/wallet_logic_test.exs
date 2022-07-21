@@ -65,7 +65,6 @@ defmodule Circlex.Emulator.Logic.WalletLogicTest do
       assert {:ok,
               [
                 %Wallet{
-                  addresses: nil,
                   balances: [%Amount{amount: "151234.93", currency: "USD"}],
                   description: "Master Wallet",
                   entity_id: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",

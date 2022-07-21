@@ -12,13 +12,6 @@ defmodule Circlex.Emulator.State.SubscriptionState do
     get_subscriptions_st(fn subscriptions -> subscriptions end, filters)
   end
 
-  def send_notifications(notification, filters \\ []) do
-    for subscription <- all_subscriptions(filters) do
-      Logger.info("Sending `#{notification.message.notificationType}` Notification")
-      SNS.send_message(subscription.endpoint, notification)
-    end
-  end
-
   def get_subscription(id, filters \\ []) do
     get_subscriptions_st(
       fn subscriptions -> SubscriptionLogic.get_subscription(subscriptions, id) end,
