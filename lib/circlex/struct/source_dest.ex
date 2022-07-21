@@ -14,7 +14,8 @@ defmodule Circlex.Struct.SourceDest do
       "wallet" ->
         %__MODULE__{
           type: :wallet,
-          id: fetch(source_dest, :id)
+          id: fetch(source_dest, :id),
+          address: fetch(source_dest, :address)
         }
 
       "blockchain" ->
@@ -44,7 +45,12 @@ defmodule Circlex.Struct.SourceDest do
       :wallet ->
         %{
           type: "wallet",
-          id: source_dest.id
+          id: source_dest.id,
+          address:
+            if(is_nil(source_dest.address),
+              do: nil,
+              else: Signet.Util.checksum_address(source_dest.address)
+            )
         }
 
       :blockchain ->
@@ -62,7 +68,7 @@ defmodule Circlex.Struct.SourceDest do
               address: source_dest.address,
               chain: source_dest.chain
             }
-          end
+        end
 
       :verified_blockchain ->
         %{
