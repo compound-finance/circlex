@@ -4,7 +4,7 @@ defmodule Circlex.MixProject do
   def project do
     [
       app: :circlex_api,
-      version: "0.1.0-rc1",
+      version: "0.1.0-rc2",
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
@@ -45,7 +45,7 @@ defmodule Circlex.MixProject do
   defp deps do
     [
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
-      {:signet, "~> 0.1.0-rc7"},
+      {:signet, "~> 0.1.0"},
       {:plug_cowboy, "~> 2.5"},
       {:jason, "~> 1.2"},
       {:httpoison, "~> 1.8"},

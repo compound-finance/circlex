@@ -1,6 +1,6 @@
-defmodule Circlex.Api.Payouts.BankAccounts do
+defmodule Circlex.Api.Payments.BankAccounts do
   @moduledoc """
-  API Client to the Payouts Bank Accounts API.
+  API Client to the Payments Bank Accounts API.
 
   Reference: https://developers.circle.com/reference/payments-bank-accounts-wires-create
   """
@@ -12,14 +12,14 @@ defmodule Circlex.Api.Payouts.BankAccounts do
   @doc ~S"""
   Create a bank account (wires).
 
-  Reference: https://developers.circle.com/reference/payouts-bank-accounts-wires-create
+  Reference: https://developers.circle.com/reference/payments-bank-accounts-wires-create
 
   ## Examples
 
       iex> host = Circlex.Test.start_server()
       iex> billing_details = %{city: "Toronto", country: "CA", district: "ON", line1: "100 Money St", name: "Satoshi Nakamoto", postalCode: "ON M5J 1S9"}
       iex> bank_address = %{bankName: "HSBC Canada", city: "Toronto", country: "CA"}
-      iex> Circlex.Api.Payouts.BankAccounts.create("1000000001", "999999999", billing_details, bank_address, host: host)
+      iex> Circlex.Api.Payments.BankAccounts.create("1000000001", "999999999", billing_details, bank_address, host: host)
       {
         :ok,
         %Circlex.Struct.BankAccount{
@@ -77,14 +77,46 @@ defmodule Circlex.Api.Payouts.BankAccounts do
   end
 
   @doc ~S"""
-  Get a bank account (wires)
+  Get a list of bank accounts (wires).
 
-  Reference: https://developers.circle.com/reference/payouts-bank-accounts-wires-get-id
+  Reference: https://developers.circle.com/reference/getbusinessaccountwirebankaccount
 
   ## Examples
 
       iex> host = Circlex.Test.start_server()
-      iex> Circlex.Api.Payouts.BankAccounts.get_bank_account("fce6d303-2923-43cf-a66a-1e4690e08d1b", host: host)
+      iex> Circlex.Api.Payments.BankAccounts.list_bank_accounts(host: host)
+      {
+        :ok,
+        [
+          %Circlex.Struct.BankAccount{
+            description: "HSBC Canada ****4444",
+            bank_address: %{"bankName" => "HSBC Canada", "city" => "Toronto", "country" => "CA"},
+            billing_details: %{"city" => "Toronto", "country" => "CA", "district" => "ON", "line1" => "100 Money St", "name" => "Satoshi Nakamoto", "postalCode" => "ON M5J 1S9"},
+            create_date: "2022-02-14T22:29:32.779Z",
+            fingerprint: "b296029f-8ec2-49bf-9b11-22ba09973c49",
+            id: "fce6d303-2923-43cf-a66a-1e4690e08d1b",
+            status: "complete",
+            tracking_ref: "CIR3KX3L99",
+            update_date: "2022-02-14T22:29:33.516Z"
+          }
+        ]
+      }
+  """
+  def list_bank_accounts(opts \\ []) do
+    with {:ok, bank_accounts} <- api_get("/v1/banks/wires", opts) do
+      {:ok, Enum.map(bank_accounts, &BankAccount.deserialize/1)}
+    end
+  end
+
+  @doc ~S"""
+  Get a bank account (wires)
+
+  Reference: https://developers.circle.com/reference/getbusinessaccountwirebankaccounts
+
+  ## Examples
+
+      iex> host = Circlex.Test.start_server()
+      iex> Circlex.Api.Payments.BankAccounts.get_bank_account("fce6d303-2923-43cf-a66a-1e4690e08d1b", host: host)
       {
         :ok,
         %Circlex.Struct.BankAccount{

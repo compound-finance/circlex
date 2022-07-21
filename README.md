@@ -10,7 +10,7 @@ by adding `circlex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:circlex_api, "~> 0.1.0-rc1"}
+    {:circlex_api, "~> 0.1.0-rc2"}
   ]
 end
 ```
@@ -116,7 +116,7 @@ The following APIs are supported by the API client:
  - [ ] Core - Deposits API
  - [x] Payments - Payments API
  - [ ] Payments - Cards API
- - [ ] Payments - Bank Accounts API
+ - [x] Payments - Bank Accounts API
  - [ ] Payments - On-chain Payments API
  - [ ] Payments - Settlements API
  - [ ] Payments - Chargebacks API
@@ -147,7 +147,7 @@ The following APIs are supported by the emulator:
  - [ ] Core - Deposits API
  - [x] Payments - Payments API
  - [ ] Payments - Cards API
- - [ ] Payments - Bank Accounts API
+ - [x] Payments - Bank Accounts API
  - [ ] Payments - On-chain Payments API
  - [ ] Payments - Settlements API
  - [ ] Payments - Chargebacks API

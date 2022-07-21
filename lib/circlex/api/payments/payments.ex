@@ -24,36 +24,25 @@ defmodule Circlex.Api.Payments.Payments do
         :ok,
         [
           %Circlex.Struct.Payment{
-            adjustments: nil,
-            amount: %Circlex.Struct.Amount{amount: "12111.00", currency: "USD"},
-            create_date: "2022-07-15T20:03:32.718Z",
-            destination: %Circlex.Struct.SourceDest{id: "4847be95-8b73-44cc-a329-549a25a776e2", name: "CAIXABANK, S.A. ****6789", type: :wire},
-            fees: %Circlex.Struct.Amount{amount: "25.00", currency: "USD"},
-            id: "5e2e20bd-6ad6-4603-950b-64803647a4e5",
-            return: nil,
-            risk_evaluation: nil,
-            source_wallet_id: "1000788811",
-            status: "complete",
-            tracking_ref: nil,
-            update_date: "2022-07-15T20:20:32.255Z"
-          },
-          %Circlex.Struct.Payment{
-            adjustments: nil,
-            amount: %Circlex.Struct.Amount{amount: "12111.00", currency: "USD"},
-            create_date: "2022-07-15T20:03:32.718Z",
-            destination: %Circlex.Struct.SourceDest{
-              id: "4847be95-8b73-44cc-a329-549a25a776e2",
-              name: "CAIXABANK, S.A. ****6789",
+            amount: %Circlex.Struct.Amount{amount: "3.14", currency: "USD"},
+            create_date: "2022-07-15T21:10:03.635Z",
+            description: "Merchant Push Payment",
+            fees: %Circlex.Struct.Amount{amount: "2.00", currency: "USD"},
+            id: "24c26e1b-8666-46fa-96ea-892afcadb9bb",
+            merchant_id: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",
+            merchant_wallet_id: "1000216185",
+            refunds: [],
+            source: %Circlex.Struct.SourceDest{
+              address: nil,
+              address_id: nil,
+              address_tag: nil,
+              chain: nil,
+              id: "ad823515-3b51-4061-a016-d626e3cd105e",
               type: :wire
             },
-            fees: %Circlex.Struct.Amount{amount: "25.00", currency: "USD"},
-            id: "6e2e20bd-6ad6-4603-950b-64803647a4e6",
-            return: nil,
-            risk_evaluation: nil,
-            source_wallet_id: "1000216185",
-            status: "complete",
-            tracking_ref: nil,
-            update_date: "2022-07-15T20:20:32.255Z"
+            status: "paid",
+            type: "payment",
+            update_date: "2022-07-15T21:11:03.863523Z"
           }
         ]
       }
@@ -72,22 +61,29 @@ defmodule Circlex.Api.Payments.Payments do
   ## Examples
 
       iex> host = Circlex.Test.start_server()
-      iex> Circlex.Api.Payments.Payments.get_payment("5e2e20bd-6ad6-4603-950b-64803647a4e5", host: host)
+      iex> Circlex.Api.Payments.Payments.get_payment("24c26e1b-8666-46fa-96ea-892afcadb9bb", host: host)
       {
         :ok,
         %Circlex.Struct.Payment{
-          adjustments: nil,
-          amount: %Circlex.Struct.Amount{amount: "12111.00", currency: "USD"},
-          create_date: "2022-07-15T20:03:32.718Z",
-          destination: %{id: "4847be95-8b73-44cc-a329-549a25a776e2", name: "CAIXABANK, S.A. ****6789", type: :wire},
-          fees: %Circlex.Struct.Amount{amount: "25.00", currency: "USD"},
-          id: "5e2e20bd-6ad6-4603-950b-64803647a4e5",
-          return: nil,
-          risk_evaluation: nil,
-          source_wallet_id: "1000788811",
-          status: "complete",
-          tracking_ref: nil,
-          update_date: "2022-07-15T20:20:32.255Z"
+          amount: %Circlex.Struct.Amount{amount: "3.14", currency: "USD"},
+          create_date: "2022-07-15T21:10:03.635Z",
+          description: "Merchant Push Payment",
+          fees: %Circlex.Struct.Amount{amount: "2.00", currency: "USD"},
+          id: "24c26e1b-8666-46fa-96ea-892afcadb9bb",
+          merchant_id: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",
+          merchant_wallet_id: "1000216185",
+          refunds: [],
+          source: %Circlex.Struct.SourceDest{
+            address: nil,
+            address_id: nil,
+            address_tag: nil,
+            chain: nil,
+            id: "ad823515-3b51-4061-a016-d626e3cd105e",
+            type: :wire
+          },
+          status: "paid",
+          type: "payment",
+          update_date: "2022-07-15T21:11:03.863523Z"
         }
       }
   """

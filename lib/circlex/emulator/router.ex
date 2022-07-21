@@ -35,7 +35,9 @@ defmodule Circlex.Emulator.Router do
   forward("/v1/businessAccount/wallets/addresses", to: Circlex.Emulator.Api.Core.AddressesApi)
   # forward("/v1/businessAccount/deposits", to: Circlex.Emulator.Api.Core.DepositsApi)
 
-  # TODO: Payments API
+  # Payments API
+  forward("/v1/payments", to: Circlex.Emulator.Api.Payments.PaymentsApi)
+  # Mirrors /v1/banks
 
   # Payouts
   forward("/v1/payouts", to: Circlex.Emulator.Api.Payouts.PayoutsApi)
