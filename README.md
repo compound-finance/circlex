@@ -10,7 +10,7 @@ by adding `circlex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:circlex_api, "~> 0.1.0-rc0"}
+    {:circlex_api, "~> 0.1.0-rc1"}
   ]
 end
 ```
@@ -24,7 +24,7 @@ To start an API client, set-up your Circlex application by specifying the Circle
 **runtime.exs**
 
 ```elixir
-config :circlex,
+config :circlex_api,
   host: "https://api-sandbox.circle.com",
   auth: System.get_env("CIRCLE_AUTH")
 ```

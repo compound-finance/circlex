@@ -10,6 +10,6 @@ if config_env() == :dev do
   end
 
   if not is_nil(System.get_env("USDC_ADDRESS")) do
-    config :circlex, :emulator, usdc_address: System.get_env("USDC_ADDRESS")
+    config :circlex_api, :emulator, usdc_address: System.get_env("USDC_ADDRESS")
   end
 end

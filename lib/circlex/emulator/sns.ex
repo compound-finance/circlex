@@ -5,7 +5,7 @@ defmodule Circlex.Emulator.SNS do
 
   require Logger
 
-  defp sns_config(), do: Application.get_env(:circlex, :sns, [])
+  defp sns_config(), do: Application.get_env(:circlex_api, :sns, [])
   def sns_http_client(), do: Keyword.get(sns_config(), :http_client)
   def sns_topic_arn(), do: Keyword.get(sns_config(), :topic_arn)
 

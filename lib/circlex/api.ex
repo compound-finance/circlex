@@ -3,9 +3,9 @@ defmodule Circlex.Api do
   A module to build requests for Circle API calls.
   """
 
-  def env_host(), do: Application.get_env(:circlex, :host)
+  def env_host(), do: Application.get_env(:circlex_api, :host)
 
-  def auth(), do: Application.get_env(:circlex, :auth)
+  def auth(), do: Application.get_env(:circlex_api, :auth)
 
   defmodule Tooling do
     def not_implemented(), do: {:error, %{error: "Not implemented by Circlex client"}}

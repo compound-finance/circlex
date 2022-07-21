@@ -25,5 +25,5 @@ defmodule Circlex.Emulator.State.Util do
     end
   end
 
-  def merchant_id(), do: Keyword.fetch!(Application.get_env(:circlex, :emulator), :merchant_id)
+  def merchant_id(), do: Circlex.Emulator.merchant_id()
 end

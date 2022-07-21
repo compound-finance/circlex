@@ -7,13 +7,14 @@ defmodule Circlex.Emulator do
   @type opt() :: {:port, integer()} | {:initial_state, term()}
   @default_port 3333
 
-  def emulator_config(), do: Application.get_env(:circlex, :emulator)
+  def emulator_config(), do: Application.get_env(:circlex_api, :emulator)
   def usdc_address(), do: Signet.Util.decode_hex!(Keyword.fetch!(emulator_config(), :usdc_address))
+  def merchant_id(), do: Keyword.fetch!(emulator_config(), :merchant_id)
 
   @transfer_event "Transfer(address indexed from, address indexed to, uint amount)"
 
   def action_delay(),
-    do: Keyword.fetch!(Application.get_env(:circlex, :emulator), :action_delay_ms)
+    do: Keyword.fetch!(emulator_config(), :action_delay_ms)
 
   def child_spec(opts) do
     %{
