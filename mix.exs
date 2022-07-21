@@ -3,7 +3,7 @@ defmodule Circlex.MixProject do
 
   def project do
     [
-      app: :circlex,
+      app: :circlex_api,
       version: "0.1.0-rc0",
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
