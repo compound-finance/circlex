@@ -7,13 +7,9 @@ defmodule Circlex.Emulator.Api.CirclexApi do
   @route path: "/save/:path", method: :post
   def save(%{path: path}) do
     if path =~ ~r/^[a-zA-Z][a-zA-Z0-9_-]{1,50}$/ do
-      state =
-        State.serialize_state()
-        |> Jason.encode!(pretty: true)
-
-      file_path = Path.join("state", "#{path}.json")
-      File.write!(file_path, state)
-      {:ok, %{saved: file_path}}
+      file = Path.join("state", "#{path}.json")
+      State.persist({:file, file})
+      {:ok, %{saved: file}}
     else
       {:error, "Invalid state name, should match ^[a-zA-Z][a-zA-Z0-9_-]{1,50}$"}
     end

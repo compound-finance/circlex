@@ -23,6 +23,9 @@ defmodule Mix.Tasks.Emulator do
   defp do_parse_args(["--load", file | rest], opts), do: do_load_file(file, rest, opts)
   defp do_parse_args(["-l", file | rest], opts), do: do_load_file(file, rest, opts)
 
+  defp do_parse_args(["--persist", file | rest], opts), do: do_persist_file(file, rest, opts)
+  defp do_parse_args(["-s", file | rest], opts), do: do_persist_file(file, rest, opts)
+
   defp do_set_port(port, rest, opts) do
     {port_int, ""} = Integer.parse(port)
     do_parse_args(rest, Keyword.put(opts, :port, port_int))
@@ -30,5 +33,9 @@ defmodule Mix.Tasks.Emulator do
 
   defp do_load_file(file, rest, opts) do
     do_parse_args(rest, Keyword.put(opts, :initial_state, {:file, file}))
+  end
+
+  defp do_persist_file(file, rest, opts) do
+    do_parse_args(rest, Keyword.put(opts, :initial_state, {:persist, file}))
   end
 end

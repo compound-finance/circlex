@@ -10,7 +10,7 @@ by adding `circlex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:circlex_api, "~> 0.1.0-rc2"}
+    {:circlex_api, "~> 0.1.0-rc3"}
   ]
 end
 ```
@@ -80,7 +80,7 @@ ETHEREUM_REMOTE_NODE="http://localhost:8085"
 
 In a local fork, you will not need to worry about sending away your Goerli USDC.
 
-#### Saving State
+#### Persisting State
 
 Start an emulator, and then run:
 
@@ -93,6 +93,14 @@ That should save your state to `state/my_state.json`. You can then reload that s
 ```
 mix emulator --load state/my_state.json
 ```
+
+You can also persist state after every change by running:
+
+```
+mix emulator --persist state/my_state.json
+```
+
+This will load and store the state with that JSON file so it's always in sync. This is not done particularly efficiently, so buyer beware. 
 
 ## Documentation
 

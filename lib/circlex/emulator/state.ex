@@ -17,22 +17,23 @@ defmodule Circlex.Emulator.State do
     next = Keyword.get(opts, :next, %{})
     signer_proc = Keyword.get(opts, :signer_proc, nil)
 
-    initial_state =
+    {initial_state, persistor} =
       case Keyword.get(opts, :initial_state, nil) do
         {:file, file} ->
-          file
-          |> File.read!()
-          |> Jason.decode!(keys: :atoms)
+          {read_file(file), nil}
+
+        {:persist, file} ->
+          {read_file(file), {:file, file}}
 
         els ->
-          els
+          {els, nil}
       end
 
     Logger.info("Starting Circlex.Emulator.State #{name}...")
 
     GenServer.start_link(
       __MODULE__,
-      %{st: initial_state, signer_proc: signer_proc, next: next},
+      %{st: initial_state, signer_proc: signer_proc, next: next, persistor: persistor},
       name: name
     )
   end
@@ -101,25 +102,40 @@ defmodule Circlex.Emulator.State do
     update_st(fn _ -> val end, keys)
   end
 
+  def persist(persistor) do
+    GenServer.cast(get_pid(), {:persist, persistor})
+  end
+
   @impl true
-  def handle_cast({:update_st, {mod, fun, args}, keys, filter_fn}, state = %{st: st}) do
+  def handle_cast(
+        {:update_st, {mod, fun, args}, keys, filter_fn},
+        state = %{st: st, persistor: persistor}
+      ) do
     case apply(mod, fun, [get_val(st, keys, filter_fn) | args]) do
       {:ok, res} ->
         new_st = do_put_in(st, keys, res)
+        do_persist(persistor, new_st)
         {:noreply, Map.put(state, :st, new_st)}
     end
   end
 
-  def handle_cast({:update_st, f, keys, filter_fn}, state = %{st: st}) when is_function(f) do
+  def handle_cast({:update_st, f, keys, filter_fn}, state = %{st: st, persistor: persistor})
+      when is_function(f) do
     case f.(get_val(st, keys, filter_fn)) do
       {:ok, res} ->
         new_st = do_put_in(st, keys, res)
+        do_persist(persistor, new_st)
         {:noreply, Map.put(state, :st, new_st)}
     end
   end
 
   def handle_cast({:restore_state, new_st}, state) do
     {:noreply, Map.put(state, :st, do_restore_st(new_st))}
+  end
+
+  def handle_cast({:persist, persistor}, state = %{st: st}) do
+    do_persist(st, persistor)
+    {:noreply, state}
   end
 
   @impl true
@@ -155,17 +171,7 @@ defmodule Circlex.Emulator.State do
   end
 
   def handle_call(:serialize_state, _from, state = %{st: st}) do
-    serialized =
-      st
-      |> WalletState.serialize()
-      |> BankAccountState.serialize()
-      |> TransferState.serialize()
-      |> PaymentState.serialize()
-      |> PayoutState.serialize()
-      |> RecipientState.serialize()
-      |> SubscriptionState.serialize()
-
-    {:reply, serialized, state}
+    {:reply, serialize_st(st), state}
   end
 
   defp get_val(st, keys, filter_fn) do
@@ -210,4 +216,35 @@ defmodule Circlex.Emulator.State do
 
   defp generate_type(:tracking_ref),
     do: "CIR3KXLL" <> to_string(System.unique_integer([:positive]))
+
+  defp serialize_st(st) do
+    st
+    |> WalletState.serialize()
+    |> BankAccountState.serialize()
+    |> TransferState.serialize()
+    |> PaymentState.serialize()
+    |> PayoutState.serialize()
+    |> RecipientState.serialize()
+    |> SubscriptionState.serialize()
+  end
+
+  # TODO: We could probably move this out of this process and make it best effort.
+  defp do_persist({:file, file}, st) do
+    st_enc =
+      st
+      |> serialize_st()
+      |> Jason.encode!(pretty: true)
+
+    File.write!(file, st_enc)
+  end
+
+  defp do_persist(nil, st) do
+    :ok
+  end
+
+  defp read_file(file) do
+    file
+    |> File.read!()
+    |> Jason.decode!(keys: :atoms)
+  end
 end
