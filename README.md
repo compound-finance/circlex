@@ -10,7 +10,7 @@ by adding `circlex` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:circlex, "~> 0.1.0"}
+    {:circlex, "~> 0.1.0-rc0"}
   ]
 end
 ```
