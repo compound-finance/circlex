@@ -102,68 +102,64 @@ Full documentation can be found at <https://hexdocs.pm/circlex>.
 
 The following APIs are supported by the API client:
 
-```md
-- [x] Health API
-- [x] Management API
-- [ ] Encryption API
-- [x] Subscriptions API
-- [ ] Channels API
-- [x] Stablecoins API
-- [x] Core - Balances API
-- [x] Core - Payouts API
-- [x] Core - Bank Accounts API
-- [x] Core - Transfers API
-- [x] Core - Addresses API
-- [ ] Core - Deposits API
-- [x] Payments - Payments API
-- [ ] Payments - Cards API
-- [ ] Payments - Bank Accounts API
-- [ ] Payments - On-chain Payments API
-- [ ] Payments - Settlements API
-- [ ] Payments - Chargebacks API
-- [ ] Payments - Reversals API
-- [ ] Payments - Balances API
-- [x] Payouts - Payouts API
-- [x] Payouts - Bank Accounts API
-- [x] Payouts - Transfers API
-- [ ] Payouts - Returns API
-- [x] Accounts - Wallets API
-- [ ] Accounts - Transfers API
-```
+ - [x] Health API
+ - [x] Management API
+ - [ ] Encryption API
+ - [x] Subscriptions API
+ - [ ] Channels API
+ - [x] Stablecoins API
+ - [x] Core - Balances API
+ - [x] Core - Payouts API
+ - [x] Core - Bank Accounts API
+ - [x] Core - Transfers API
+ - [x] Core - Addresses API
+ - [ ] Core - Deposits API
+ - [x] Payments - Payments API
+ - [ ] Payments - Cards API
+ - [ ] Payments - Bank Accounts API
+ - [ ] Payments - On-chain Payments API
+ - [ ] Payments - Settlements API
+ - [ ] Payments - Chargebacks API
+ - [ ] Payments - Reversals API
+ - [ ] Payments - Balances API
+ - [x] Payouts - Payouts API
+ - [x] Payouts - Bank Accounts API
+ - [x] Payouts - Transfers API
+ - [ ] Payouts - Returns API
+ - [x] Accounts - Wallets API
+ - [ ] Accounts - Transfers API
 
 ### Emulator Features
 
 The following APIs are supported by the emulator:
 
-```md
-- [x] Health API
-- [x] Management API
-- [ ] Encryption API
-- [x] Subscriptions API
-- [ ] Channels API
-- [x] Stablecoins API (*partial)
-- [x] Core - Balances API
-- [x] Core - Payouts API
-- [x] Core - Bank Accounts API
-- [x] Core - Transfers API
-- [x] Core - Addresses API
-- [ ] Core - Deposits API
-- [x] Payments - Payments API
-- [ ] Payments - Cards API
-- [ ] Payments - Bank Accounts API
-- [ ] Payments - On-chain Payments API
-- [ ] Payments - Settlements API
-- [ ] Payments - Chargebacks API
-- [ ] Payments - Reversals API
-- [ ] Payments - Balances API
-- [x] Payouts - Payouts API
-- [x] Payouts - Bank Accounts API
-- [x] Payouts - Transfers API
-- [ ] Payouts - Returns API
-- [x] Accounts - Wallets API
-- [x] Accounts - Transfers API
-- [x] Mocks (Wire) API
-```
+ - [x] Health API
+ - [x] Management API
+ - [ ] Encryption API
+ - [x] Subscriptions API
+ - [ ] Channels API
+ - [x] Stablecoins API (*partial)
+ - [x] Core - Balances API
+ - [x] Core - Payouts API
+ - [x] Core - Bank Accounts API
+ - [x] Core - Transfers API
+ - [x] Core - Addresses API
+ - [ ] Core - Deposits API
+ - [x] Payments - Payments API
+ - [ ] Payments - Cards API
+ - [ ] Payments - Bank Accounts API
+ - [ ] Payments - On-chain Payments API
+ - [ ] Payments - Settlements API
+ - [ ] Payments - Chargebacks API
+ - [ ] Payments - Reversals API
+ - [ ] Payments - Balances API
+ - [x] Payouts - Payouts API
+ - [x] Payouts - Bank Accounts API
+ - [x] Payouts - Transfers API
+ - [ ] Payouts - Returns API
+ - [x] Accounts - Wallets API
+ - [x] Accounts - Transfers API
+ - [x] Mocks (Wire) API
 
 Additionally, the emulator has the features:
 
