@@ -4,8 +4,6 @@ defmodule Circlex.Emulator.Api.ManagementApi do
   """
   use Circlex.Emulator.Api
 
-  alias Circlex.Emulator.State.WalletState
-
   # https://developers.circle.com/reference/getconfig
   @route "/"
   def get_config(%{}) do

@@ -32,7 +32,7 @@ defmodule Circlex.Emulator.DepositDetector do
   @impl true
   def handle_info({:event, event, log}, state) do
     case event do
-      {"Transfer", %{"from" => from, "to" => to, "amount" => amount}} ->
+      {"Transfer", %{"from" => _from, "to" => to, "amount" => amount}} ->
         # Okay, now let's see if it matches any known wallet.
         case WalletState.get_wallet_by_address(@chain, @currency, Signet.Util.encode_hex(to)) do
           {:ok, wallet} ->
@@ -68,7 +68,7 @@ defmodule Circlex.Emulator.DepositDetector do
     {:noreply, state}
   end
 
-  def handle_info({:log, log}, state) do
+  def handle_info({:log, _log}, state) do
     {:noreply, state}
   end
 end

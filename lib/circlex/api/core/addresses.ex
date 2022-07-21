@@ -3,7 +3,7 @@ defmodule Circlex.Api.Core.Addresses do
   Core API...
   """
   import Circlex.Api
-  alias Circlex.Struct.{Recipient, Wallet}
+  alias Circlex.Struct.Recipient
 
   @doc ~S"""
   Generates a new blockchain address for a wallet for a given currency/chain pair.

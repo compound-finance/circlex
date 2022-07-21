@@ -3,6 +3,7 @@ defmodule Circlex.Emulator.Api.Payouts.PayoutsApi do
   Mounted under `/v1/payouts`.
   """
   use Circlex.Emulator.Api
+
   alias Circlex.Emulator.State.PayoutState
   alias Circlex.Struct.Payout
 

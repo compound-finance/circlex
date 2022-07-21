@@ -1,5 +1,6 @@
 defmodule Circlex.Emulator.Actor.TransferActorTest do
   use ExUnit.Case
+
   alias Circlex.Emulator.Actor.TransferActor
   alias Circlex.Emulator.State
   alias Circlex.Emulator.State.{TransferState, WalletState}

@@ -8,7 +8,7 @@ defmodule Circlex.Emulator do
   @default_port 3333
 
   def emulator_config(), do: Application.get_env(:circlex, :emulator)
-  def usdc_address(), do: Signet.Util.decode_hex!(Keyword.fetch!(emulator_config, :usdc_address))
+  def usdc_address(), do: Signet.Util.decode_hex!(Keyword.fetch!(emulator_config(), :usdc_address))
 
   @transfer_event "Transfer(address indexed from, address indexed to, uint amount)"
 

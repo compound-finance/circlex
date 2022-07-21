@@ -37,8 +37,7 @@ defmodule Circlex.Emulator.State.BankAccountState do
     end)
   end
 
-  # TODO: Test
-  def new_bank_account(account_number, routing_number, billing_details, bank_address) do
+  def new_bank_account(account_number, _routing_number, billing_details, bank_address) do
     {:ok,
      %BankAccount{
        id: State.next(:uuid),

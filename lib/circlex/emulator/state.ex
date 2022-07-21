@@ -51,7 +51,6 @@ defmodule Circlex.Emulator.State do
       |> Map.merge(SubscriptionState.initial_state())
       |> Map.merge(do_restore_st(st))
 
-    Logger.info("Initial state: #{inspect(initial_st)}")
     {:ok, Map.put(state, :st, initial_st)}
   end
 
@@ -102,6 +101,7 @@ defmodule Circlex.Emulator.State do
     update_st(fn _ -> val end, keys)
   end
 
+  @impl true
   def handle_cast({:update_st, {mod, fun, args}, keys, filter_fn}, state = %{st: st}) do
     case apply(mod, fun, [get_val(st, keys, filter_fn) | args]) do
       {:ok, res} ->
@@ -122,6 +122,7 @@ defmodule Circlex.Emulator.State do
     {:noreply, Map.put(state, :st, do_restore_st(new_st))}
   end
 
+  @impl true
   def handle_call({:get_st, {mod, fun, args}, keys, filter_fn}, _from, state = %{st: st}) do
     {:reply, apply(mod, fun, [get_val(st, keys, filter_fn) | args]), state}
   end
@@ -146,7 +147,7 @@ defmodule Circlex.Emulator.State do
 
       {f, acc} when is_function(f) ->
         {v, new_acc} = f.(acc)
-        {:reply, next, %{state | next: Map.put(next, type, {f, new_acc})}}
+        {:reply, v, %{state | next: Map.put(next, type, {f, new_acc})}}
 
       [v | rest] ->
         {:reply, v, %{state | next: Map.put(next, type, rest)}}

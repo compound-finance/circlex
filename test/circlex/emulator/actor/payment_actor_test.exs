@@ -1,5 +1,6 @@
 defmodule Circlex.Emulator.Actor.PaymentActorTest do
   use ExUnit.Case
+
   alias Circlex.Emulator.Actor.PaymentActor
   alias Circlex.Emulator.State
   alias Circlex.Emulator.State.{PaymentState, WalletState}

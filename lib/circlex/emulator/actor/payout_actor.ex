@@ -11,9 +11,8 @@ defmodule Circlex.Emulator.Actor.PayoutActor do
   alias Circlex.Emulator
   alias Circlex.Emulator.Notifier
   alias Circlex.Emulator.State
-  alias Circlex.Emulator.State.{PayoutState, SubscriptionState, WalletState}
-  alias Circlex.Emulator.Logic.{PayoutLogic, WalletLogic}
-  alias Circlex.Struct.Payout
+  alias Circlex.Emulator.State.PayoutState
+  alias Circlex.Emulator.Logic.PayoutLogic
 
   def start_link(payout_id) do
     GenServer.start_link(__MODULE__, {payout_id, Process.get(:state_pid)})

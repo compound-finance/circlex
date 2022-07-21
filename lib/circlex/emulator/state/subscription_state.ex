@@ -6,7 +6,6 @@ defmodule Circlex.Emulator.State.SubscriptionState do
   alias Circlex.Emulator.State
   alias Circlex.Struct.Subscription
   alias Circlex.Emulator.Logic.SubscriptionLogic
-  alias Circlex.Emulator.SNS
 
   def all_subscriptions(filters \\ []) do
     get_subscriptions_st(fn subscriptions -> subscriptions end, filters)

@@ -4,7 +4,7 @@ defmodule Circlex.Emulator.Api.Core.AddressesApi do
   """
   use Circlex.Emulator.Api
   alias Circlex.Emulator.Api
-  alias Circlex.Emulator.State.{RecipientState, WalletState}
+  alias Circlex.Emulator.State.RecipientState
   alias Circlex.Struct.Recipient
 
   @route path: "/deposit", method: :post

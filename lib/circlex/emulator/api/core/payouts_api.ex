@@ -4,7 +4,6 @@ defmodule Circlex.Emulator.Api.Core.PayoutsApi do
   """
   use Circlex.Emulator.Api
 
-  alias Circlex.Emulator.Api
   alias Circlex.Emulator.State.PayoutState
   alias Circlex.Struct.Payout
 

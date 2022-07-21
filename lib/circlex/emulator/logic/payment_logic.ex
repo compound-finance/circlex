@@ -3,7 +3,7 @@ defmodule Circlex.Emulator.Logic.PaymentLogic do
 
   require Logger
 
-  alias Circlex.Struct.{Amount, Payment, Wallet}
+  alias Circlex.Struct.{Amount, Payment}
   alias Circlex.Emulator.Logic.WalletLogic
 
   def get_payment(payments, payment_id) do

@@ -13,12 +13,10 @@ defmodule Circlex.Emulator.Actor.TransferActor do
   alias Circlex.Emulator
   alias Circlex.Emulator.Notifier
   alias Circlex.Emulator.State
-  alias Circlex.Emulator.State.{SubscriptionState, TransferState}
+  alias Circlex.Emulator.State.TransferState
   alias Circlex.Emulator.Logic.TransferLogic
-  alias Circlex.Struct.Transfer
 
   def start_link(transfer_id) do
-    IO.puts("a0")
     GenServer.start_link(
       __MODULE__,
       {transfer_id, Process.get(:state_pid), Process.get(:signer_proc)}

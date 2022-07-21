@@ -26,7 +26,7 @@ defmodule Circlex.Emulator.Api do
     end
   end
 
-  def define_route(%{module: module}, kind, name, _args, _guards, _body) do
+  def define_route(%{module: module}, _kind, name, _args, _guards, _body) do
     case Module.get_attribute(module, :route) do
       path when is_binary(path) ->
         Module.put_attribute(module, :__routes__, {path, :get, name, false})

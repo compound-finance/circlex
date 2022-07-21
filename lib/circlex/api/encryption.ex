@@ -15,7 +15,7 @@ defmodule Circlex.Api.Encryption do
       iex> Circlex.Api.Encryption.get_public_key(host: host)
       {:error, %{error: "Not implemented by Circlex client"}}
   """
-  def get_public_key(opts \\ []) do
+  def get_public_key(_opts \\ []) do
     not_implemented()
   end
 end
