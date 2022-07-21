@@ -4,18 +4,18 @@ defmodule Circlex.Emulator.Actor.TransferActorTest do
   alias Circlex.Emulator.Actor.TransferActor
   alias Circlex.Emulator.State
   alias Circlex.Emulator.State.{TransferState, WalletState}
-  alias Circlex.Struct.{Amount, Transfer, Wallet}
+  alias Circlex.Struct.{Amount, Transfer, SourceDest, Wallet}
 
   @transfer_b2w %Transfer{
     amount: %Amount{amount: "10000.00", currency: "USD"},
     create_date: "2022-05-05T16:49:04.541Z",
-    source: %{
+    source: %SourceDest{
       address: "0x2eb953f992d4fa6e769fabf25d8218f21b793558",
       chain: "ETH",
-      type: "blockchain"
+      type: :blockchain
     },
     id: "83f18616-0f26-499a-aa8f-4fa4d563b974",
-    destination: %{id: "1000216185", type: "wallet"},
+    destination: %SourceDest{id: "1000216185", type: :wallet},
     status: "pending",
     transaction_hash: "0xef6cf276368eb0e36162074b1c17a3256df14635c8603f076e826650c9f8a9ff"
   }
@@ -23,9 +23,9 @@ defmodule Circlex.Emulator.Actor.TransferActorTest do
   @transfer_w2w %Transfer{
     amount: %Amount{amount: "10000.00", currency: "USD"},
     create_date: "2022-05-05T16:49:04.541Z",
-    destination: %{id: "1000216186", type: "wallet"},
+    destination: %SourceDest{id: "1000216186", type: :wallet},
     id: "83f18616-0f26-499a-aa8f-4fa4d563b975",
-    source: %{id: "1000216185", type: "wallet"},
+    source: %SourceDest{id: "1000216185", type: :wallet},
     status: "pending",
     transaction_hash: nil
   }
@@ -33,13 +33,13 @@ defmodule Circlex.Emulator.Actor.TransferActorTest do
   @transfer_w2b %Transfer{
     amount: %Amount{amount: "10000.00", currency: "USD"},
     create_date: "2022-05-05T16:49:04.541Z",
-    destination: %{
+    destination: %SourceDest{
       address: "0x2eb953f992d4fa6e769fabf25d8218f21b793558",
       chain: "ETH",
-      type: "blockchain"
+      type: :blockchain
     },
     id: "83f18616-0f26-499a-aa8f-4fa4d563b975",
-    source: %{id: "1000216185", type: "wallet"},
+    source: %SourceDest{id: "1000216185", type: :wallet},
     status: "pending",
     transaction_hash: nil
   }

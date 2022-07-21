@@ -40,8 +40,9 @@ defmodule Circlex.Emulator.Api.Accounts.WalletsApi do
         chain: chain
       }) do
     # TODO: Check idempotency key
+    # TODO: Implement this
     address = %{
-      address: "0x6a9de7df6a986a0398348efb0ecd91f341547b31",
+      address: Signet.Util.checksum_address("0x6a9de7df6a986a0398348efb0ecd91f341547b31"),
       currency: currency,
       chain: chain
     }

@@ -15,7 +15,11 @@ defmodule Circlex.Struct.Address do
     %{
       chain: address.chain,
       currency: address.currency,
-      address: address.address
+      address:
+        if(address.chain == "ETH",
+          do: Signet.Util.checksum_address(address.address),
+          else: address.address
+        )
     }
   end
 

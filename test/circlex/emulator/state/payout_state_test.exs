@@ -2,17 +2,16 @@ defmodule Circlex.Emulator.State.PayoutStateTest do
   use ExUnit.Case
   alias Circlex.Emulator.State.PayoutState
   alias Circlex.Emulator.State
-  alias Circlex.Struct.{Amount, Payout}
+  alias Circlex.Struct.{Amount, Payout, SourceDest}
   doctest PayoutState
 
   @payout %Payout{
     adjustments: nil,
     amount: %Amount{amount: "12111.00", currency: "USD"},
     create_date: "2022-07-15T20:03:32.718Z",
-    destination: %{
+    destination: %SourceDest{
       id: "4847be95-8b73-44cc-a329-549a25a776e2",
-      name: "CAIXABANK, S.A. ****6789",
-      type: "wire"
+      type: :wire
     },
     fees: %Amount{amount: "25.00", currency: "USD"},
     id: "6e2e20bd-6ad6-4603-950b-64803647a4e6",

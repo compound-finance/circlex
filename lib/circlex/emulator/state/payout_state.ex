@@ -1,6 +1,6 @@
 defmodule Circlex.Emulator.State.PayoutState do
   alias Circlex.Emulator.State
-  alias Circlex.Struct.{Amount, Payout}
+  alias Circlex.Struct.{Amount, Payout, SourceDest}
   alias Circlex.Emulator.Logic.PayoutLogic
 
   import State.Util
@@ -26,7 +26,7 @@ defmodule Circlex.Emulator.State.PayoutState do
      %Payout{
        id: State.next(:uuid),
        source_wallet_id: fetch(source, :id),
-       destination: destination,
+       destination: SourceDest.deserialize(destination),
        amount: %Amount{
          amount: amount,
          currency: currency

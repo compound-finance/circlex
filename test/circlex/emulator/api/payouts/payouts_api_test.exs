@@ -41,8 +41,7 @@ defmodule Circlex.Emulator.Api.Payouts.PayoutsApiTest do
                 createDate: "2022-07-15T20:03:32.718Z",
                 destination: %{
                   type: "wire",
-                  id: "4847be95-8b73-44cc-a329-549a25a776e2",
-                  name: "CAIXABANK, S.A. ****6789"
+                  id: "4847be95-8b73-44cc-a329-549a25a776e2"
                 },
                 id: "5e2e20bd-6ad6-4603-950b-64803647a4e5",
                 status: "complete",
@@ -56,7 +55,6 @@ defmodule Circlex.Emulator.Api.Payouts.PayoutsApiTest do
                 createDate: "2022-07-15T20:03:32.718Z",
                 destination: %{
                   id: "4847be95-8b73-44cc-a329-549a25a776e2",
-                  name: "CAIXABANK, S.A. ****6789",
                   type: "wire"
                 },
                 fees: %{amount: "25.00", currency: "USD"},
@@ -76,8 +74,7 @@ defmodule Circlex.Emulator.Api.Payouts.PayoutsApiTest do
               createDate: "2022-07-15T20:03:32.718Z",
               destination: %{
                 type: "wire",
-                id: "4847be95-8b73-44cc-a329-549a25a776e2",
-                name: "CAIXABANK, S.A. ****6789"
+                id: "4847be95-8b73-44cc-a329-549a25a776e2"
               },
               id: "5e2e20bd-6ad6-4603-950b-64803647a4e5",
               status: "complete",

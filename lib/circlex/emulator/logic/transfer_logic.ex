@@ -23,7 +23,7 @@ defmodule Circlex.Emulator.Logic.TransferLogic do
 
     {wallets, transfers} =
       case {transfer.source.type, transfer.destination.type} do
-        {"blockchain", "wallet"} ->
+        {:blockchain, :wallet} ->
           {:ok, wallet} = WalletLogic.get_wallet(wallets, transfer.destination.id)
           {:ok, wallets} = WalletLogic.update_balance(wallets, wallet.wallet_id, transfer.amount)
 
@@ -32,7 +32,7 @@ defmodule Circlex.Emulator.Logic.TransferLogic do
 
           {wallets, transfers}
 
-        {"wallet", "wallet"} ->
+        {:wallet, :wallet} ->
           {:ok, source_wallet} = WalletLogic.get_wallet(wallets, transfer.source.id)
           {:ok, destination_wallet} = WalletLogic.get_wallet(wallets, transfer.destination.id)
 
@@ -51,7 +51,7 @@ defmodule Circlex.Emulator.Logic.TransferLogic do
 
           {wallets, transfers}
 
-        {"wallet", "blockchain"} ->
+        {:wallet, :blockchain} ->
           {:ok, wallet} = WalletLogic.get_wallet(wallets, transfer.source.id)
 
           {:ok, wallets} =

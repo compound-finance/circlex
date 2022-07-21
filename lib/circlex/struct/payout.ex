@@ -1,6 +1,7 @@
 defmodule Circlex.Struct.Payout do
   import Circlex.Struct.Util
-  alias Circlex.Struct.Amount
+
+  alias Circlex.Struct.{Amount, SourceDest}
 
   defstruct [
     :id,
@@ -21,9 +22,9 @@ defmodule Circlex.Struct.Payout do
     %__MODULE__{
       id: fetch(payout, :id),
       source_wallet_id: fetch(payout, :sourceWalletId),
-      destination: fetch(payout, :destination),
-      amount: fetch(payout, :amount) |> Amount.deserialize(),
-      fees: fetch(payout, :fees) |> Amount.deserialize(),
+      destination: SourceDest.deserialize(fetch(payout, :destination)),
+      amount: Amount.deserialize(fetch(payout, :amount)),
+      fees: Amount.deserialize(fetch(payout, :fees)),
       status: fetch(payout, :status),
       tracking_ref: fetch(payout, :trackingRef),
       create_date: fetch(payout, :createDate),
@@ -35,9 +36,9 @@ defmodule Circlex.Struct.Payout do
     %{
       id: payout.id,
       sourceWalletId: payout.source_wallet_id,
-      destination: payout.destination,
-      amount: payout.amount |> Amount.serialize(),
-      fees: payout.fees |> Amount.serialize(),
+      destination: SourceDest.serialize(payout.destination),
+      amount: Amount.serialize(payout.amount),
+      fees: Amount.serialize(payout.fees),
       status: payout.status,
       trackingRef: payout.tracking_ref,
       createDate: payout.create_date,

@@ -14,7 +14,7 @@ defmodule Circlex.Emulator.Api.Core.TransfersApi do
     with {:ok, master_wallet} <- get_master_wallet() do
       {:ok,
        Enum.map(
-         TransferState.all_transfers(transfer_source: {"wallet", master_wallet.wallet_id}),
+         TransferState.all_transfers(transfer_source: {:wallet, master_wallet.wallet_id}),
          &Transfer.serialize/1
        )}
     end
@@ -25,7 +25,7 @@ defmodule Circlex.Emulator.Api.Core.TransfersApi do
   def get_transfer(%{transfer_id: transfer_id}) do
     with {:ok, master_wallet} <- get_master_wallet() do
       with {:ok, transfer} <-
-             TransferState.get_transfer(transfer_id, transfer_source: {"wallet", master_wallet.wallet_id}) do
+             TransferState.get_transfer(transfer_id, transfer_source: {:wallet, master_wallet.wallet_id}) do
         {:ok, Transfer.serialize(transfer)}
       end
     end

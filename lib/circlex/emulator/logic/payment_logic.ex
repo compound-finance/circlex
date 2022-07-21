@@ -22,7 +22,7 @@ defmodule Circlex.Emulator.Logic.PaymentLogic do
     {:ok, payment} = get_payment(payments, payment_id)
 
     case payment.source.type do
-      "wire" ->
+      :wire ->
         {:ok, master_wallet} = WalletLogic.master_wallet(wallets)
 
         {:ok, wallets} =

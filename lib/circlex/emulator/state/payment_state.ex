@@ -1,6 +1,6 @@
 defmodule Circlex.Emulator.State.PaymentState do
   alias Circlex.Emulator.State
-  alias Circlex.Struct.{Amount, Payment}
+  alias Circlex.Struct.{Amount, Payment, SourceDest}
   alias Circlex.Emulator.Logic.PaymentLogic
 
   import State.Util
@@ -40,10 +40,10 @@ defmodule Circlex.Emulator.State.PaymentState do
        update_date: State.next(:date),
        merchant_id: merchant_id(),
        merchant_wallet_id: wallet_id,
-       source: %{
+       source: SourceDest.deserialize(%{
          id: bank_account_id,
          type: "wire"
-       },
+       }),
        refunds: []
      }}
   end

@@ -3,7 +3,7 @@ import Config
 # Default assumptions here are a fork of Goerli
 config :signet, :ethereum_node, "http://127.0.0.1:8545"
 config :signet, :chain_id, :goerli
-config :signet, :signer, defult: {:priv_key, <<1::256>>}
+config :signet, :signer, default: {:priv_key, <<1::256>>}
 
 config :circlex, :sns,
   http_client: HTTPoison,

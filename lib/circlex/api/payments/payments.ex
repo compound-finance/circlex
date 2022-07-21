@@ -21,10 +21,10 @@ defmodule Circlex.Api.Payments.Payments do
         [
           %Circlex.Struct.Payment{
             adjustments: nil,
-            amount: %{"amount" => "12111.00", "currency" => "USD"},
+            amount: %Circlex.Struct.Amount{amount: "12111.00", currency: "USD"},
             create_date: "2022-07-15T20:03:32.718Z",
-            destination: %{"id" => "4847be95-8b73-44cc-a329-549a25a776e2", "name" => "CAIXABANK, S.A. ****6789", "type" => "wire"},
-            fees: %{"amount" => "25.00", "currency" => "USD"},
+            destination: %Circlex.Struct.SourceDest{id: "4847be95-8b73-44cc-a329-549a25a776e2", name: "CAIXABANK, S.A. ****6789", type: :wire},
+            fees: %Circlex.Struct.Amount{amount: "25.00", currency: "USD"},
             id: "5e2e20bd-6ad6-4603-950b-64803647a4e5",
             return: nil,
             risk_evaluation: nil,
@@ -35,14 +35,14 @@ defmodule Circlex.Api.Payments.Payments do
           },
           %Circlex.Struct.Payment{
             adjustments: nil,
-            amount: %{"amount" => "12111.00", "currency" => "USD"},
+            amount: %Circlex.Struct.Amount{amount: "12111.00", currency: "USD"},
             create_date: "2022-07-15T20:03:32.718Z",
-            destination: %{
-              "id" => "4847be95-8b73-44cc-a329-549a25a776e2",
-              "name" => "CAIXABANK, S.A. ****6789",
-              "type" => "wire"
+            destination: %Circlex.Struct.SourceDest{
+              id: "4847be95-8b73-44cc-a329-549a25a776e2",
+              name: "CAIXABANK, S.A. ****6789",
+              type: :wire
             },
-            fees: %{"amount" => "25.00", "currency" => "USD"},
+            fees: %Circlex.Struct.Amount{amount: "25.00", currency: "USD"},
             id: "6e2e20bd-6ad6-4603-950b-64803647a4e6",
             return: nil,
             risk_evaluation: nil,
@@ -73,10 +73,10 @@ defmodule Circlex.Api.Payments.Payments do
         :ok,
         %Circlex.Struct.Payment{
           adjustments: nil,
-          amount: %{"amount" => "12111.00", "currency" => "USD"},
+          amount: %Circlex.Struct.Amount{amount: "12111.00", currency: "USD"},
           create_date: "2022-07-15T20:03:32.718Z",
-          destination: %{"id" => "4847be95-8b73-44cc-a329-549a25a776e2", "name" => "CAIXABANK, S.A. ****6789", "type" => "wire"},
-          fees: %{"amount" => "25.00", "currency" => "USD"},
+          destination: %{id: "4847be95-8b73-44cc-a329-549a25a776e2", name: "CAIXABANK, S.A. ****6789", type: :wire},
+          fees: %Circlex.Struct.Amount{amount: "25.00", currency: "USD"},
           id: "5e2e20bd-6ad6-4603-950b-64803647a4e5",
           return: nil,
           risk_evaluation: nil,

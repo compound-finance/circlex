@@ -16,7 +16,7 @@ defmodule Circlex.Api.Core.Addresses do
       iex> Circlex.Api.Core.Addresses.generate_deposit_address("USD", "ETH", host: host)
       {:ok,
         %{
-          address: "0x6a9de7df6a986a0398348efb0ecd91f341547b31",
+          address: "0x6a9DE7dF6a986a0398348EFB0ECD91f341547b31",
           chain: "ETH",
           currency: "USD"
         }}
@@ -56,9 +56,9 @@ defmodule Circlex.Api.Core.Addresses do
       {
         :ok,
         [
-          %{address: "0x522c4caaf435fdf1822c7b6a081858344623cf84", chain: "ETH", currency: "USD"},
+          %{address: "0x522C4caaf435FDF1822C7b6A081858344623Cf84", chain: "ETH", currency: "USD"},
           %{address: "mpLQ2waXiQW6aAtnp9XMWh52R42k3QVjtU", chain: "BTC", currency: "BTC"},
-          %{address: "0x6a9de7df6a986a0398348efb0ecd91f341547b31", chain: "ETH", currency: "USD"}
+          %{address: "0x6a9DE7dF6a986a0398348EFB0ECD91f341547b31", chain: "ETH", currency: "USD"}
         ]
       }
   """
@@ -139,14 +139,14 @@ defmodule Circlex.Api.Core.Addresses do
         :ok,
         [
           %Circlex.Struct.Recipient{
-            address: "0x9dfb4f706a4747355a7ef65cd341a0289034a385",
+            address: "0x9dfb4F706A4747355A7Ef65cd341a0289034A385",
             chain: "ETH",
             currency: "USD",
             description: "Treasury Adaptor v1",
             id: "7bfd6d2a-3682-52b5-a041-714af6913086"
           },
           %Circlex.Struct.Recipient{
-            address: "0x2eb953f992d4fa6e769fabf25d8218f21b793558",
+            address: "0x2Eb953F992D4fa6E769FABf25D8218f21b793558",
             chain: "ETH",
             currency: "USD",
             description: "Fireblocks Address",

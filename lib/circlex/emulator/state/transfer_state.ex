@@ -1,7 +1,7 @@
 defmodule Circlex.Emulator.State.TransferState do
   alias Circlex.Emulator.State
   alias Circlex.Emulator.State.RecipientState
-  alias Circlex.Struct.{Amount, Transfer}
+  alias Circlex.Struct.{Amount, SourceDest, Transfer}
   alias Circlex.Emulator.Logic.TransferLogic
 
   import State.Util
@@ -43,8 +43,8 @@ defmodule Circlex.Emulator.State.TransferState do
     {:ok,
      %Transfer{
        id: State.next(:uuid),
-       source: source,
-       destination: destination,
+       source: SourceDest.deserialize(source),
+       destination: SourceDest.deserialize(destination),
        amount: Amount.deserialize(amount),
        status: "pending",
        transaction_hash: transaction_hash,
