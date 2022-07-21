@@ -76,7 +76,7 @@ and then specify:
 USDC_ADDRESS="0x07865c6e87b9f70255377e024ace6630c1eaa37f"
 USDC_HOLDER_PK={private key of USDC holder}
 ETHEREUM_REMOTE_NODE="http://localhost:8085"
-````
+```
 
 In a local fork, you will not need to worry about sending away your Goerli USDC.
 
@@ -168,13 +168,13 @@ The following APIs are supported by the emulator:
 Additionally, the emulator has the features:
 
 ```md
-* Payment Actor
-* Payout Actor
-* Transfer Actor
+ * Payment Actor
+ * Payout Actor
+ * Transfer Actor
 ```
 
 These actors follow the flows of a payment, payout or transfer from "pending" to "complete" possibly sending on-chain USDC transfers, etc, to match the role of a real Circle server.
 
 ## Contributing
 
-Create a pull request to contribute to Circlex. All contributors agree to accept the license specified in this repository for all contributions to this project. See [LICENSE.md](/LICENSE.md).
+Create a pull request to contribute to Circlex. All contributors agree to accept the license specified in this repository for all contributions to this project. See [LICENSE.md](./LICENSE.md).

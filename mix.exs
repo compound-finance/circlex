@@ -8,7 +8,24 @@ defmodule Circlex.MixProject do
       elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      name: "Circlex",
+      description: "Circle API Client and Emulator",
+      source_url: "https://github.com/compound-finance/circlex",
+      docs: [
+        main: "readme",
+        extras: ["README.md", "LICENSE.md"]
+      ],
+      package: package()
+    ]
+  end
+
+  defp package() do
+    [
+      files: ["lib", "mix.exs", "README*", "LICENSE*"],
+      maintainers: ["Geoffrey Hayes"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/compound-finance/circlex"}
     ]
   end
 
@@ -27,6 +44,7 @@ defmodule Circlex.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false},
       {:signet, "~> 0.1.0-rc7"},
       {:plug_cowboy, "~> 2.5"},
       {:jason, "~> 1.2"},
