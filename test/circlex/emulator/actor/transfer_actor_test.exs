@@ -44,19 +44,6 @@ defmodule Circlex.Emulator.Actor.TransferActorTest do
     transaction_hash: nil
   }
 
-  @transfer_w2vb %Transfer{
-    amount: %Amount{amount: "10000.00", currency: "USD"},
-    create_date: "2022-05-05T16:49:04.541Z",
-    destination: %{
-      addressId: "b2cef1b0-6c54-52b8-9d62-71b85f5b51ed",
-      type: "verified_blockchain"
-    },
-    id: "83f18616-0f26-499a-aa8f-4fa4d563b975",
-    source: %{id: "1000216185", type: "wallet"},
-    status: "pending",
-    transaction_hash: nil
-  }
-
   setup do
     signer_proc = Signet.Test.Signer.start_signer()
     Process.put(:signer_proc, signer_proc)
@@ -133,27 +120,4 @@ defmodule Circlex.Emulator.Actor.TransferActorTest do
     assert Wallet.get_balance(master_wallet, "USD") == "140234.93"
   end
 
-  test "wallet to verified blockchain processing flow" do
-    TransferState.add_transfer(@transfer_w2vb)
-    assert TransferState.get_transfer(@transfer_w2vb.id) == {:ok, @transfer_w2vb}
-    {:ok, master_wallet} = WalletState.master_wallet()
-    assert Wallet.get_balance(master_wallet, "USD") == "150234.93"
-
-    {:ok, _actor} = TransferActor.start_link(@transfer_w2vb.id)
-
-    # Allow processing time
-    :timer.sleep(2 * Circlex.Emulator.action_delay())
-
-    assert TransferState.get_transfer(@transfer_w2vb.id) ==
-             {:ok,
-              %{
-                @transfer_w2vb
-                | status: "complete",
-                  transaction_hash:
-                    "0x04000000003B9ACA0000001407865C6E87B9F70255377E024ACE6630C1EAA37F"
-              }}
-
-    {:ok, master_wallet} = WalletState.master_wallet()
-    assert Wallet.get_balance(master_wallet, "USD") == "140234.93"
-  end
 end

@@ -1,5 +1,6 @@
 defmodule Circlex.Emulator.State.TransferState do
   alias Circlex.Emulator.State
+  alias Circlex.Emulator.State.RecipientState
   alias Circlex.Struct.{Amount, Transfer}
   alias Circlex.Emulator.Logic.TransferLogic
 
@@ -24,6 +25,21 @@ defmodule Circlex.Emulator.State.TransferState do
   end
 
   def new_transfer(source, destination, amount, transaction_hash \\ nil) do
+    destination =
+      case destination.type do
+        "verified_blockchain" ->
+          {:ok, recipient} = RecipientState.get_recipient(destination.addressId)
+
+          %{
+            type: "blockchain",
+            address: recipient.address,
+            chain: recipient.chain
+          }
+
+        _ ->
+          destination
+      end
+
     {:ok,
      %Transfer{
        id: State.next(:uuid),
