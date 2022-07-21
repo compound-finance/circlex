@@ -35,7 +35,7 @@ defmodule Circlex.Emulator do
     next = Keyword.get(opts, :next, %{})
     listeners = Keyword.get(opts, :listeners, [])
     ethereum_node = Signet.Application.ethereum_node()
-    signer = Keyword.get(opts, :signer, Signet.Signer.Default)
+    signer = Keyword.get(opts, :signer, emulator_config()[:signer] || Signet.Signer.Default) |> IO.inspect(label: "emulator signer")
 
     children = [
       {Plug.Cowboy,
