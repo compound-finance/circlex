@@ -16,7 +16,7 @@ defmodule Circlex.Struct.Recipient do
   def serialize(recipient) do
     %{
       id: recipient.id,
-      address: Signet.Util.checksum_address(recipient.address),
+      address: String.downcase(recipient.address),
       chain: recipient.chain,
       currency: recipient.currency,
       description: recipient.description

@@ -50,7 +50,7 @@ defmodule Circlex.Struct.SourceDest do
           },
           if(is_nil(source_dest.address),
             do: %{},
-            else: %{address: Signet.Util.checksum_address(source_dest.address)}
+            else: %{address: String.downcase(source_dest.address)}
           )
         )
 
@@ -59,7 +59,7 @@ defmodule Circlex.Struct.SourceDest do
           "ETH" ->
             %{
               type: "blockchain",
-              address: Signet.Util.checksum_address(source_dest.address),
+              address: String.downcase(source_dest.address),
               chain: source_dest.chain
             }
 
