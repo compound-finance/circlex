@@ -11,14 +11,14 @@ defmodule Circlex.Emulator.Api.Payouts.PayoutsApi do
   # https://developers.circle.com/reference/payouts-payouts-get
   @route "/"
   def list_payouts(%{}) do
-    {:ok, Enum.map(PayoutState.all_payouts(), &Payout.serialize/1)}
+    {:ok, Enum.map(PayoutState.all_payouts(), fn payout -> Payout.serialize(payout, true) end)}
   end
 
   # https://developers.circle.com/reference/payouts-payouts-get-id
   @route "/:payout_id"
   def get_payout(%{payout_id: payout_id}) do
     with {:ok, payout} <- PayoutState.get_payout(payout_id) do
-      {:ok, Payout.serialize(payout)}
+      {:ok, Payout.serialize(payout, true)}
     end
   end
 
@@ -37,7 +37,7 @@ defmodule Circlex.Emulator.Api.Payouts.PayoutsApi do
            PayoutState.new_payout(source, destination, amount, currency, metadata) do
       PayoutState.add_payout(payout)
       PayoutActor.start_link(payout.id)
-      {:ok, Payout.serialize(payout)}
+      {:ok, Payout.serialize(payout, true)}
     end
   end
 end

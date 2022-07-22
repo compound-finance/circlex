@@ -18,7 +18,7 @@ defmodule Circlex.Emulator.Logic.PayoutLogic do
     update(payouts, fn %Payout{id: id} -> id == payout_id end, f)
   end
 
-  def process_payout(st = %{payouts: payouts, wallets: wallets}, payout_id) do
+  def process_payout(st = %{payouts: payouts, wallets: wallets}, payout_id, external_ref) do
     {:ok, payout} = get_payout(payouts, payout_id)
 
     case payout.destination.type do
@@ -28,7 +28,10 @@ defmodule Circlex.Emulator.Logic.PayoutLogic do
         {:ok, wallets} =
           WalletLogic.update_balance(wallets, wallet.wallet_id, Amount.negate(payout.amount))
 
-        {:ok, payouts} = update_payout(payouts, payout.id, fn p -> %{p | status: "complete"} end)
+        {:ok, payouts} =
+          update_payout(payouts, payout.id, fn p ->
+            %{p | status: "complete", external_ref: external_ref}
+          end)
 
         Logger.warn("[NOTICE] Just paid out wire for #{Amount.display(payout.amount)}")
 

@@ -22,16 +22,6 @@ defmodule Circlex.Struct.AddressTest do
     currency: "USD"
   }
 
-  describe "serialize" do
-    test "with priv key" do
-      assert Address.serialize(@address) == @address_ser_priv
-    end
-
-    test "without priv key" do
-      assert Address.serialize(@address, false) == @address_ser_no_priv
-    end
-  end
-
   describe "deserialize" do
     test "with priv key" do
       assert Address.deserialize(@address_ser_priv) == @address
@@ -39,6 +29,16 @@ defmodule Circlex.Struct.AddressTest do
 
     test "without priv key" do
       assert Address.deserialize(@address_ser_no_priv) == %{@address|priv_key: nil}
+    end
+  end
+
+  describe "serialize" do
+    test "with priv key" do
+      assert Address.serialize(@address) == @address_ser_priv
+    end
+
+    test "without priv key" do
+      assert Address.serialize(@address, false) == @address_ser_no_priv
     end
   end
 end

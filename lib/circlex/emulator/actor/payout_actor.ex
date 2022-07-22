@@ -32,8 +32,9 @@ defmodule Circlex.Emulator.Actor.PayoutActor do
 
     case payout.status do
       "pending" ->
+        external_ref = State.next(:external_ref)
         # We've accepted the wire, set state and send notification
-        State.update_st(fn st -> st |> PayoutLogic.process_payout(payout.id) end)
+        State.update_st(fn st -> PayoutLogic.process_payout(st, payout.id, external_ref) end)
         Notifier.notify_payout(payout.id)
     end
 

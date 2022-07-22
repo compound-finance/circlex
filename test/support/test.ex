@@ -22,6 +22,7 @@ defmodule Circlex.Test do
         wallet_id: ["1000000500", "1000000501", "1000000502"],
         date: fn -> "2022-07-17T08:59:41.344582Z" end,
         tracking_ref: ["CIR3KXZZ00", "CIR3KXZZ01", "CIR3KXZZ02"],
+        external_ref: ["REFREF000", "REFREF001"],
         eth_keypair: [
           {<<93, 46, 74, 39, 17, 3, 16, 12, 141, 212, 99, 163, 34, 158, 159, 187, 126, 7, 159,
              80>>,

@@ -218,6 +218,9 @@ defmodule Circlex.Emulator.State do
   defp generate_type(:tracking_ref),
     do: "CIR3KXLL" <> to_string(System.unique_integer([:positive]))
 
+  defp generate_type(:external_ref),
+    do: "EXTREF" <> to_string(System.unique_integer([:positive]))
+
   defp serialize_st(st) do
     st
     |> WalletState.serialize()
