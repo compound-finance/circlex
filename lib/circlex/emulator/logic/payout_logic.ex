@@ -28,7 +28,7 @@ defmodule Circlex.Emulator.Logic.PayoutLogic do
         {:ok, wallets} =
           WalletLogic.update_balance(wallets, wallet.wallet_id, Amount.negate(payout.amount))
 
-        {:ok, payouts} = update_payout(payouts, payout.id, fn p -> %{p | status: "paid"} end)
+        {:ok, payouts} = update_payout(payouts, payout.id, fn p -> %{p | status: "complete"} end)
 
         Logger.warn("[NOTICE] Just paid out wire for #{Amount.display(payout.amount)}")
 

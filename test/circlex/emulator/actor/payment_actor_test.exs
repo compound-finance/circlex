@@ -48,7 +48,7 @@ defmodule Circlex.Emulator.Actor.PaymentActorTest do
     # Allow processing time
     :timer.sleep(2 * Circlex.Emulator.action_delay())
 
-    assert PaymentState.get_payment(@payment.id) == {:ok, %{@payment | status: "paid"}}
+    assert PaymentState.get_payment(@payment.id) == {:ok, %{@payment | status: "complete"}}
     {:ok, master_wallet} = WalletState.master_wallet()
     assert Wallet.get_balance(master_wallet, "USD") == "150284.93"
   end
