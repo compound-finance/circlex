@@ -26,7 +26,7 @@ defmodule Circlex.Api.Payouts.Transfers do
          %Circlex.Struct.Transfer{
           amount: %Circlex.Struct.Amount{amount: "12345.00", currency: "USD"},
           create_date: "2022-07-17T08:59:41.344582Z",
-          destination: %Circlex.Struct.SourceDest{address: "0x871A9FF377eCf2632A0928950dCEb181557F2e17", chain: "ETH", type: :blockchain},
+          destination: %Circlex.Struct.SourceDest{address: "0x871a9ff377ecf2632a0928950dceb181557f2e17", chain: "ETH", type: :blockchain},
           id: "a033a6d8-05ae-11ed-9e62-6a1733211c00",
           source: %Circlex.Struct.SourceDest{id: "1000788811", type: :wallet},
           status: "pending",
@@ -69,7 +69,7 @@ defmodule Circlex.Api.Payouts.Transfers do
           %Circlex.Struct.Transfer{
             amount: %Circlex.Struct.Amount{amount: "12345.00", currency: "USD"},
             create_date: "2022-07-15T23:51:42.729Z",
-            destination: %Circlex.Struct.SourceDest{address: "0x871A9FF377eCf2632A0928950dCEb181557F2e17", chain: "ETH", type: :blockchain},
+            destination: %Circlex.Struct.SourceDest{address: "0x871a9ff377ecf2632a0928950dceb181557f2e17", chain: "ETH", type: :blockchain},
             id: "588aa258-51c4-4a69-a3bc-88f007375364",
             source: %Circlex.Struct.SourceDest{id: "1000788811", type: :wallet},
             status: "complete",
@@ -79,7 +79,7 @@ defmodule Circlex.Api.Payouts.Transfers do
             amount: %Circlex.Struct.Amount{amount: "8999998.14", currency: "USD"},
             create_date: "2022-05-05T16:49:04.541Z",
             destination: %Circlex.Struct.SourceDest{
-              address: "0x2Eb953F992D4fa6E769FABf25D8218f21b793558",
+              address: "0x2eb953f992d4fa6e769fabf25d8218f21b793558",
               chain: "ETH",
               type: :blockchain
             },
@@ -111,7 +111,7 @@ defmodule Circlex.Api.Payouts.Transfers do
         %Circlex.Struct.Transfer{
           amount: %Circlex.Struct.Amount{amount: "12345.00", currency: "USD"},
           create_date: "2022-07-15T23:51:42.729Z",
-          destination: %Circlex.Struct.SourceDest{address: "0x871A9FF377eCf2632A0928950dCEb181557F2e17", chain: "ETH", type: :blockchain},
+          destination: %Circlex.Struct.SourceDest{address: "0x871a9ff377ecf2632a0928950dceb181557f2e17", chain: "ETH", type: :blockchain},
           id: "588aa258-51c4-4a69-a3bc-88f007375364",
           source: %Circlex.Struct.SourceDest{id: "1000788811", type: :wallet},
           status: "complete",

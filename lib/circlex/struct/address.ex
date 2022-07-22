@@ -1,26 +1,29 @@
 defmodule Circlex.Struct.Address do
   import Circlex.Struct.Util
 
-  defstruct [:chain, :currency, :address]
+  defstruct [:chain, :currency, :address, :priv_key]
 
   def deserialize(address) do
     %__MODULE__{
       chain: fetch(address, :chain),
       currency: fetch(address, :currency),
-      address: fetch(address, :address)
+      address: fetch(address, :address),
+      priv_key: fetch(address, :privKey)
     }
   end
 
-  def serialize(address) do
-    %{
-      chain: address.chain,
-      currency: address.currency,
-      address:
-        if(address.chain == "ETH",
-          do: String.downcase(address.address),
-          else: address.address
-        )
-    }
+  def serialize(address, include_priv_key \\ true) do
+    Map.merge(
+      %{
+        chain: address.chain,
+        currency: address.currency,
+        address: address.address
+      },
+      if(include_priv_key && !is_nil(address.priv_key),
+        do: %{privKey: String.downcase(address.priv_key)},
+        else: %{}
+      )
+    )
   end
 
   def match?(address_struct = %__MODULE__{}, chain, currency, address) do

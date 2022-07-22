@@ -213,6 +213,7 @@ defmodule Circlex.Emulator.State do
   defp generate_type(:uuid), do: UUID.uuid1()
   defp generate_type(:wallet_id), do: Enum.random(1_000_000_000..1_001_000_000) |> to_string()
   defp generate_type(:date), do: DateTime.to_iso8601(DateTime.utc_now())
+  defp generate_type(:eth_keypair), do: Signet.Keys.generate_keypair()
 
   defp generate_type(:tracking_ref),
     do: "CIR3KXLL" <> to_string(System.unique_integer([:positive]))

@@ -49,7 +49,7 @@ defmodule Circlex.Emulator.Api.Accounts.WalletsApiTest do
   test "generate_blockchain_address/1" do
     assert {:ok,
             %{
-              address: "0x6a9DE7dF6a986a0398348EFB0ECD91f341547b31",
+              address: "0x5d2e4a271103100c8dd463a3229e9fbb7e079f50",
               chain: "ETH",
               currency: "USD"
             }} ==
@@ -59,19 +59,39 @@ defmodule Circlex.Emulator.Api.Accounts.WalletsApiTest do
                currency: "USD",
                chain: "ETH"
              })
+
+    assert {:ok,
+     [
+       %{
+         address: "0x5d2e4a271103100c8dd463a3229e9fbb7e079f50",
+         chain: "ETH",
+         currency: "USD"
+       },
+       %{
+         address: "0x522c4caaf435fdf1822c7b6a081858344623cf84",
+         chain: "ETH",
+         currency: "USD"
+       },
+       %{address: "mpLQ2waXiQW6aAtnp9XMWh52R42k3QVjtU", chain: "BTC", currency: "BTC"},
+       %{
+         address: "0x6a9de7df6a986a0398348efb0ecd91f341547b31",
+         chain: "ETH",
+         currency: "USD"
+       }
+     ]} == WalletsApi.list_addresses(%{wallet_id: "1000216185"})
   end
 
   test "list_addresses/1" do
     assert {:ok,
             [
               %{
-                address: "0x522C4caaf435FDF1822C7b6A081858344623Cf84",
+                address: "0x522c4caaf435fdf1822c7b6a081858344623cf84",
                 chain: "ETH",
                 currency: "USD"
               },
               %{address: "mpLQ2waXiQW6aAtnp9XMWh52R42k3QVjtU", chain: "BTC", currency: "BTC"},
               %{
-                address: "0x6a9DE7dF6a986a0398348EFB0ECD91f341547b31",
+                address: "0x6a9de7df6a986a0398348efb0ecd91f341547b31",
                 chain: "ETH",
                 currency: "USD"
               }

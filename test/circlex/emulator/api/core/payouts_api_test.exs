@@ -9,7 +9,7 @@ defmodule Circlex.Emulator.Api.Core.PayoutsApiTest do
               amount: %{amount: "12345.00", currency: "USD"},
               createDate: "2022-07-17T08:59:41.344582Z",
               destination: %{
-                address: "0x871A9FF377eCf2632A0928950dCEb181557F2e17",
+                address: "0x871a9ff377ecf2632a0928950dceb181557f2e17",
                 chain: "ETH",
                 type: "blockchain"
               },

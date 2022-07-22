@@ -1,7 +1,7 @@
 defmodule Circlex.Emulator.State.WalletState do
   alias Circlex.Emulator.State
   alias Circlex.Emulator.Logic.WalletLogic
-  alias Circlex.Struct.Wallet
+  alias Circlex.Struct.{Address, Wallet}
 
   import State.Util
 
@@ -51,6 +51,29 @@ defmodule Circlex.Emulator.State.WalletState do
        balances: [],
        addresses: []
      }}
+  end
+
+  def new_address(chain, currency) do
+    case {chain, currency} do
+      {"ETH", "USD"} ->
+        {eth_address, priv_key} = State.next(:eth_keypair)
+
+        {:ok, %Address{
+          address: String.downcase(Signet.Util.encode_hex(eth_address)),
+          priv_key: String.downcase(Signet.Util.encode_hex(priv_key)),
+          currency: currency,
+          chain: chain
+        }}
+
+      _ ->
+        {:error, "Unable to generate key pair for chain #{chain} currency: #{currency}"}
+    end
+  end
+
+  def add_address_to_wallet(wallet_id, address) do
+    update_wallet(wallet_id, fn wallet ->
+      %{wallet | addresses: [address | wallet.addresses]}
+    end)
   end
 
   defp get_wallets_st(mfa_or_fn) do

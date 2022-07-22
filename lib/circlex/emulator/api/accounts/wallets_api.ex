@@ -4,7 +4,7 @@ defmodule Circlex.Emulator.Api.Accounts.WalletsApi do
   """
   use Circlex.Emulator.Api
   alias Circlex.Emulator.State.WalletState
-  alias Circlex.Struct.Wallet
+  alias Circlex.Struct.{Address, Wallet}
 
   # https://developers.circle.com/reference/accounts-wallets-get
   @route "/"
@@ -40,25 +40,17 @@ defmodule Circlex.Emulator.Api.Accounts.WalletsApi do
         chain: chain
       }) do
     # TODO: Check idempotency key
-    # TODO: Implement this
-    address = %{
-      address: "0x6a9de7df6a986a0398348efb0ecd91f341547b31",
-      currency: currency,
-      chain: chain
-    }
-
-    WalletState.update_wallet(wallet_id, fn wallet ->
-      %{wallet | addresses: [address | wallet.addresses]}
-    end)
-
-    {:ok, address}
+    with {:ok, address} <- WalletState.new_address(chain, currency) do
+      :ok = WalletState.add_address_to_wallet(wallet_id, address)
+      {:ok, Address.serialize(address, false)}
+    end
   end
 
   # https://developers.circle.com/reference/accounts-wallets-addresses-get
   @route "/:wallet_id/addresses"
   def list_addresses(%{wallet_id: wallet_id}) do
     with {:ok, wallet} <- WalletState.get_wallet(wallet_id) do
-      {:ok, Wallet.serialize(wallet)[:addresses]}
+      {:ok, Enum.map(wallet.addresses, fn address -> Address.serialize(address, false) end)}
     end
   end
 end

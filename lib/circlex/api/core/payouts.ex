@@ -26,7 +26,7 @@ defmodule Circlex.Api.Core.Payouts do
           adjustments: nil,
           amount: %Circlex.Struct.Amount{amount: "12345.00", currency: "USD"},
           create_date: "2022-07-17T08:59:41.344582Z",
-          destination: %Circlex.Struct.SourceDest{type: :blockchain, address: "0x871A9FF377eCf2632A0928950dCEb181557F2e17", chain: "ETH"},
+          destination: %Circlex.Struct.SourceDest{type: :blockchain, address: "0x871a9ff377ecf2632a0928950dceb181557f2e17", chain: "ETH"},
           fees: %Circlex.Struct.Amount{amount: "0.00", currency: "USD"},
           id: "a033a6d8-05ae-11ed-9e62-6a1733211c00",
           return: nil,

@@ -9,7 +9,7 @@ defmodule Circlex.Emulator.Api.Core.TransfersApiTest do
               amount: %{amount: "12345.00", currency: "USD"},
               createDate: "2022-07-17T08:59:41.344582Z",
               destination: %{
-                address: "0x871A9FF377eCf2632A0928950dCEb181557F2e17",
+                address: "0x871a9ff377ecf2632a0928950dceb181557f2e17",
                 chain: "ETH",
                 type: "blockchain"
               },
@@ -21,7 +21,7 @@ defmodule Circlex.Emulator.Api.Core.TransfersApiTest do
              TransfersApi.create_transfer(%{
                idempotencyKey: UUID.uuid1(),
                destination: %{
-                 address: "0x871A9FF377eCf2632A0928950dCEb181557F2e17",
+                 address: "0x871a9ff377ecf2632a0928950dceb181557f2e17",
                  chain: "ETH",
                  type: "blockchain"
                },
@@ -36,7 +36,7 @@ defmodule Circlex.Emulator.Api.Core.TransfersApiTest do
                 amount: %{amount: "8999998.14", currency: "USD"},
                 createDate: "2022-05-05T16:49:04.541Z",
                 destination: %{
-                  address: "0x2Eb953F992D4fa6E769FABf25D8218f21b793558",
+                  address: "0x2eb953f992d4fa6e769fabf25d8218f21b793558",
                   chain: "ETH",
                   type: "blockchain"
                 },
@@ -55,7 +55,7 @@ defmodule Circlex.Emulator.Api.Core.TransfersApiTest do
               amount: %{amount: "8999998.14", currency: "USD"},
               createDate: "2022-05-05T16:49:04.541Z",
               destination: %{
-                address: "0x2Eb953F992D4fa6E769FABf25D8218f21b793558",
+                address: "0x2eb953f992d4fa6e769fabf25d8218f21b793558",
                 chain: "ETH",
                 type: "blockchain"
               },
