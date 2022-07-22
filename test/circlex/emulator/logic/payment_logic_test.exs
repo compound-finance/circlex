@@ -7,7 +7,7 @@ defmodule Circlex.Emulator.Logic.PaymentLogicTest do
   @payment %Payment{
     id: "24c26e1b-8666-46fa-96ea-892afcadb9bb",
     type: "payment",
-    status: "paid",
+    status: "pending",
     description: "Merchant Push Payment",
     amount: %Amount{
       amount: "50.00",
@@ -23,7 +23,7 @@ defmodule Circlex.Emulator.Logic.PaymentLogicTest do
     merchant_wallet_id: "1000216185",
     source: %{
       id: "ad823515-3b51-4061-a016-d626e3cd105e",
-      type: "wire"
+      type: :wire
     },
     refunds: []
   }
@@ -62,7 +62,7 @@ defmodule Circlex.Emulator.Logic.PaymentLogicTest do
                    merchant_id: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",
                    merchant_wallet_id: "1000216185",
                    refunds: [],
-                   source: %{id: "ad823515-3b51-4061-a016-d626e3cd105e", type: "wire"},
+                   source: %{id: "ad823515-3b51-4061-a016-d626e3cd105e", type: :wire},
                    status: "paid",
                    type: "payment",
                    update_date: "2022-07-15T21:11:03.863523Z"
@@ -71,7 +71,7 @@ defmodule Circlex.Emulator.Logic.PaymentLogicTest do
                wallets: [
                  %Wallet{
                    addresses: nil,
-                   balances: [%Amount{amount: "100.00", currency: "USD"}],
+                   balances: [%Amount{amount: "150.00", currency: "USD"}],
                    description: "Master Wallet",
                    entity_id: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",
                    type: "merchant",
