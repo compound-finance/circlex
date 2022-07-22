@@ -1,36 +1,47 @@
 defmodule Circlex.Emulator.Api.Payouts.PayoutsApiTest do
   use Circlex.ApiCase
   alias Circlex.Emulator.Api.Payouts.PayoutsApi
+  alias Circlex.Emulator.State
+  alias State.WalletState
+  alias Circlex.Struct.Wallet
   doctest PayoutsApi
 
   test "create_payout/1" do
+    {:ok, master_wallet} = WalletState.master_wallet()
+    assert Wallet.get_balance(master_wallet, "USD") == "150234.93"
+
     assert {:ok,
             %{
-              amount: %{amount: "12345.00", currency: "USD"},
+              amount: %{amount: "100.00", currency: "USD"},
               createDate: "2022-07-17T08:59:41.344582Z",
               destination: %{
-                address: "0x871a9ff377ecf2632a0928950dceb181557f2e17",
-                chain: "ETH",
-                type: "blockchain"
+                type: "wire",
+                id: "4847be95-8b73-44cc-a329-549a25a776e2"
               },
               id: "a033a6d8-05ae-11ed-9e62-6a1733211c00",
               status: "pending",
               fees: %{amount: "0.00", currency: "USD"},
-              sourceWalletId: "1000788811",
+              sourceWalletId: "1000216185",
               trackingRef: "CIR3KXZZ00",
               updateDate: "2022-07-17T08:59:41.344582Z"
             }} ==
              PayoutsApi.create_payout(%{
                idempotencyKey: UUID.uuid1(),
-               source: %{id: "1000788811", type: "wallet"},
+               source: %{id: "1000216185", type: "wallet"},
                destination: %{
-                 address: "0x871a9ff377ecf2632a0928950dceb181557f2e17",
-                 chain: "ETH",
-                 type: "blockchain"
+                 type: "wire",
+                 id: "4847be95-8b73-44cc-a329-549a25a776e2",
+                 name: "CAIXABANK, S.A. ****6789"
                },
-               amount: %{amount: "12345.00", currency: "USD"},
+               amount: %{amount: "100.00", currency: "USD"},
                metadata: %{beneficiaryEmail: "tom@example.com"}
              })
+
+    # Allow processing time
+    :timer.sleep(2 * Circlex.Emulator.action_delay())
+
+    {:ok, master_wallet} = WalletState.master_wallet()
+    assert Wallet.get_balance(master_wallet, "USD") == "150134.93"
   end
 
   test "list_payouts/1" do

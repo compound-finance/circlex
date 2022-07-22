@@ -5,6 +5,7 @@ defmodule Circlex.Emulator.Api.Payouts.PayoutsApi do
   use Circlex.Emulator.Api
 
   alias Circlex.Emulator.State.PayoutState
+  alias Circlex.Emulator.Actor.PayoutActor
   alias Circlex.Struct.Payout
 
   # https://developers.circle.com/reference/payouts-payouts-get
@@ -35,6 +36,7 @@ defmodule Circlex.Emulator.Api.Payouts.PayoutsApi do
     with {:ok, payout} <-
            PayoutState.new_payout(source, destination, amount, currency, metadata) do
       PayoutState.add_payout(payout)
+      PayoutActor.start_link(payout.id)
       {:ok, Payout.serialize(payout)}
     end
   end
