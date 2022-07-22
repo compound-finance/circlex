@@ -50,7 +50,8 @@ defmodule Circlex.Emulator.DepositDetector do
                   id: wallet.wallet_id,
                   address: Signet.Util.encode_hex(to)
                 },
-                Amount.from_wei(amount, @usdc_decimals)
+                Amount.from_wei(amount, @usdc_decimals),
+                trx_id
               )
 
             TransferState.add_transfer(transfer)
