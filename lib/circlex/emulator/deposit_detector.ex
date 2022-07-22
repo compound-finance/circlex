@@ -59,7 +59,7 @@ defmodule Circlex.Emulator.DepositDetector do
             Logger.info("Detected new USDC transfer to wallet via trx: #{trx_id}: #{inspect(transfer)}")
 
           :not_found ->
-            Logger.debug("Ignoring irrevelevant USDC transfer...")
+            Logger.info("Ignoring irrevelevant USDC transfer...")
         end
 
       _ ->

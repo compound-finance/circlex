@@ -92,4 +92,35 @@ defmodule Circlex.Api.Payments.Payments do
       {:ok, Payment.deserialize(payment)}
     end
   end
+
+  @doc ~S"""
+  In the sandbox environment, initiate a mock wire payment that mimics the behavior of funds sent through the bank (wire) account linked to master wallet.
+
+  Reference: https://developers.circle.com/reference/payments-payments-mock-create
+
+  ## Examples
+
+      iex> host = Circlex.Test.start_server()
+      iex> amount = %{amount: "12345.00", currency: "USD"}
+      iex> Circlex.Api.Payments.Payments.mock_wire("CIR3KX3L99", amount, host: host)
+      {:ok,
+       %{
+         "amount" => %{"amount" => "12345.00", "currency" => "USD"},
+         "status" => "pending",
+         "trackingRef" => "CIR3KX3L99"
+       }}
+  """
+  def mock_wire(tracking_ref, amount, opts \\ []) do
+    with {:ok, res} <-
+           api_post(
+             "/v1/mocks/payments/wire",
+             %{
+               trackingRef: tracking_ref,
+               amount: amount
+             },
+             opts
+           ) do
+      {:ok, res}
+    end
+  end
 end
