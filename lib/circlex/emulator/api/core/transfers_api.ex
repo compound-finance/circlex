@@ -23,11 +23,12 @@ defmodule Circlex.Emulator.Api.Core.TransfersApi do
   # https://developers.circle.com/reference/getbusinessaccounttransfer
   @route "/:transfer_id"
   def get_transfer(%{transfer_id: transfer_id}) do
-    with {:ok, master_wallet} <- get_master_wallet() do
-      with {:ok, transfer} <-
-             TransferState.get_transfer(transfer_id, transfer_source: {:wallet, master_wallet.wallet_id}) do
-        {:ok, Transfer.serialize(transfer)}
-      end
+    with {:ok, master_wallet} <- get_master_wallet(),
+         {:ok, transfer} <-
+           TransferState.get_transfer(transfer_id,
+             transfer_source: {:wallet, master_wallet.wallet_id}
+           ) do
+      {:ok, Transfer.serialize(transfer)}
     end
   end
 
@@ -39,13 +40,13 @@ defmodule Circlex.Emulator.Api.Core.TransfersApi do
         amount: amount
       }) do
     # TODO: Check idempotency key
-    with {:ok, source} <- get_master_source() do
-      with {:ok, transfer} <-
-             TransferState.new_transfer(source, destination, amount) do
-        TransferState.add_transfer(transfer)
-        TransferActor.start_link(transfer.id)
-        {:ok, Transfer.serialize(transfer)}
-      end
+    with :ok <- check_idempotency_key(idempotency_key),
+         {:ok, source} <- get_master_source(),
+         {:ok, transfer} <-
+           TransferState.new_transfer(source, destination, amount) do
+      TransferState.add_transfer(transfer)
+      TransferActor.start_link(transfer.id)
+      {:ok, Transfer.serialize(transfer)}
     end
   end
 end

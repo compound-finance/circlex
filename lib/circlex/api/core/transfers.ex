@@ -24,11 +24,11 @@ defmodule Circlex.Api.Core.Transfers do
         :ok,
          %Circlex.Struct.Transfer{
           amount: %Circlex.Struct.Amount{amount: "12345.00", currency: "USD"},
-          create_date: nil,
-          destination: %Circlex.Struct.SourceDest{address: "0x871A9FF377eCf2632A0928950dCEb181557F2e17", chain: "ETH", type: :blockchain},
+          create_date: "2022-07-17T08:59:41.344582Z",
+          destination: %Circlex.Struct.SourceDest{address: "0x871a9ff377ecf2632a0928950dceb181557f2e17", chain: "ETH", type: :blockchain},
           id: "a033a6d8-05ae-11ed-9e62-6a1733211c00",
           source: %Circlex.Struct.SourceDest{id: "1000216185", type: :wallet},
-          status: nil,
+          status: "pending",
           transaction_hash: nil
         }
       }
@@ -36,35 +36,17 @@ defmodule Circlex.Api.Core.Transfers do
   def create(destination, amount, opts \\ []) do
     idempotency_key = Keyword.get(opts, :idempotency_key, UUID.uuid1())
 
-    case api_post(
-           "/v1/businessAccount/transfers",
-           %{
-             idempotencyKey: idempotency_key,
-             destination: destination,
-             amount: amount
-           },
-           opts
-         ) do
-      {:ok,
-       %{
-         "id" => id,
-         "source" => source,
-         "destination" => destination,
-         "amount" => amount,
-         "transactionHash" => transaction_hash,
-         "status" => status,
-         "createDate" => create_date
-       }} ->
-        {:ok,
-         %Transfer{
-           id: id,
-           source: source,
-           destination: destination,
-           amount: amount,
-           transaction_hash: transaction_hash,
-           status: status,
-           create_date: create_date
-         }}
+    with {:ok, transfer} <-
+           api_post(
+             "/v1/businessAccount/transfers",
+             %{
+               idempotencyKey: idempotency_key,
+               destination: destination,
+               amount: amount
+             },
+             opts
+           ) do
+      {:ok, Transfer.deserialize(transfer)}
     end
   end
 
@@ -123,7 +105,8 @@ defmodule Circlex.Api.Core.Transfers do
       }
   """
   def get_transfer(id, opts \\ []) do
-    with {:ok, transfer} <- api_get(Path.join("/v1/businessAccount/transfers", to_string(id)), opts) do
+    with {:ok, transfer} <-
+           api_get(Path.join("/v1/businessAccount/transfers", to_string(id)), opts) do
       {:ok, Transfer.deserialize(transfer)}
     end
   end

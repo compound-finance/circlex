@@ -38,41 +38,19 @@ defmodule Circlex.Api.Payments.BankAccounts do
   def create(account_number, routing_number, billing_details, bank_address, opts \\ []) do
     idempotency_key = Keyword.get(opts, :idempotency_key, UUID.uuid1())
 
-    case api_post(
-           "/v1/banks/wires",
-           %{
-             idempotencyKey: idempotency_key,
-             accountNumber: account_number,
-             routingNumber: routing_number,
-             billingDetails: billing_details,
-             bankAddress: bank_address
-           },
-           opts
-         ) do
-      {:ok,
-       %{
-         "id" => id,
-         "status" => status,
-         "description" => description,
-         "trackingRef" => tracking_ref,
-         "fingerprint" => fingerprint,
-         "billingDetails" => billing_details,
-         "bankAddress" => bank_address,
-         "createDate" => create_date,
-         "updateDate" => update_date
-       }} ->
-        {:ok,
-         %BankAccount{
-           id: id,
-           status: status,
-           description: description,
-           tracking_ref: tracking_ref,
-           fingerprint: fingerprint,
-           billing_details: billing_details,
-           bank_address: bank_address,
-           create_date: create_date,
-           update_date: update_date
-         }}
+    with {:ok, bank_account} <-
+           api_post(
+             "/v1/banks/wires",
+             %{
+               idempotencyKey: idempotency_key,
+               accountNumber: account_number,
+               routingNumber: routing_number,
+               billingDetails: billing_details,
+               bankAddress: bank_address
+             },
+             opts
+           ) do
+      {:ok, BankAccount.deserialize(bank_account)}
     end
   end
 

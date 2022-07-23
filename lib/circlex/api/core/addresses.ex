@@ -47,7 +47,7 @@ defmodule Circlex.Api.Core.Addresses do
 
   import Circlex.Api.Tooling
 
-  alias Circlex.Struct.Recipient
+  alias Circlex.Struct.{Address, Recipient}
 
   @doc ~S"""
   Generates a new blockchain address for a wallet for a given currency/chain pair.
@@ -59,7 +59,7 @@ defmodule Circlex.Api.Core.Addresses do
       iex> host = Circlex.Test.start_server()
       iex> Circlex.Api.Core.Addresses.generate_deposit_address("USD", "ETH", host: host)
       {:ok,
-        %{
+        %Circlex.Struct.Address{
           address: "0x5d2e4a271103100c8dd463a3229e9fbb7e079f50",
           chain: "ETH",
           currency: "USD"
@@ -68,23 +68,13 @@ defmodule Circlex.Api.Core.Addresses do
   def generate_deposit_address(currency, chain, opts \\ []) do
     idempotency_key = Keyword.get(opts, :idempotency_key, UUID.uuid1())
 
-    case api_post(
-           "/v1/businessAccount/wallets/addresses/deposit",
-           %{idempotencyKey: idempotency_key, currency: currency, chain: chain},
-           opts
-         ) do
-      {:ok,
-       %{
-         "address" => address,
-         "chain" => chain,
-         "currency" => currency
-       }} ->
-        {:ok,
-         %{
-           address: address,
-           chain: chain,
-           currency: currency
-         }}
+    with {:ok, address} <-
+           api_post(
+             "/v1/businessAccount/wallets/addresses/deposit",
+             %{idempotencyKey: idempotency_key, currency: currency, chain: chain},
+             opts
+           ) do
+      {:ok, Address.deserialize(address)}
     end
   end
 

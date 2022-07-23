@@ -15,9 +15,8 @@ defmodule Circlex.Emulator.Api.Accounts.WalletsApi do
   # https://developers.circle.com/reference/accounts-wallets-create
   @route path: "/", method: :post
   def create_wallet(%{idempotencyKey: idempotency_key, description: description}) do
-    # TODO: Check idempotency key
-
-    with {:ok, wallet} <- WalletState.new_wallet(:end_user_wallet, description) do
+    with :ok <- check_idempotency_key(idempotency_key),
+         {:ok, wallet} <- WalletState.new_wallet(:end_user_wallet, description) do
       :ok = WalletState.add_wallet(wallet)
       {:ok, Wallet.serialize(wallet, false)}
     end
@@ -39,8 +38,8 @@ defmodule Circlex.Emulator.Api.Accounts.WalletsApi do
         currency: currency,
         chain: chain
       }) do
-    # TODO: Check idempotency key
-    with {:ok, address} <- WalletState.new_address(chain, currency) do
+    with :ok <- check_idempotency_key(idempotency_key),
+         {:ok, address} <- WalletState.new_address(chain, currency) do
       :ok = WalletState.add_address_to_wallet(wallet_id, address)
       {:ok, Address.serialize(address, false)}
     end

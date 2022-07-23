@@ -36,14 +36,14 @@ defmodule Circlex.Emulator.Api.Core.AddressesApi do
   # https://developers.circle.com/reference/createbusinessaccountrecipientaddress
   @route path: "/recipient", method: :post
   def add_recipient_address(%{
+        idempotencyKey: idempotency_key,
         address: address,
         chain: chain,
         currency: currency,
         description: description
       }) do
-    # TODO: Check idempotency key
-
-    with {:ok, recipient} <- RecipientState.new_recipient(address, chain, currency, description) do
+    with :ok <- check_idempotency_key(idempotency_key),
+         {:ok, recipient} <- RecipientState.new_recipient(address, chain, currency, description) do
       RecipientState.add_recipient(recipient)
       {:ok, Recipient.serialize(recipient)}
     end

@@ -50,7 +50,7 @@ defmodule Circlex.Api.Accounts.Wallets do
 
   import Circlex.Api.Tooling
 
-  alias Circlex.Struct.Wallet
+  alias Circlex.Struct.{Address, Wallet}
 
   @doc ~S"""
   Creates an end user wallet.
@@ -64,6 +64,7 @@ defmodule Circlex.Api.Accounts.Wallets do
       {
         :ok,
         %Circlex.Struct.Wallet{
+          addresses: [],
           balances: [],
           description: "Test Wallet",
           entity_id: "5dfa1127-050b-4ba6-b9b5-b2015aa4c882",
@@ -75,27 +76,13 @@ defmodule Circlex.Api.Accounts.Wallets do
   def create(description, opts \\ []) do
     idempotency_key = Keyword.get(opts, :idempotency_key, UUID.uuid1())
 
-    case api_post(
-           "/v1/wallets",
-           %{idempotencyKey: idempotency_key, description: description},
-           opts
-         ) do
-      {:ok,
-       %{
-         "walletId" => wallet_id,
-         "entityId" => entity_id,
-         "type" => type,
-         "description" => description,
-         "balances" => balances
-       }} ->
-        {:ok,
-         %Wallet{
-           wallet_id: wallet_id,
-           entity_id: entity_id,
-           type: type,
-           description: description,
-           balances: balances
-         }}
+    with {:ok, wallet} <-
+           api_post(
+             "/v1/wallets",
+             %{idempotencyKey: idempotency_key, description: description},
+             opts
+           ) do
+      {:ok, Wallet.deserialize(wallet)}
     end
   end
 
@@ -173,7 +160,7 @@ defmodule Circlex.Api.Accounts.Wallets do
       iex> host = Circlex.Test.start_server()
       iex> Circlex.Api.Accounts.Wallets.generate_address("1000216185", "USD", "ETH", host: host)
       {:ok,
-        %{
+        %Circlex.Struct.Address{
           address: "0x5d2e4a271103100c8dd463a3229e9fbb7e079f50",
           chain: "ETH",
           currency: "USD"
@@ -182,23 +169,13 @@ defmodule Circlex.Api.Accounts.Wallets do
   def generate_address(wallet_id, currency, chain, opts \\ []) do
     idempotency_key = Keyword.get(opts, :idempotency_key, UUID.uuid1())
 
-    case api_post(
-           Path.join(["/v1/wallets", wallet_id, "addresses"]),
-           %{idempotencyKey: idempotency_key, currency: currency, chain: chain},
-           opts
-         ) do
-      {:ok,
-       %{
-         "address" => address,
-         "chain" => chain,
-         "currency" => currency
-       }} ->
-        {:ok,
-         %{
-           address: address,
-           chain: chain,
-           currency: currency
-         }}
+    with {:ok, address} <-
+           api_post(
+             Path.join(["/v1/wallets", wallet_id, "addresses"]),
+             %{idempotencyKey: idempotency_key, currency: currency, chain: chain},
+             opts
+           ) do
+      {:ok, Address.deserialize(address)}
     end
   end
 

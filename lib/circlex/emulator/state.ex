@@ -33,7 +33,13 @@ defmodule Circlex.Emulator.State do
 
     GenServer.start_link(
       __MODULE__,
-      %{st: initial_state, signer_proc: signer_proc, next: next, persistor: persistor},
+      %{
+        st: initial_state,
+        idempotency_keys: [],
+        signer_proc: signer_proc,
+        next: next,
+        persistor: persistor
+      },
       name: name
     )
   end
@@ -70,6 +76,10 @@ defmodule Circlex.Emulator.State do
 
   def next(type) do
     GenServer.call(get_pid(), {:next, type})
+  end
+
+  def check_idempotency_key(idempotency_key) do
+    GenServer.call(get_pid(), {:check_idempotency_key, idempotency_key})
   end
 
   def restore_state(json) do
@@ -145,6 +155,18 @@ defmodule Circlex.Emulator.State do
 
   def handle_call({:get_st, f, keys, filter_fn}, _from, state = %{st: st}) when is_function(f) do
     {:reply, f.(get_val(st, keys, filter_fn)), state}
+  end
+
+  def handle_call(
+        {:check_idempotency_key, idempotency_key},
+        _from,
+        state = %{idempotency_keys: idempotency_keys}
+      ) do
+    if Enum.member?(idempotency_keys, idempotency_key) do
+      {:reply, :reused_key, state}
+    else
+      {:reply, :ok, %{state | idempotency_keys: [idempotency_key | idempotency_keys]}}
+    end
   end
 
   # TODO: We could simplify this down to just transform all

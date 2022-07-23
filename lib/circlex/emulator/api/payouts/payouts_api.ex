@@ -32,8 +32,8 @@ defmodule Circlex.Emulator.Api.Payouts.PayoutsApi do
         metadata: metadata
       }) do
     # TODO: Check idempotency key
-
-    with {:ok, payout} <-
+    with :ok <- check_idempotency_key(idempotency_key),
+         {:ok, payout} <-
            PayoutState.new_payout(source, destination, amount, currency, metadata) do
       PayoutState.add_payout(payout)
       PayoutActor.start_link(payout.id)

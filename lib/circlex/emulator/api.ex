@@ -1,6 +1,7 @@
 defmodule Circlex.Emulator.Api do
   import Plug.Conn
 
+  alias Circlex.Emulator.State
   alias Circlex.Emulator.State.WalletState
 
   defmacro __using__([]) do
@@ -82,6 +83,9 @@ defmodule Circlex.Emulator.Api do
 
             {:error, _} ->
               Logger.error("[Error] #{conn.method} #{conn.request_path} (#{elapsed_str})")
+
+            {:error, _code, _} ->
+              Logger.error("[Error] #{conn.method} #{conn.request_path} (#{elapsed_str})")
           end
 
           conn
@@ -126,6 +130,19 @@ defmodule Circlex.Emulator.Api do
 
       {:error, error} ->
         json!(%{error: to_string(error)}, conn, 500)
+
+      {:error, code, error} ->
+        json!(%{code: code, message: to_string(error)}, conn, code)
+    end
+  end
+
+  def check_idempotency_key(idempotency_key) do
+    case State.check_idempotency_key(idempotency_key) do
+      :ok ->
+        :ok
+
+      :reused_key ->
+        {:error, 409, "Conflicts with another request."}
     end
   end
 
