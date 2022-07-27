@@ -40,7 +40,7 @@ defmodule Circlex.Emulator.SNS do
       %__MODULE__{
         type: "Notification",
         message_id: UUID.uuid1(),
-        topic_arn: "yolo",
+        topic_arn: Circlex.Emulator.SNS.sns_topic_arn(),
         message: message,
         timestamp: DateTime.utc_now(),
         signature_version: "1",

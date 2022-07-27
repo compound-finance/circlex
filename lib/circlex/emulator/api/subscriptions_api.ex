@@ -15,9 +15,8 @@ defmodule Circlex.Emulator.Api.SubscriptionsApi do
   # https://developers.circle.com/reference/subscribe
   @route path: "/", method: :post
   def create_subscription(%{idempotencyKey: idempotency_key, endpoint: endpoint}) do
-    # TODO: Check idempotency key
-
-    with {:ok, subscription} <- SubscriptionState.new_subscription(endpoint) do
+    with :ok <- check_idempotency_key(idempotency_key),
+         {:ok, subscription} <- SubscriptionState.new_subscription(endpoint) do
       SubscriptionState.add_subscription(subscription)
       {:ok, Subscription.serialize(subscription)}
     end

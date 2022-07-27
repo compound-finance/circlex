@@ -66,23 +66,13 @@ defmodule Circlex.Api.Subscriptions do
   def subscribe(endpoint, opts \\ []) do
     idempotency_key = Keyword.get(opts, :idempotency_key, UUID.uuid1())
 
-    case api_post(
-           "/v1/notifications/subscriptions",
-           %{idempotencyKey: idempotency_key, endpoint: endpoint},
-           opts
-         ) do
-      {:ok,
-       %{
-         "id" => id,
-         "endpoint" => endpoint,
-         "subscriptionDetails" => subscription_details
-       }} ->
-        {:ok,
-         %Subscription{
-           id: id,
-           endpoint: endpoint,
-           subscription_details: subscription_details
-         }}
+    with {:ok, subscription} <-
+           api_post(
+             "/v1/notifications/subscriptions",
+             %{idempotencyKey: idempotency_key, endpoint: endpoint},
+             opts
+           ) do
+      {:ok, Subscription.deserialize(subscription)}
     end
   end
 
