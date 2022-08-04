@@ -48,7 +48,7 @@ defmodule Circlex.Emulator.State.RecipientState do
      }}
   end
 
-  defp get_recipients_st(mfa_or_fn, filters \\ []) do
+  defp get_recipients_st(mfa_or_fn, filters) do
     State.get_st(mfa_or_fn, [:recipients], &apply_filters(&1, filters))
   end
 

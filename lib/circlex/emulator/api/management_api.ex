@@ -16,5 +16,4 @@ defmodule Circlex.Emulator.Api.ManagementApi do
        }}
     end
   end
-
 end

@@ -42,7 +42,9 @@ defmodule Circlex.Emulator.Actor.PayoutActorTest do
     # Allow processing time
     :timer.sleep(2 * Circlex.Emulator.action_delay())
 
-    assert PayoutState.get_payout(@payout.id) == {:ok, %{@payout | status: "complete", external_ref: "REFREF000"}}
+    assert PayoutState.get_payout(@payout.id) ==
+             {:ok, %{@payout | status: "complete", external_ref: "REFREF000"}}
+
     {:ok, wallet} = WalletState.get_wallet(@payout.source_wallet_id)
     assert Wallet.get_balance(wallet, "USD") == "150204.93"
   end

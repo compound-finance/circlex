@@ -12,11 +12,13 @@ defmodule Circlex.Emulator.State.SubscriptionStateTest do
     subscription_details: [
       %{
         status: "confirmed",
-        url: "arn:aws:sns:us-east-1:908968368384:sandbox_platform-notifications-topic:3c849cdd-af12-4c28-a4fe-d0d037079cc0"
+        url:
+          "arn:aws:sns:us-east-1:908968368384:sandbox_platform-notifications-topic:3c849cdd-af12-4c28-a4fe-d0d037079cc0"
       },
       %{
         status: "confirmed",
-        url: "arn:aws:sns:us-west-2:908968368384:sandbox_platform-notifications-topic:48a51c19-6549-4b9c-be4a-926f77bb95a0"
+        url:
+          "arn:aws:sns:us-west-2:908968368384:sandbox_platform-notifications-topic:48a51c19-6549-4b9c-be4a-926f77bb95a0"
       }
     ]
   }

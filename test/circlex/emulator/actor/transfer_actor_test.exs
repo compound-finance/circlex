@@ -119,5 +119,4 @@ defmodule Circlex.Emulator.Actor.TransferActorTest do
     {:ok, master_wallet} = WalletState.master_wallet()
     assert Wallet.get_balance(master_wallet, "USD") == "140234.93"
   end
-
 end

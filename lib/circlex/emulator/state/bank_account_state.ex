@@ -64,7 +64,7 @@ defmodule Circlex.Emulator.State.BankAccountState do
     %{bank_accounts: []}
   end
 
-  defp get_bank_accounts_st(mfa_or_fn, filters \\ []) do
+  defp get_bank_accounts_st(mfa_or_fn, filters) do
     State.get_st(mfa_or_fn, [:bank_accounts], &apply_filters(&1, filters))
   end
 

@@ -9,5 +9,4 @@ defmodule Circlex.Emulator.Api.HealthApi do
   def ping(%{}) do
     {:ok, %{message: "pong"}}
   end
-
 end

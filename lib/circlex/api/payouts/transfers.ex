@@ -7,7 +7,7 @@ defmodule Circlex.Api.Payouts.Transfers do
 
   import Circlex.Api.Tooling
 
-  alias Circlex.Struct.{Amount, Transfer}
+  alias Circlex.Struct.Transfer
 
   @doc ~S"""
   A transfer can be made from an existing funded wallet to a blockchain address or another wallet.
