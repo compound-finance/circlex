@@ -1,7 +1,7 @@
 defmodule Circlex.Emulator.Logic.TransferLogic do
   import Circlex.Emulator.Logic.LogicUtil
 
-  alias Circlex.Emulator.Logic.{RecipientLogic, WalletLogic}
+  alias Circlex.Emulator.Logic.WalletLogic
   alias Circlex.Struct.{Amount, Transfer}
 
   @usdc_decimals 6
@@ -18,7 +18,7 @@ defmodule Circlex.Emulator.Logic.TransferLogic do
     update(transfers, fn %Transfer{id: id} -> id == transfer_id end, f)
   end
 
-  def process_transfer(st = %{transfers: transfers, wallets: wallets, recipients: recipients}, transfer_id) do
+  def process_transfer(st = %{transfers: transfers, wallets: wallets}, transfer_id) do
     {:ok, transfer} = get_transfer(transfers, transfer_id)
 
     {wallets, transfers} =
@@ -76,7 +76,6 @@ defmodule Circlex.Emulator.Logic.TransferLogic do
             end)
 
           {wallets, transfers}
-
       end
 
     {:ok,

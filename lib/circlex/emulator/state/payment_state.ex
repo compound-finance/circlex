@@ -40,10 +40,11 @@ defmodule Circlex.Emulator.State.PaymentState do
        update_date: State.next(:date),
        merchant_id: merchant_id(),
        merchant_wallet_id: wallet_id,
-       source: SourceDest.deserialize(%{
-         id: bank_account_id,
-         type: "wire"
-       }),
+       source:
+         SourceDest.deserialize(%{
+           id: bank_account_id,
+           type: "wire"
+         }),
        refunds: []
      }}
   end
@@ -60,7 +61,7 @@ defmodule Circlex.Emulator.State.PaymentState do
     %{payments: []}
   end
 
-  defp get_payments_st(mfa_or_fn, filters \\ []) do
+  defp get_payments_st(mfa_or_fn, filters) do
     State.get_st(mfa_or_fn, [:payments], &apply_filters(&1, filters))
   end
 

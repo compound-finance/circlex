@@ -54,7 +54,7 @@ defmodule Circlex.Emulator.State.PayoutState do
     %{payouts: []}
   end
 
-  defp get_payouts_st(mfa_or_fn, filters \\ []) do
+  defp get_payouts_st(mfa_or_fn, filters) do
     State.get_st(mfa_or_fn, [:payouts], &apply_filters(&1, filters))
   end
 

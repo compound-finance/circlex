@@ -64,7 +64,7 @@ defmodule Circlex.Emulator.State.TransferState do
     %{transfers: []}
   end
 
-  defp get_transfers_st(mfa_or_fn, filters \\ []) do
+  defp get_transfers_st(mfa_or_fn, filters) do
     State.get_st(mfa_or_fn, [:transfers], &apply_filters(&1, filters))
   end
 

@@ -53,11 +53,21 @@ defmodule Circlex.Emulator.State.WalletStateTest do
 
   describe "get_wallet_by_address/1" do
     test "found" do
-      assert {:ok, @wallet} == WalletState.get_wallet_by_address("BTC", "BTC", "mpLQ2waXiQW6aAtnp9XMWh52R42k3QVjtU")
+      assert {:ok, @wallet} ==
+               WalletState.get_wallet_by_address(
+                 "BTC",
+                 "BTC",
+                 "mpLQ2waXiQW6aAtnp9XMWh52R42k3QVjtU"
+               )
     end
 
     test "not found" do
-      assert :not_found == WalletState.get_wallet_by_address("BTC", "USD", "mpLQ2waXiQW6aAtnp9XMWh52R42k3QVjtU")
+      assert :not_found ==
+               WalletState.get_wallet_by_address(
+                 "BTC",
+                 "USD",
+                 "mpLQ2waXiQW6aAtnp9XMWh52R42k3QVjtU"
+               )
     end
   end
 

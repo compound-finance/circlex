@@ -4,9 +4,8 @@ defmodule Circlex.Emulator.Api.MocksApi do
   """
   use Circlex.Emulator.Api
   alias Circlex.Emulator.Actor.PaymentActor
-  alias Circlex.Emulator.State
   alias Circlex.Emulator.State.{BankAccountState, PaymentState}
-  alias Circlex.Struct.{Amount, Payment}
+  alias Circlex.Struct.Amount
 
   # https://developers.circle.com/reference/payments-payments-mock-create
   @route path: "/payments/wire", method: :post
@@ -21,7 +20,12 @@ defmodule Circlex.Emulator.Api.MocksApi do
         PaymentActor.start_link(payment.id)
 
         # It's weird we don't just serialize a payment, but this is what the API returns.
-        {:ok, %{amount: Amount.serialize(payment.amount), status: payment.status, trackingRef: tracking_ref}}
+        {:ok,
+         %{
+           amount: Amount.serialize(payment.amount),
+           status: payment.status,
+           trackingRef: tracking_ref
+         }}
       end
     end
   end

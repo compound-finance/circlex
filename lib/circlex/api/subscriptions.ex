@@ -89,7 +89,7 @@ defmodule Circlex.Api.Subscriptions do
       {:ok, %{}}
   """
   def unsubscribe(id, opts \\ []) do
-    idempotency_key = Keyword.get(opts, :idempotency_key, UUID.uuid1())
+    # Note: no idempotency key
 
     case api_delete(
            Path.join("/v1/notifications/subscriptions", id),

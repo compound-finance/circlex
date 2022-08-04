@@ -28,7 +28,7 @@ defmodule Circlex.Struct.AddressTest do
     end
 
     test "without priv key" do
-      assert Address.deserialize(@address_ser_no_priv) == %{@address|priv_key: nil}
+      assert Address.deserialize(@address_ser_no_priv) == %{@address | priv_key: nil}
     end
   end
 

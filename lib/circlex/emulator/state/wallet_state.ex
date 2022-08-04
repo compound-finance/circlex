@@ -14,7 +14,9 @@ defmodule Circlex.Emulator.State.WalletState do
   end
 
   def get_wallet_by_address(chain, currency, address) do
-    get_wallets_st(fn wallets -> WalletLogic.get_wallet_by_address(wallets, chain, currency, address) end)
+    get_wallets_st(fn wallets ->
+      WalletLogic.get_wallet_by_address(wallets, chain, currency, address)
+    end)
   end
 
   def master_wallet() do
@@ -58,12 +60,13 @@ defmodule Circlex.Emulator.State.WalletState do
       {"ETH", "USD"} ->
         {eth_address, priv_key} = State.next(:eth_keypair)
 
-        {:ok, %Address{
-          address: String.downcase(Signet.Util.encode_hex(eth_address)),
-          priv_key: String.downcase(Signet.Util.encode_hex(priv_key)),
-          currency: currency,
-          chain: chain
-        }}
+        {:ok,
+         %Address{
+           address: String.downcase(Signet.Util.encode_hex(eth_address)),
+           priv_key: String.downcase(Signet.Util.encode_hex(priv_key)),
+           currency: currency,
+           chain: chain
+         }}
 
       _ ->
         {:error, "Unable to generate key pair for chain #{chain} currency: #{currency}"}

@@ -38,7 +38,7 @@ defmodule Circlex.Emulator.DepositDetector do
   end
 
   @impl true
-  def handle_info({:event, event, log}, state=%{events: events}) do
+  def handle_info({:event, event, log}, state = %{events: events}) do
     trx_id = Signet.Util.encode_hex(log.transaction_hash)
 
     case event do
@@ -65,7 +65,10 @@ defmodule Circlex.Emulator.DepositDetector do
             TransferState.add_transfer(transfer)
 
             TransferActor.start_link(transfer.id)
-            Logger.info("Detected new USDC transfer to wallet via trx: #{trx_id}: #{inspect(transfer)}")
+
+            Logger.info(
+              "Detected new USDC transfer to wallet via trx: #{trx_id}: #{inspect(transfer)}"
+            )
 
           :not_found ->
             Logger.info("Ignoring irrevelevant USDC transfer via trx: #{trx_id}...")
@@ -78,15 +81,16 @@ defmodule Circlex.Emulator.DepositDetector do
     {:noreply, %{state | events: Map.put(events, trx_id, event)}}
   end
 
-  def handle_info({:log, log}, state=%{logs: logs}) do
-    {:noreply, %{state|logs: [log.transaction_hash|logs]}}
+  def handle_info({:log, log}, state = %{logs: logs}) do
+    {:noreply, %{state | logs: [log.transaction_hash | logs]}}
   end
 
-  def handle_call(:logs, _from, state=%{logs: logs}) do
+  @impl true
+  def handle_call(:logs, _from, state = %{logs: logs}) do
     {:reply, logs, state}
   end
 
-  def handle_call(:events, _from, state=%{events: events}) do
+  def handle_call(:events, _from, state = %{events: events}) do
     {:reply, events, state}
   end
 end

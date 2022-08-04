@@ -62,7 +62,8 @@ defmodule Circlex.Struct.PayoutTest do
     end
 
     test "for api" do
-      assert Payout.serialize(@payout_with_external_ref, true) == Map.drop(@payout_ser, [:riskEvaluation, :return, :adjustments])
+      assert Payout.serialize(@payout_with_external_ref, true) ==
+               Map.drop(@payout_ser, [:riskEvaluation, :return, :adjustments])
     end
   end
 end

@@ -39,7 +39,7 @@ defmodule Circlex.Emulator.Api.Core.PayoutsApiTest do
                 createDate: "2022-07-15T20:03:32.718Z",
                 destination: %{
                   type: "wire",
-                  id: "4847be95-8b73-44cc-a329-549a25a776e2",
+                  id: "4847be95-8b73-44cc-a329-549a25a776e2"
                 },
                 id: "6e2e20bd-6ad6-4603-950b-64803647a4e6",
                 status: "complete",
@@ -58,7 +58,7 @@ defmodule Circlex.Emulator.Api.Core.PayoutsApiTest do
               createDate: "2022-07-15T20:03:32.718Z",
               destination: %{
                 type: "wire",
-                id: "4847be95-8b73-44cc-a329-549a25a776e2",
+                id: "4847be95-8b73-44cc-a329-549a25a776e2"
               },
               id: "6e2e20bd-6ad6-4603-950b-64803647a4e6",
               status: "complete",

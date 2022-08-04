@@ -264,9 +264,7 @@ defmodule Circlex.Emulator.State do
     File.write!(file, st_enc)
   end
 
-  defp do_persist(nil, st) do
-    :ok
-  end
+  defp do_persist(nil, _st), do: :ok
 
   defp read_file(file) do
     file
