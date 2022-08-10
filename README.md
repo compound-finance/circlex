@@ -1,16 +1,21 @@
-# Circlex 🪐
+# Circlex
+[![Build Status](https://github.com/compound-finance/circlex/workflows/Circlex%20Tests/badge.svg)](https://github.com/compound-finance/circlex/actions?query=workflow%3A%22Circlex+Tests%22) [![Hex Version](https://img.shields.io/hexpm/v/circlex_api.svg)](https://hex.pm/packages/circlex_api/) [![Documentation](https://img.shields.io/badge/docs-hexpm-blue.svg)](https://hexdocs.pm/circlex_api/) [![Downloads](https://img.shields.io/hexpm/dt/circlex_api.svg)](https://hex.pm/packages/circlex_api) [![Last Updated](https://img.shields.io/github/last-commit/compound-finance/circlex.svg)](https://github.com/compound-finance/circlex/commits/main)
 
+
+<img src="https://github.com/compound-finance/circlex/raw/main/logo.png" width="100">
+
+----
 Circlex is a client libary for the Circle API, and a Circle API Server emulator. You can use Circlex's API client to get or post to the Circle API (e.g. in the sandbox, production). You can alternatively run a Circle API Emulator, that will act like a Circle server, accepting transfers, wires, managing wallet balances, and sending and receiving USDC transfers. This emulator can be run on a test-net (e.g. Goerli) or a local Ethereum net (e.g. Anvil, possibly forking Goerli).
 
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `circlex` to your list of dependencies in `mix.exs`:
+by adding `circlex_api` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:circlex_api, "~> 0.1.4"}
+    {:circlex_api, "~> 0.1.5"}
   ]
 end
 ```
@@ -182,3 +187,5 @@ These actors follow the flows of a payment, payout or transfer from "pending" to
 ## Contributing
 
 Create a pull request to contribute to Circlex. All contributors agree to accept the license specified in this repository for all contributions to this project. See [LICENSE.md](./LICENSE.md).
+
+Note: The author generated the Circlex logo with DALL•E, OpenAI's text-to-image generation model. The image was further modified by the author.
