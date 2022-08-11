@@ -5,6 +5,7 @@ defmodule Circlex.Emulator.Api.Core.BankAccountsApi do
   use Circlex.Emulator.Api
   alias Circlex.Emulator.State.BankAccountState
   alias Circlex.Struct.BankAccount
+  alias Circlex.Struct.WireInstructions
 
   ### Wires
 
@@ -25,27 +26,8 @@ defmodule Circlex.Emulator.Api.Core.BankAccountsApi do
   # https://developers.circle.com/reference/payments-bank-accounts-wires-get-id-instructions
   @route "/wires/:bank_account_id/instructions"
   def get_wire_instructions(%{bank_account_id: bank_account_id}) do
-    with {:ok, bank_account} <- BankAccountState.get_bank_account(bank_account_id) do
-      wire_instructions = %{
-        beneficiary: %{
-          address1: "1 MAIN STREET",
-          address2: "SUITE 1",
-          name: "CIRCLE INTERNET FINANCIAL INC"
-        },
-        beneficiaryBank: %{
-          accountNumber: bank_account.virtual_account_number,
-          address: "1 MONEY STREET",
-          city: "NEW YORK",
-          country: "US",
-          currency: "USD",
-          name: "CRYPTO BANK",
-          postalCode: "1001",
-          routingNumber: "999999999",
-          swiftCode: "CRYPTO99"
-        },
-        trackingRef: bank_account.tracking_ref,
-        virtualAccountEnabled: true
-      }
+    with {:ok, bank_account_sending_wire} <- BankAccountState.get_bank_account(bank_account_id) do
+      {:ok, WireInstructions.serialize(bank_account_sending_wire)}
     end
   end
 

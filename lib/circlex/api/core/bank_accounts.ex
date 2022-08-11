@@ -8,6 +8,7 @@ defmodule Circlex.Api.Core.BankAccounts do
   import Circlex.Api.Tooling
 
   alias Circlex.Struct.BankAccount
+  alias Circlex.Struct.WireInstructions
 
   @doc ~S"""
   Create a bank account (wires).
@@ -32,6 +33,7 @@ defmodule Circlex.Api.Core.BankAccounts do
           status: "pending",
           tracking_ref: "CIR3KXZZ00",
           update_date: "2022-07-17T08:59:41.344582Z"
+          [TODO: virtual_account_number is random...how to test??]
         }
       }
   """
@@ -114,6 +116,47 @@ defmodule Circlex.Api.Core.BankAccounts do
     with {:ok, bank_account} <-
            api_get(Path.join("/v1/businessAccount/banks/wires", to_string(id)), opts) do
       {:ok, BankAccount.deserialize(bank_account)}
+    end
+  end
+
+
+  @doc ~S"""
+  Get wire instructions for a bank account (wires)
+
+  Reference: https://developers.circle.com/reference/payments-bank-accounts-wires-get-id-instructions
+
+  ## Examples
+
+      iex> host = Circlex.Test.start_server()
+      iex> Circlex.Api.Core.BankAccounts.get_wire_instructions("fce6d303-2923-43cf-a66a-1e4690e08d1b", host: host)
+      {
+        :ok,
+        %Circlex.Struct.WireInstructions{
+          beneficiary: %{
+            "address1" => "1 MAIN STREET",
+            "address2" => "SUITE 1",
+            "name" => "CIRCLE INTERNET FINANCIAL INC"
+          },
+          beneficiary_bank: %{
+            "accountNumber" => [TODO: ADD],
+            "address" => "1 MONEY STREET",
+            "city" => "NEW YORK",
+            "country" => "US",
+            "currency" => "USD",
+            "name" => "CRYPTO BANK",
+            "postalCode" => "1001",
+            "routingNumber" => "999999999",
+            "swiftCode" => "CRYPTO99"
+          },
+          tracking_ref: "CIR3KX3L99",
+          virtual_account_enabled: true
+        }
+      }
+  """
+  def get_wire_instructions(id, opts \\ []) do
+    with {:ok, wire_instructions} <- 
+          api_get(Path.join(["/v1/banks/wires", to_string(id), "instructions"]), opts) do
+      {:ok, WireInstructions.deserialize(wire_instructions)}
     end
   end
 end
