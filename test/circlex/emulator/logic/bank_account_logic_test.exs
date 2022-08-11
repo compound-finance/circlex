@@ -21,7 +21,7 @@ defmodule Circlex.Emulator.Logic.BankAccountLogicTest do
     status: "complete",
     tracking_ref: "CIR3KX3L99",
     update_date: "2022-02-14T22:29:33.516Z",
-    virtualAccountNumber: "547425368404"
+    virtual_account_number: "547425368404"
   }
 
   setup do

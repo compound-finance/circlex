@@ -32,8 +32,8 @@ defmodule Circlex.Api.Core.BankAccounts do
           id: "a033a6d8-05ae-11ed-9e62-6a1733211c00",
           status: "pending",
           tracking_ref: "CIR3KXZZ00",
-          update_date: "2022-07-17T08:59:41.344582Z"
-          [TODO: virtual_account_number is random...how to test??]
+          update_date: "2022-07-17T08:59:41.344582Z",
+          virtual_account_number: "547425368404"
         }
       }
   """
@@ -77,7 +77,8 @@ defmodule Circlex.Api.Core.BankAccounts do
             id: "fce6d303-2923-43cf-a66a-1e4690e08d1b",
             status: "complete",
             tracking_ref: "CIR3KX3L99",
-            update_date: "2022-02-14T22:29:33.516Z"
+            update_date: "2022-02-14T22:29:33.516Z",
+            virtual_account_number: "547425368404"
           }
         ]
       }
@@ -108,7 +109,8 @@ defmodule Circlex.Api.Core.BankAccounts do
           id: "fce6d303-2923-43cf-a66a-1e4690e08d1b",
           status: "complete",
           tracking_ref: "CIR3KX3L99",
-          update_date: "2022-02-14T22:29:33.516Z"
+          update_date: "2022-02-14T22:29:33.516Z",
+          virtual_account_number: "547425368404"
         }
       }
   """
@@ -138,7 +140,7 @@ defmodule Circlex.Api.Core.BankAccounts do
             "name" => "CIRCLE INTERNET FINANCIAL INC"
           },
           beneficiary_bank: %{
-            "accountNumber" => [TODO: ADD],
+            "accountNumber" => "547425368404",
             "address" => "1 MONEY STREET",
             "city" => "NEW YORK",
             "country" => "US",
