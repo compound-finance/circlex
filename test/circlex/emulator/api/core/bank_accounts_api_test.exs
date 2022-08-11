@@ -106,4 +106,31 @@ defmodule Circlex.Emulator.Api.Core.BankAccountsApiTest do
                bank_account_id: "fce6d303-2923-43cf-a66a-1e4690e08d1b"
              })
   end
+
+  test "get_wire_instructions/1" do
+    assert {:ok,
+            %{
+              beneficiary: %{
+                "address1": "1 MAIN STREET",
+                "address2": "SUITE 1",
+                "name": "CIRCLE INTERNET FINANCIAL INC"
+              },
+              beneficiaryBank: %{
+                "accountNumber": "547425368404",
+                "address": "1 MONEY STREET",
+                "city": "NEW YORK",
+                "country": "US",
+                "currency": "USD",
+                "name": "CRYPTO BANK",
+                "postalCode": "1001",
+                "routingNumber": "999999999",
+                "swiftCode": "CRYPTO99"
+              },
+              trackingRef: "CIR3KX3L99",
+              virtualAccountEnabled: true
+            }} ==
+            BankAccountsApi.get_wire_instructions(%{
+              bank_account_id: "fce6d303-2923-43cf-a66a-1e4690e08d1b"
+            })
+  end
 end
