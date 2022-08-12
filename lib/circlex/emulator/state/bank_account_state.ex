@@ -48,7 +48,8 @@ defmodule Circlex.Emulator.State.BankAccountState do
        billing_details: billing_details,
        bank_address: bank_address,
        create_date: State.next(:date),
-       update_date: State.next(:date)
+       update_date: State.next(:date),
+       virtual_account_number: State.next(:virtual_account_number)
      }}
   end
 

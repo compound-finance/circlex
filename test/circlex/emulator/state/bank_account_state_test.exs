@@ -21,7 +21,8 @@ defmodule Circlex.Emulator.State.BankAccountStateTest do
     id: "fce6d303-2923-43cf-a66a-1e4690e08d1b",
     status: "complete",
     tracking_ref: "CIR3KX3L99",
-    update_date: "2022-02-14T22:29:33.516Z"
+    update_date: "2022-02-14T22:29:33.516Z",
+    virtual_account_number: "547425368404"
   }
 
   setup do
