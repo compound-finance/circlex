@@ -26,8 +26,8 @@ defmodule Circlex.Emulator.Api.Core.BankAccountsApi do
   # https://developers.circle.com/reference/payments-bank-accounts-wires-get-id-instructions
   @route "/wires/:bank_account_id/instructions"
   def get_wire_instructions(%{bank_account_id: bank_account_id}) do
-    with {:ok, bank_account_sending_wire} <- BankAccountState.get_bank_account(bank_account_id) do
-      {:ok, WireInstructions.serialize(bank_account_sending_wire)}
+    with {:ok, bank_account} <- BankAccountState.get_bank_account(bank_account_id) do
+      {:ok, WireInstructions.serialize_bank_account(bank_account)}
     end
   end
 
