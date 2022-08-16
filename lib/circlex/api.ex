@@ -7,6 +7,9 @@ defmodule Circlex.Api do
 
   def auth(), do: Application.get_env(:circlex_api, :auth)
 
+  # Has to conform to the HTTPoison interface
+  def http_client(), do: Application.get_env(:circlex_api, :http_client, HTTPoison)
+
   defmodule Tooling do
     def not_implemented(), do: {:error, %{error: "Not implemented by Circlex client"}}
 
@@ -39,7 +42,8 @@ defmodule Circlex.Api do
         ]
       }
 
-      case HTTPoison.request(request) do
+      http_client = Keyword.get(opts, :host, Circlex.Api.http_client())
+      case http_client.request(request) do
         {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
           with {:ok, json} <- Jason.decode(body) do
             case status_code do
