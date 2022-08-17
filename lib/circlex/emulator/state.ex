@@ -243,9 +243,6 @@ defmodule Circlex.Emulator.State do
   defp generate_type(:external_ref),
     do: "EXTREF" <> to_string(System.unique_integer([:positive]))
 
-  defp generate_type(:virtual_account_number),
-    do: Enum.random(100_000_000_000..999_999_999_999) |> to_string()
-
   defp serialize_st(st) do
     st
     |> WalletState.serialize()

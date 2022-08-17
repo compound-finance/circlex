@@ -28,8 +28,7 @@ defmodule Circlex.Test do
              80>>,
            <<138, 188, 117, 102, 29, 10, 220, 76, 146, 255, 224, 189, 147, 170, 123, 117, 245,
              233, 203, 54, 29, 173, 66, 196, 169, 148, 65, 232, 223, 235, 76, 223>>}
-        ],
-        virtual_account_number: ["547425368404"]
+        ]
       })
 
     [port: port, initial_state: initial_state, state_name: state_name, next: next]

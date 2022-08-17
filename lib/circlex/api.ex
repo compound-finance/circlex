@@ -11,7 +11,6 @@ defmodule Circlex.Api do
   @http_client Application.get_env(:circlex_api, :http_client, HTTPoison)
   def http_client(), do: @http_client
 
-
   defmodule Tooling do
     def not_implemented(), do: {:error, %{error: "Not implemented by Circlex client"}}
 
