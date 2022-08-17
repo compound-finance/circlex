@@ -30,6 +30,7 @@ defmodule Circlex.Api do
       host = Keyword.get(opts, :host, Circlex.Api.env_host())
       auth = Keyword.get(opts, :auth, Circlex.Api.auth())
       no_data_key = Keyword.get(opts, :no_data_key, false)
+      http_client = Keyword.get(opts, :http_client, Circlex.Api.http_client())
 
       request = %HTTPoison.Request{
         method: method,
@@ -42,7 +43,6 @@ defmodule Circlex.Api do
         ]
       }
 
-      http_client = Keyword.get(opts, :host, Circlex.Api.http_client())
       case http_client.request(request) do
         {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
           with {:ok, json} <- Jason.decode(body) do
