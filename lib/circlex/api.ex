@@ -8,7 +8,9 @@ defmodule Circlex.Api do
   def auth(), do: Application.get_env(:circlex_api, :auth)
 
   # Has to conform to the HTTPoison interface
-  def http_client(), do: Application.get_env(:circlex_api, :http_client, HTTPoison)
+  @http_client Application.get_env(:circlex_api, :http_client, HTTPoison)
+  def http_client(), do: @http_client
+
 
   defmodule Tooling do
     def not_implemented(), do: {:error, %{error: "Not implemented by Circlex client"}}
