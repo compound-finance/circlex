@@ -102,8 +102,7 @@ defmodule Circlex.Api.Payments.Payments do
 
       iex> host = Circlex.Test.start_server()
       iex> amount = %{amount: "12345.00", currency: "USD"}
-      iex> beneficiaryBank = %{accountNumber: "1000000001"}
-      iex> Circlex.Api.Payments.Payments.mock_wire("CIR3KX3L99", amount, beneficiaryBank, host: host)
+      iex> Circlex.Api.Payments.Payments.mock_wire("CIR3KX3L99", amount, "1000000001", host: host)
       {:ok,
        %{
          "amount" => %{"amount" => "12345.00", "currency" => "USD"},
@@ -112,14 +111,16 @@ defmodule Circlex.Api.Payments.Payments do
          "beneficiaryBank" => %{"accountNumber" => "1000000001"}
        }}
   """
-  def mock_wire(tracking_ref, amount, beneficiary_bank, opts \\ []) do
+  def mock_wire(tracking_ref, amount, account_number, opts \\ []) do
     with {:ok, res} <-
            api_post(
              "/v1/mocks/payments/wire",
              %{
                trackingRef: tracking_ref,
                amount: amount,
-               beneficiaryBank: beneficiary_bank
+               beneficiaryBank: %{
+                accountNumber: account_number
+               }
              },
              opts
            ) do
