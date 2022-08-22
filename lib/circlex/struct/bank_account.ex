@@ -10,8 +10,7 @@ defmodule Circlex.Struct.BankAccount do
     :billing_details,
     :bank_address,
     :create_date,
-    :update_date,
-    :virtual_account_number
+    :update_date
   ]
 
   def deserialize(bank_account) do
@@ -24,8 +23,7 @@ defmodule Circlex.Struct.BankAccount do
       billing_details: fetch(bank_account, :billingDetails),
       bank_address: fetch(bank_account, :bankAddress),
       create_date: fetch(bank_account, :createDate),
-      update_date: fetch(bank_account, :updateDate),
-      virtual_account_number: fetch(bank_account, :virtualAccountNumber)
+      update_date: fetch(bank_account, :updateDate)
     }
   end
 
@@ -39,8 +37,7 @@ defmodule Circlex.Struct.BankAccount do
       billingDetails: bank_account.billing_details,
       bankAddress: bank_account.bank_address,
       createDate: bank_account.create_date,
-      updateDate: bank_account.update_date,
-      virtualAccountNumber: bank_account.virtual_account_number
+      updateDate: bank_account.update_date
     }
   end
 end

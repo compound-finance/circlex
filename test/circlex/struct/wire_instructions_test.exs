@@ -9,7 +9,7 @@ defmodule Circlex.Struct.WireInstructionsTest do
       name: "CIRCLE INTERNET FINANCIAL INC"
     },
     beneficiary_bank: %BeneficiaryBank{
-      account_number: "547425368404",
+      account_number: "198906493711",
       address: "1 MONEY STREET",
       city: "NEW YORK",
       country: "US",
@@ -43,8 +43,7 @@ defmodule Circlex.Struct.WireInstructionsTest do
       country: "CA"
     },
     create_date: "2022-02-14T22:29:32.779Z",
-    update_date: "2022-02-14T22:29:33.516Z",
-    virtual_account_number: "547425368404"
+    update_date: "2022-02-14T22:29:33.516Z"
   }
 
   @wire_instructions_ser %{
@@ -54,7 +53,7 @@ defmodule Circlex.Struct.WireInstructionsTest do
       name: "CIRCLE INTERNET FINANCIAL INC"
     },
     beneficiaryBank: %{
-      accountNumber: "547425368404",
+      accountNumber: "198906493711",
       address: "1 MONEY STREET",
       city: "NEW YORK",
       country: "US",
@@ -74,9 +73,9 @@ defmodule Circlex.Struct.WireInstructionsTest do
     end
   end
 
-  describe "serialize" do
+  describe "construct" do
     test "success" do
-      assert WireInstructions.serialize_bank_account(@bank_account) == @wire_instructions_ser
+      assert WireInstructions.from_bank_account(@bank_account) == @wire_instructions_ser
     end
   end
 end

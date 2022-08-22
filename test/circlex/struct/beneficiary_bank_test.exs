@@ -3,7 +3,7 @@ defmodule Circlex.Struct.BeneficiaryBankTest do
   alias Circlex.Struct.BeneficiaryBank
 
   @beneficiary_bank %BeneficiaryBank{
-    account_number: "547425368404",
+    account_number: "198906493711",
     address: "1 MONEY STREET",
     city: "NEW YORK",
     country: "US",
@@ -15,7 +15,7 @@ defmodule Circlex.Struct.BeneficiaryBankTest do
   }
 
   @beneficiary_bank_ser %{
-    accountNumber: "547425368404",
+    accountNumber: "198906493711",
     address: "1 MONEY STREET",
     city: "NEW YORK",
     country: "US",
