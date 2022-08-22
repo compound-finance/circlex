@@ -13,11 +13,17 @@ defmodule Circlex.Emulator.Api.MocksApiTest do
             %{
               amount: %{amount: "100.00", currency: "USD"},
               status: "pending",
-              trackingRef: "CIR3KX3L99"
+              trackingRef: "CIR3KX3L99",
+              beneficiaryBank: %{
+                accountNumber: "1000000001"
+              }
             }} ==
              MocksApi.create_mock_wire(%{
                trackingRef: "CIR3KX3L99",
-               amount: %{amount: "100.00", currency: "USD"}
+               amount: %{amount: "100.00", currency: "USD"},
+               beneficiaryBank: %{
+                 accountNumber: "1000000001"
+               }
              })
 
     # allow effects

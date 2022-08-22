@@ -9,7 +9,11 @@ defmodule Circlex.Emulator.Api.MocksApi do
 
   # https://developers.circle.com/reference/payments-payments-mock-create
   @route path: "/payments/wire", method: :post
-  def create_mock_wire(%{trackingRef: tracking_ref, amount: %{amount: amount, currency: currency}}) do
+  def create_mock_wire(%{
+        trackingRef: tracking_ref,
+        amount: %{amount: amount, currency: currency},
+        beneficiaryBank: beneficiary_bank
+      }) do
     with {:ok, master_wallet} <- get_master_wallet() do
       with {:ok, bank_account} <- BankAccountState.get_bank_account_by_tracking_ref(tracking_ref) do
         {:ok, payment} =
@@ -24,7 +28,8 @@ defmodule Circlex.Emulator.Api.MocksApi do
          %{
            amount: Amount.serialize(payment.amount),
            status: payment.status,
-           trackingRef: tracking_ref
+           trackingRef: tracking_ref,
+           beneficiaryBank: beneficiary_bank
          }}
       end
     end

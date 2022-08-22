@@ -37,6 +37,7 @@ defmodule Circlex.Emulator.Router do
 
   # Payments API
   forward("/v1/payments", to: Circlex.Emulator.Api.Payments.PaymentsApi)
+  forward("/v1/balances", to: Circlex.Emulator.Api.Core.BalancesApi)
   # Mirrors /v1/banks
 
   # Payouts
