@@ -21,11 +21,11 @@ defmodule Circlex.Struct.WireInstructions do
 
   # Constructs wire instructions from a bank account given its id and tracking_ref
   def from_bank_account(bank_account = %Circlex.Struct.BankAccount{}) do
-    <<virtualAccountNumber::binary-size(12)>> <> _rest =
+    <<virtual_account_number::binary-size(12)>> <> _rest =
       :binary.decode_unsigned(bank_account.id) |> Integer.to_string()
 
     beneficiary_bank = %{
-      account_number: virtualAccountNumber,
+      account_number: virtual_account_number,
       address: "1 MONEY STREET",
       city: "NEW YORK",
       country: "US",
