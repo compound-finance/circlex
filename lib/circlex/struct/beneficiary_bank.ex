@@ -1,6 +1,6 @@
 defmodule Circlex.Struct.BeneficiaryBank do
   use Circlex.Struct.JasonHelper
-import Circlex.Struct.Util
+  import Circlex.Struct.Util
 
   defstruct [
     :account_number,

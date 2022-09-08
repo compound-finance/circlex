@@ -67,10 +67,10 @@ defmodule Circlex.Struct.PayoutTest do
     end
   end
 
-      
   describe "JasonEncoding" do
     test "it calls serialize then jason.encode" do
-      assert Jason.encode(@payout_with_external_ref) == Jason.encode(@payout_ser_with_external_ref)
+      assert Jason.encode(@payout_with_external_ref) ==
+               Jason.encode(@payout_ser_with_external_ref)
     end
   end
 end

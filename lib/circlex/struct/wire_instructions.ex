@@ -20,7 +20,6 @@ defmodule Circlex.Struct.WireInstructions do
     }
   end
 
-
   def serialize(wire_instructions) do
     %{
       beneficiary: fetch(wire_instructions, :beneficiary),
@@ -29,7 +28,6 @@ defmodule Circlex.Struct.WireInstructions do
       virtualAccountEnabled: fetch(wire_instructions, :virtual_account_enabled)
     }
   end
-
 
   # Constructs wire instructions from a bank account given its id and tracking_ref
   def from_bank_account(bank_account = %Circlex.Struct.BankAccount{}) do

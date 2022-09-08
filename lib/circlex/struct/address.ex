@@ -1,7 +1,6 @@
 defmodule Circlex.Struct.Address do
   use Circlex.Struct.JasonHelper
-import Circlex.Struct.Util
-
+  import Circlex.Struct.Util
 
   defstruct [:chain, :currency, :address, :priv_key]
 

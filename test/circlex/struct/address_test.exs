@@ -42,7 +42,6 @@ defmodule Circlex.Struct.AddressTest do
     end
   end
 
-  
   describe "JasonEncoding" do
     test "it calls serialize then jason.encode" do
       assert Jason.encode(@address) == Jason.encode(@address_ser_priv)

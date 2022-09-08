@@ -22,7 +22,7 @@ defmodule Circlex.Struct.TransferSource do
     |> Circlex.Struct.TransferDestination.serialize()
     |> Map.put(
       :identities,
-      Enum.map(source.identities , &__MODULE__.Identity.serialize/1)
+      Enum.map(source.identities, &__MODULE__.Identity.serialize/1)
     )
   end
 
@@ -41,11 +41,11 @@ defmodule Circlex.Struct.TransferSource do
     end
 
     def serialize(source) do
-        %{
-          name: source.name,
-          type: source.type,
-          addresses: source.addresses
-    }
+      %{
+        name: source.name,
+        type: source.type,
+        addresses: source.addresses
+      }
     end
   end
 end

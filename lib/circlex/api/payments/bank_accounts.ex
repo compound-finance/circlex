@@ -56,30 +56,30 @@ defmodule Circlex.Api.Payments.BankAccounts do
     end
   end
 
-    @doc """
-    Create a bank account (wires) for an international bank account that supports list_bank_accounts
+  @doc """
+  Create a bank account (wires) for an international bank account that supports list_bank_accounts
 
-      iex> host = Circlex.Test.start_server()
-      iex> billing_details = %{city: "Toronto", country: "CA", district: "ON", line1: "100 Money St", name: "Satoshi Nakamoto", postalCode: "ON M5J 1S9"}
-      iex> bank_address = %{bankName: "HSBC Canada", city: "Toronto", country: "CA"}
-      iex> Circlex.Api.Payments.BankAccounts.create_non_us_iban_supported("1000000001", billing_details, bank_address, host: host)
-      {
-        :ok,
-        %Circlex.Struct.BankAccount{
-          description: "HSBC Canada 0001",
-          bank_address: %{"bankName" => "HSBC Canada", "city" => "Toronto", "country" => "CA"},
-          billing_details: %{"city" => "Toronto", "country" => "CA", "district" => "ON", "line1" => "100 Money St", "name" => "Satoshi Nakamoto", "postalCode" => "ON M5J 1S9"},
-          create_date: "2022-07-17T08:59:41.344582Z",
-          fingerprint: "b09eb536-05ae-11ed-aaa8-6a1733211c01",
-          id: "a033a6d8-05ae-11ed-9e62-6a1733211c00",
-          status: "pending",
-          tracking_ref: "CIR3KXZZ00",
-          update_date: "2022-07-17T08:59:41.344582Z"
-        }
+    iex> host = Circlex.Test.start_server()
+    iex> billing_details = %{city: "Toronto", country: "CA", district: "ON", line1: "100 Money St", name: "Satoshi Nakamoto", postalCode: "ON M5J 1S9"}
+    iex> bank_address = %{bankName: "HSBC Canada", city: "Toronto", country: "CA"}
+    iex> Circlex.Api.Payments.BankAccounts.create_non_us_iban_supported("1000000001", billing_details, bank_address, host: host)
+    {
+      :ok,
+      %Circlex.Struct.BankAccount{
+        description: "HSBC Canada 0001",
+        bank_address: %{"bankName" => "HSBC Canada", "city" => "Toronto", "country" => "CA"},
+        billing_details: %{"city" => "Toronto", "country" => "CA", "district" => "ON", "line1" => "100 Money St", "name" => "Satoshi Nakamoto", "postalCode" => "ON M5J 1S9"},
+        create_date: "2022-07-17T08:59:41.344582Z",
+        fingerprint: "b09eb536-05ae-11ed-aaa8-6a1733211c01",
+        id: "a033a6d8-05ae-11ed-9e62-6a1733211c00",
+        status: "pending",
+        tracking_ref: "CIR3KXZZ00",
+        update_date: "2022-07-17T08:59:41.344582Z"
       }
-    """
-    @spec create_non_us_iban_supported(String.t, map(), map(), list()) :: {:ok, %BankAccount{}} 
-    def create_non_us_iban_supported(iban, billing_details, bank_address, opts \\ []) do
+    }
+  """
+  @spec create_non_us_iban_supported(String.t(), map(), map(), list()) :: {:ok, %BankAccount{}}
+  def create_non_us_iban_supported(iban, billing_details, bank_address, opts \\ []) do
     idempotency_key = Keyword.get(opts, :idempotency_key, UUID.uuid1())
 
     with {:ok, bank_account} <-
@@ -96,7 +96,6 @@ defmodule Circlex.Api.Payments.BankAccounts do
       {:ok, BankAccount.deserialize(bank_account)}
     end
   end
-
 
   @doc ~S"""
   Get a list of bank accounts (wires).
