@@ -1,5 +1,6 @@
 defmodule Circlex.Struct.Wallet do
-  import Circlex.Struct.Util
+  use Circlex.Struct.JasonHelper
+import Circlex.Struct.Util
 
   defstruct [:wallet_id, :entity_id, :type, :description, :balances, :addresses]
 

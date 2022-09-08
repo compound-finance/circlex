@@ -1,5 +1,6 @@
 defmodule Circlex.Struct.Subscription do
-  import Circlex.Struct.Util
+  use Circlex.Struct.JasonHelper
+import Circlex.Struct.Util
 
   defstruct [:id, :endpoint, :subscription_details]
 

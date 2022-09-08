@@ -66,4 +66,11 @@ defmodule Circlex.Struct.PayoutTest do
                Map.drop(@payout_ser, [:riskEvaluation, :return, :adjustments])
     end
   end
+
+      
+  describe "JasonEncoding" do
+    test "it calls serialize then jason.encode" do
+      assert Jason.encode(@payout_with_external_ref) == Jason.encode(@payout_ser_with_external_ref)
+    end
+  end
 end

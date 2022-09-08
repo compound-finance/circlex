@@ -7,6 +7,20 @@ defmodule Circlex.Api do
 
   def auth(), do: Application.get_env(:circlex_api, :auth)
 
+  @doc """
+  A hook to give last chance for application to transform, log, or validate a request before
+  going to circle.
+  """
+  def pre_request_hook(),
+    do: Application.get_env(:circlex_api, :pre_request_hook, &Function.identity/1)
+
+  @doc """
+  A hook to give chance for application to transform, log, or validate a raw response before
+  it is decoded into structs
+  """
+  def after_request_hook(),
+    do: Application.get_env(:circlex_api, :after_request_hook, &Function.identity/1)
+
   # Has to conform to the HTTPoison interface
   @http_client Application.get_env(:circlex_api, :http_client, HTTPoison)
   def http_client(), do: @http_client
@@ -30,22 +44,36 @@ defmodule Circlex.Api do
     defp api_request(method, path, params, opts) do
       host = Keyword.get(opts, :host, Circlex.Api.env_host())
       auth = Keyword.get(opts, :auth, Circlex.Api.auth())
-      no_data_key = Keyword.get(opts, :no_data_key, false)
-      http_client = Keyword.get(opts, :http_client, Circlex.Api.http_client())
+      pre_request_hook = Keyword.get(opts, :pre_request_hook, Circlex.Api.pre_request_hook())
 
-      request = %HTTPoison.Request{
-        method: method,
-        url: Path.join(host, path),
-        body: if(params, do: Jason.encode!(params), else: <<>>),
-        headers: [
+      after_request_hook =
+        Keyword.get(opts, :after_request_hook, Circlex.Api.after_request_hook())
+
+      headers =
+        Keyword.get(opts, :headers, [
           {"Content-Type", "application/json"},
           {"Accept", "application/json"},
           {"Authorization", "Bearer #{auth}"}
-        ]
-      }
+        ])
 
-      case http_client.request(request) do
-        {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
+      # just give all the headers you want
+      no_data_key = Keyword.get(opts, :no_data_key, false)
+      http_client = Keyword.get(opts, :http_client, Circlex.Api.http_client())
+
+      request =
+        %HTTPoison.Request{
+          method: method,
+          url: Path.join(host, path),
+          body: if(params, do: Jason.encode!(params), else: <<>>),
+          headers: headers
+        }
+        |> pre_request_hook.()
+
+      response = http_client.request(request)
+      after_request_hook.({request, response})
+
+      case response do
+        {:ok, %HTTPoison.Response{status_code: status_code, body: body} = response} ->
           with {:ok, json} <- Jason.decode(body) do
             case status_code do
               code when code in 200..299 ->

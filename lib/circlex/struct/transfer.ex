@@ -1,4 +1,6 @@
 defmodule Circlex.Struct.Transfer do
+  use Circlex.Struct.JasonHelper
+
   import Circlex.Struct.Util
 
   defstruct [:id, :source, :destination, :amount, :transaction_hash, :status, :create_date]

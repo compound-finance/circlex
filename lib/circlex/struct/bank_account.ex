@@ -1,5 +1,6 @@
 defmodule Circlex.Struct.BankAccount do
-  import Circlex.Struct.Util
+  use Circlex.Struct.JasonHelper
+import Circlex.Struct.Util
 
   defstruct [
     :id,

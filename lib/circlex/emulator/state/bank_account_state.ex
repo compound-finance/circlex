@@ -52,6 +52,21 @@ defmodule Circlex.Emulator.State.BankAccountState do
      }}
   end
 
+  def new_bank_account(iban, billing_details, bank_address) do
+    {:ok,
+     %BankAccount{
+       id: State.next(:uuid),
+       status: "pending",
+       description: "#{fetch(bank_address, :bankName)} #{String.slice(iban, -4..-1)}",
+       tracking_ref: State.next(:tracking_ref),
+       fingerprint: State.next(:uuid),
+       billing_details: billing_details,
+       bank_address: bank_address,
+       create_date: State.next(:date),
+       update_date: State.next(:date)
+     }}
+  end
+
   def deserialize(st) do
     %{st | bank_accounts: Enum.map(st.bank_accounts, &BankAccount.deserialize/1)}
   end
