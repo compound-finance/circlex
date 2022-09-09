@@ -78,4 +78,10 @@ defmodule Circlex.Struct.WireInstructionsTest do
       assert WireInstructions.from_bank_account(@bank_account) == @wire_instructions_ser
     end
   end
+
+  describe "JasonEncoding" do
+    test "it calls serialize then jason.encode" do
+      assert Jason.encode(@wire_instructions) == Jason.encode(@wire_instructions_ser)
+    end
+  end
 end

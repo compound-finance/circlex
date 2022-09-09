@@ -1,4 +1,5 @@
 defmodule Circlex.Struct.Amount do
+  use Circlex.Struct.JasonHelper
   import Circlex.Struct.Util
 
   defstruct [:amount, :currency]

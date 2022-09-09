@@ -1,4 +1,5 @@
 defmodule Circlex.Struct.Payout do
+  use Circlex.Struct.JasonHelper
   import Circlex.Struct.Util
 
   alias Circlex.Struct.{Amount, SourceDest}

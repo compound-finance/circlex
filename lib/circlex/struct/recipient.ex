@@ -1,4 +1,5 @@
 defmodule Circlex.Struct.Recipient do
+  use Circlex.Struct.JasonHelper
   import Circlex.Struct.Util
 
   defstruct [:id, :address, :chain, :currency, :description]

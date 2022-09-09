@@ -41,4 +41,10 @@ defmodule Circlex.Struct.AddressTest do
       assert Address.serialize(@address, false) == @address_ser_no_priv
     end
   end
+
+  describe "JasonEncoding" do
+    test "it calls serialize then jason.encode" do
+      assert Jason.encode(@address) == Jason.encode(@address_ser_priv)
+    end
+  end
 end

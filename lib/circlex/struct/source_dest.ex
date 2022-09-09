@@ -1,7 +1,31 @@
 defmodule Circlex.Struct.SourceDest do
+  use Circlex.Struct.JasonHelper
   import Circlex.Struct.Util
 
-  defstruct [:type, :id, :address, :address_tag, :chain, :address_id]
+  defmodule Identity do
+    use Circlex.Struct.JasonHelper
+    import Circlex.Struct.Util
+
+    defstruct [:type, :name, :addresses]
+
+    def deserialize(identity) do
+      %__MODULE__{
+        name: fetch(identity, :name),
+        type: fetch(identity, :type),
+        addresses: fetch(identity, :addresses)
+      }
+    end
+
+    def serialize(source) do
+      %{
+        name: source.name,
+        type: source.type,
+        addresses: source.addresses
+      }
+    end
+  end
+
+  defstruct [:type, :id, :address, :address_tag, :chain, :address_id, identities: []]
 
   def deserialize(source_dest) do
     case fetch(source_dest, :type) do
@@ -32,50 +56,68 @@ defmodule Circlex.Struct.SourceDest do
           address_id: fetch(source_dest, :addressId)
         }
     end
+    |> Map.put(
+      :identities,
+      (fetch(source_dest, :identities) || [])
+      |> Enum.map(&Identity.deserialize/1)
+    )
   end
 
   def serialize(source_dest) do
-    case source_dest.type do
-      :wire ->
-        %{
-          type: "wire",
-          id: source_dest.id
-        }
-
-      :wallet ->
-        Map.merge(
+    base_source_dest =
+      case source_dest.type do
+        :wire ->
           %{
-            type: "wallet",
+            type: "wire",
             id: source_dest.id
-          },
-          if(is_nil(source_dest.address),
-            do: %{},
-            else: %{address: String.downcase(source_dest.address)}
+          }
+
+        :wallet ->
+          Map.merge(
+            %{
+              type: "wallet",
+              id: source_dest.id
+            },
+            if(is_nil(source_dest.address),
+              do: %{},
+              else: %{address: String.downcase(source_dest.address)}
+            )
           )
-        )
 
-      :blockchain ->
-        case source_dest.chain do
-          "ETH" ->
-            %{
-              type: "blockchain",
-              address: String.downcase(source_dest.address),
-              chain: source_dest.chain
-            }
+        :blockchain ->
+          case source_dest.chain do
+            "ETH" ->
+              %{
+                type: "blockchain",
+                address: String.downcase(source_dest.address),
+                chain: source_dest.chain
+              }
 
-          _ ->
-            %{
-              type: "blockchain",
-              address: source_dest.address,
-              chain: source_dest.chain
-            }
-        end
+            _ ->
+              %{
+                type: "blockchain",
+                address: source_dest.address,
+                chain: source_dest.chain
+              }
+          end
 
-      :verified_blockchain ->
-        %{
-          type: "verified_blockchain",
-          addressId: source_dest.address_id
-        }
+        :verified_blockchain ->
+          %{
+            type: "verified_blockchain",
+            addressId: source_dest.address_id
+          }
+      end
+
+    # a bit of a mess here b/c destinations and core api transfers souerces aren't really supposed to have identities whatsoever,
+    # so we drop the key from json if it is empty
+    if Enum.empty?(source_dest.identities) do
+      base_source_dest
+    else
+      Map.put(
+        base_source_dest,
+        :identities,
+        Enum.map(source_dest.identities, &__MODULE__.Identity.serialize/1)
+      )
     end
   end
 end

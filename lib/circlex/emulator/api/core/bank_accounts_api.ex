@@ -52,4 +52,24 @@ defmodule Circlex.Emulator.Api.Core.BankAccountsApi do
       {:ok, BankAccount.serialize(bank_account)}
     end
   end
+
+  # https://developers.circle.com/reference/payments-bank-accounts-wires-create
+  @route path: "/wires", method: :post
+  def create_bank_account(%{
+        idempotencyKey: idempotency_key,
+        iban: iban,
+        billingDetails: billing_details,
+        bankAddress: bank_address
+      }) do
+    with :ok <- check_idempotency_key(idempotency_key),
+         {:ok, bank_account} <-
+           BankAccountState.new_bank_account(
+             iban,
+             billing_details,
+             bank_address
+           ) do
+      BankAccountState.add_bank_account(bank_account)
+      {:ok, BankAccount.serialize(bank_account)}
+    end
+  end
 end

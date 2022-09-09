@@ -1,4 +1,5 @@
 defmodule Circlex.Struct.WireInstructions do
+  use Circlex.Struct.JasonHelper
   import Circlex.Struct.Util
 
   alias Circlex.Struct.BeneficiaryBank
@@ -16,6 +17,15 @@ defmodule Circlex.Struct.WireInstructions do
       beneficiary_bank: BeneficiaryBank.deserialize(fetch(wire_instructions, :beneficiaryBank)),
       tracking_ref: fetch(wire_instructions, :trackingRef),
       virtual_account_enabled: fetch(wire_instructions, :virtualAccountEnabled)
+    }
+  end
+
+  def serialize(wire_instructions) do
+    %{
+      beneficiary: fetch(wire_instructions, :beneficiary),
+      beneficiaryBank: BeneficiaryBank.serialize(fetch(wire_instructions, :beneficiary_bank)),
+      trackingRef: fetch(wire_instructions, :tracking_ref),
+      virtualAccountEnabled: fetch(wire_instructions, :virtual_account_enabled)
     }
   end
 

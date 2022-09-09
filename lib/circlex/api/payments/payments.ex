@@ -119,7 +119,7 @@ defmodule Circlex.Api.Payments.Payments do
                trackingRef: tracking_ref,
                amount: amount,
                beneficiaryBank: %{
-                accountNumber: account_number
+                 accountNumber: account_number
                }
              },
              opts

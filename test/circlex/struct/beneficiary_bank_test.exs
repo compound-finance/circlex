@@ -37,4 +37,10 @@ defmodule Circlex.Struct.BeneficiaryBankTest do
       assert BeneficiaryBank.serialize(@beneficiary_bank) == @beneficiary_bank_ser
     end
   end
+
+  describe "JasonEncoding" do
+    test "it calls serialize then jason.encode" do
+      assert Jason.encode(@beneficiary_bank) == Jason.encode(@beneficiary_bank_ser)
+    end
+  end
 end
