@@ -73,7 +73,7 @@ defmodule Circlex.Api do
       after_request_hook.({request, response})
 
       case response do
-        {:ok, %HTTPoison.Response{status_code: status_code, body: body} = response} ->
+        {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
           with {:ok, json} <- Jason.decode(body) do
             case status_code do
               code when code in 200..299 ->

@@ -1,6 +1,6 @@
 defmodule Circlex.Struct.SourceDestTest do
   use ExUnit.Case
-  alias Circlex.Struct.{Amount, SourceDest, SourceDest.Identity, Payout, PhysicalAddress}
+  alias Circlex.Struct.{SourceDest, SourceDest.Identity, PhysicalAddress}
 
   @source_dest %SourceDest{
     id: "12345",
