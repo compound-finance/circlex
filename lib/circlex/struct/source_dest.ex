@@ -12,15 +12,17 @@ defmodule Circlex.Struct.SourceDest do
       %__MODULE__{
         name: fetch(identity, :name),
         type: fetch(identity, :type),
-        addresses: fetch(identity, :addresses)
+        addresses:
+          (fetch(identity, :addresses) || [])
+          |> Enum.map(&Circlex.Struct.PhysicalAddress.deserialize/1)
       }
     end
 
-    def serialize(source) do
+    def serialize(identity) do
       %{
-        name: source.name,
-        type: source.type,
-        addresses: source.addresses
+        name: identity.name,
+        type: identity.type,
+        addresses: Enum.map(identity.addresses || [], &Circlex.Struct.PhysicalAddress.serialize/1)
       }
     end
   end
