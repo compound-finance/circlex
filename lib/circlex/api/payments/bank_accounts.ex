@@ -59,6 +59,10 @@ defmodule Circlex.Api.Payments.BankAccounts do
   @doc """
   Create a bank account (wires) for an international bank account that supports list_bank_accounts
 
+  Reference: https://developers.circle.com/reference/payments-bank-accounts-wires-create, see body params section for NON US BANK ACCOUNT - IBAN SUPPORTED
+
+  ## Examples
+
     iex> host = Circlex.Test.start_server()
     iex> billing_details = %{city: "Toronto", country: "CA", district: "ON", line1: "100 Money St", name: "Satoshi Nakamoto", postalCode: "ON M5J 1S9"}
     iex> bank_address = %{bankName: "HSBC Canada", city: "Toronto", country: "CA"}
@@ -78,7 +82,8 @@ defmodule Circlex.Api.Payments.BankAccounts do
       }
     }
   """
-  @spec create_non_us_iban_supported(String.t(), map(), map(), list()) :: {:ok, %BankAccount{}}
+  @spec create_non_us_iban_supported(String.t(), map(), map(), list()) ::
+          {:ok, %BankAccount{}} | {:error, term}
   def create_non_us_iban_supported(iban, billing_details, bank_address, opts \\ []) do
     idempotency_key = Keyword.get(opts, :idempotency_key, UUID.uuid1())
 
