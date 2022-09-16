@@ -41,6 +41,7 @@ defmodule Circlex.Struct.PayoutTest do
   }
 
   @payout_ser_with_external_ref Map.put(@payout_ser, :externalRef, "ext_ref")
+  @payout_ser_without_fees Map.delete(@payout_ser, :fees)
 
   describe "deserialize" do
     test "with external ref" do
@@ -49,6 +50,12 @@ defmodule Circlex.Struct.PayoutTest do
 
     test "without external ref" do
       assert Payout.deserialize(@payout_ser) == @payout
+    end
+
+    test "without fees" do
+      assert Payout.deserialize(@payout_ser_without_fees) ==
+               @payout
+               |> Map.put(:fees, %Circlex.Struct.Amount{amount: "tbd", currency: "tdb"})
     end
   end
 
