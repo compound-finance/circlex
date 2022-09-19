@@ -6,8 +6,8 @@ defmodule Circlex.Struct.Amount do
 
   def deserialize(nil) do
     %__MODULE__{
-      amount: "tbd",
-      currency: "tdb"
+      amount: nil,
+      currency: nil
     }
   end
 

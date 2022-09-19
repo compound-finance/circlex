@@ -55,7 +55,7 @@ defmodule Circlex.Struct.PayoutTest do
     test "without fees" do
       assert Payout.deserialize(@payout_ser_without_fees) ==
                @payout
-               |> Map.put(:fees, %Circlex.Struct.Amount{amount: "tbd", currency: "tdb"})
+               |> Map.put(:fees, %Circlex.Struct.Amount{amount: nil, currency: nil})
     end
   end
 
