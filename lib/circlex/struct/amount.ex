@@ -4,6 +4,13 @@ defmodule Circlex.Struct.Amount do
 
   defstruct [:amount, :currency]
 
+  def deserialize(nil) do
+    %__MODULE__{
+      amount: nil,
+      currency: nil
+    }
+  end
+
   def deserialize(amount) do
     %__MODULE__{
       amount: fetch(amount, :amount),
