@@ -60,16 +60,18 @@ defmodule Circlex.Emulator.Logic.TransferLogic do
           to_addr = :binary.decode_unsigned(Signet.Util.decode_hex!(transfer.destination.address))
           wei_amount = Amount.to_wei(transfer.amount, @usdc_decimals)
 
+          IO.inspect(Process.get(:signer_proc), label: "***ok***")
+          IO.inspect(Signet.Signer.address(Process.get(:signer_proc)) |> Signet.Util.encode_hex(), label: "*****Address****")
           {:ok, trx_id} =
             Signet.RPC.execute_trx(
               Circlex.Emulator.usdc_address(),
               {"transfer(address,uint256)", [to_addr, wei_amount]},
-              gas_price: {150, :gwei},
+              gas_price: {15, :gwei},
               value: 0,
               signer: Process.get(:signer_proc)
             )
 
-          {:ok, transfers} =
+            {:ok, transfers} =
             update_transfer(transfers, transfer.id, fn t ->
               # TODO: Wait for the tx to complete before "complete"
               %{t | transaction_hash: Signet.Util.encode_hex(trx_id), status: "complete"}
