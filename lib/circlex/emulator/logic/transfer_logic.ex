@@ -69,7 +69,7 @@ defmodule Circlex.Emulator.Logic.TransferLogic do
               signer: Process.get(:signer_proc)
             )
 
-            {:ok, transfers} =
+          {:ok, transfers} =
             update_transfer(transfers, transfer.id, fn t ->
               # TODO: Wait for the tx to complete before "complete"
               %{t | transaction_hash: Signet.Util.encode_hex(trx_id), status: "complete"}
