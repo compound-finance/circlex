@@ -60,8 +60,6 @@ defmodule Circlex.Emulator.Logic.TransferLogic do
           to_addr = :binary.decode_unsigned(Signet.Util.decode_hex!(transfer.destination.address))
           wei_amount = Amount.to_wei(transfer.amount, @usdc_decimals)
 
-          IO.inspect(Process.get(:signer_proc), label: "***ok***")
-          IO.inspect(Signet.Signer.address(Process.get(:signer_proc)) |> Signet.Util.encode_hex(), label: "*****Address****")
           {:ok, trx_id} =
             Signet.RPC.execute_trx(
               Circlex.Emulator.usdc_address(),
