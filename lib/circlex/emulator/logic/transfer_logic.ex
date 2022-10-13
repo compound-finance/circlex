@@ -64,7 +64,7 @@ defmodule Circlex.Emulator.Logic.TransferLogic do
             Signet.RPC.execute_trx(
               Circlex.Emulator.usdc_address(),
               {"transfer(address,uint256)", [to_addr, wei_amount]},
-              gas_price: {1, :gwei},
+              gas_price: {150, :gwei},
               value: 0,
               signer: Process.get(:signer_proc)
             )
