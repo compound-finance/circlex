@@ -113,7 +113,7 @@ defmodule Circlex.Emulator.Actor.TransferActorTest do
                 @transfer_w2b
                 | status: "complete",
                   transaction_hash:
-                    "0x04000000003B9ACA0000001407865C6E87B9F70255377E024ACE6630C1EAA37F"
+                    "0x040000000047868C0000001407865C6E87B9F70255377E024ACE6630C1EAA37F"
               }}
 
     {:ok, master_wallet} = WalletState.master_wallet()
